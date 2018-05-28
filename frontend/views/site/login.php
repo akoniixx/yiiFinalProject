@@ -36,7 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
                          'baseAuthUrl' => ['site/auth'],
                          'options' => [
                             'class' => 'auth-client-holder'
-                         ]
+                         ],
+                         'popupMode' => true,
+                         'autoRender' => true,
                     ]) ?>
 
                 </div>

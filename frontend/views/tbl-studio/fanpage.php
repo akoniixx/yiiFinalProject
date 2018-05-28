@@ -29,17 +29,13 @@ use yii\widgets\ActiveForm;
                         <div class="col-xs-7">
                             <div class="profile-info">
                                 <div class="profile-preword">
-                                    <?php $form = ActiveForm::begin([
-                                        //'action' =>['tbl-studio/uploadImageProfile'],
-                                        'method' => 'post',
-                                        'options' => ['enctype' => 'multipart/form-data']
-                                    ]) ?>
+                                    
                                     <span><?= $textStatus->confirm_name ?></span>
                                     <?php echo Dialog::widget();
                                     ?>
                                     
                                         <button type="button" id="btn-alert" class="btn btn-primary" style="float: right;">เปลี่ยนรูปภาพประจำตัว</button>
-                                    <?php ActiveForm::end() ?>
+                                    
                                 </div>
                                 <h1 class="profile-title">
                                     <span>I'm</span> <?= $modelStudio->studioName; ?>

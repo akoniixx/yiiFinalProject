@@ -30,9 +30,9 @@ class AuthHandler
         $id = ArrayHelper::getValue($attributes, 'id');
         $fullName = ArrayHelper::getValue($attributes, 'name');
         $link = ArrayHelper::getValue($attributes, 'link');
-        
+        $user = User::findOne(['email' => $email]); 
 
-        if (Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest && !$user) {
             
             if ($email !== null && User::find()->where(['email' => $email])->exists()) {
                 Yii::$app->getSession()->setFlash('error', [
@@ -87,36 +87,23 @@ class AuthHandler
             }
             
         } else { // user already logged in
-            if (!$auth) { // add auth provider
-                $auth = new Auth([
-                    'user_id' => Yii::$app->user->id,
-                    'source' => $this->client->getId(),
-                    'source_id' => (string)$attributes['id'],
-                ]);
-                if ($auth->save()) {
-                    /** @var User $user */
-                    $user = $auth->user;
-                    $this->updateUserInfo($user);
-                    Yii::$app->getSession()->setFlash('success', [
-                        Yii::t('app', 'Linked {client} account.', [
-                            'client' => $this->client->getTitle()
-                        ]),
-                    ]);
-                } else {
-                    Yii::$app->getSession()->setFlash('error', [
-                        Yii::t('app', 'Unable to link {client} account: {errors}', [
-                            'client' => $this->client->getTitle(),
-                            'errors' => json_encode($auth->getErrors()),
-                        ]),
-                    ]);
-                }
-            } else { // there's existing auth
-                Yii::$app->getSession()->setFlash('error', [
-                    Yii::t('app',
-                        'Unable to link {client} account. There is another user using it.',
-                        ['client' => $this->client->getTitle()]),
-                ]);
+
+            if($user->status != User::STATUS_ACTIVE){
+                $user->status = User::STATUS_ACTIVE;
+                $user->save();
             }
+            $profile = UProfile::find()->where(['u_id' => $user->id])->one();
+
+            if(!$profile){
+                $name = explode(" ", $fullName);
+
+                $pf = new UProfile();
+                $pf->firstname = $name[0];
+                $pf->lastname = $name[1];
+                $pf->save();
+            }
+
+            Yii::$app->getUser()->login($user);
         }
     }
 
