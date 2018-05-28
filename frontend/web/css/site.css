@@ -1,0 +1,452 @@
+@import url('https://fonts.googleapis.com/css?family=Prompt');
+html,
+body {
+    height: 100%;
+    font-family: 'Prompt', sans-serif;
+}
+
+.wrap {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+
+.wrap > .container {
+    padding: 70px 15px 20px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.jumbotron {
+    text-align: center;
+    background-color: transparent;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+.not-set {
+    color: #c55;
+    font-style: italic;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: "\e151";
+}
+
+a.desc:after {
+    content: "\e152";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+.grid-view td {
+    white-space: nowrap;
+}
+
+.grid-view .filters input,
+.grid-view .filters select {
+    min-width: 50px;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* align the logout "link" (button in form) of the navbar */
+.nav li > form > button.logout {
+    padding: 15px;
+    border: none;
+}
+
+@media(max-width:767px) {
+    .nav li > form > button.logout {
+        display:block;
+        text-align: left;
+        width: 100%;
+        padding: 10px 15px;
+    }
+}
+
+.nav > li > form > button.logout:focus,
+.nav > li > form > button.logout:hover {
+    text-decoration: none;
+}
+
+.nav > li > form > button.logout:focus {
+    outline: none;
+}
+.auth-client-holder {
+    display: inline-block;
+    vertical-align: top;
+}
+
+/*############################Upgrade profile###########################*/
+.container-hidd {
+    display:none;
+}
+.container-column {
+    height: 485px;
+    width: 65%;
+    /*background: #EEE;*/
+    margin: 10px auto;
+    position: relative;
+    border: solid 1px #cccccc;
+    border-radius: 13px;
+    overflow: auto;
+    margin-bottom: 40px;
+}
+.block-column {
+    width: 50%;
+    float: left;
+    /*margin: 20px;*/
+    padding: 20px;
+    padding-top: 35px;
+    padding-left: 30px;
+}
+.checkbox-inline {
+    margin-left: 10px;
+}
+    input[type="number"] {
+        color:green;
+        height:35px;
+        width: 85px;
+        font-size: 28px;
+    }
+    .inline {
+        padding: 20px;
+        border-top: solid 1px #cccccc;
+    }
+    .set-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 7px;
+        border: solid 1px #cccccc;
+        padding-bottom: 3px;
+        margin-right: 10px;
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+        margin-left: 8px;
+    }
+    .input-price {
+        float: right;
+        padding-top: 15px;
+    }
+    .checkbox-inline-type {
+        position: relative;
+        vertical-align: middle;
+        top: 5px;
+        margin-right: 5px;
+    }
+    .border-price-div {
+        border-radius: 15px;
+        border-left: solid 1px #cccccc;
+        border-right: solid 1px #cccccc;
+        border-bottom: solid 1px #cccccc;
+        width: 750px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+    .footer-box {
+        background-color: #f1f1f1;
+        opacity: 0.8;
+        margin: 0;
+    }
+    p.text-footer {
+        margin: 0;
+        padding: 8px;
+    }
+    .label-url {
+        font-size: 19px;
+    }
+    input.input-url {
+        width: 190px;
+        height: 30px;
+        font-size: 19px;
+    }
+    .div-url {
+        margin-bottom: 25px;
+        margin-top: 20px;
+    }
+    .div-button {
+        text-align: center;
+        margin: 25px;
+    }
+    .button-set {
+        width: 180px;
+        background-color: #5bc0de;
+        font-size: 20px;
+    }
+    .button-set:hover {
+        background-color: #269abc; 
+        color: white;
+    }
+/* ########################## End upgrade profile ################################ */
+/* ########################## START fanpage ################################ */
+.head-bg {
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    position: absolute;
+    background-size: cover;
+    background-color: #242832;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 415px;
+    }
+.content {
+    z-index: 2;
+    position: relative;
+}
+.container {
+    width: 100%;
+    max-width: 960px;
+    
+    margin: 0 auto;
+}
+.section-about {
+    padding-top: 40px;
+    position: relative;
+}
+.animate-up.animated {
+    opacity: 1;
+    visibility: visible;
+}
+.section-about .section-box {
+    padding: 0;
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+}
+.section-about .profile {
+    padding: 57px 50px 15px 50px;
+    height: 425px;
+}
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.col-xs-5 {
+    width: 41.66667%;
+    float: left;
+}
+.section-about .profile-photo {
+    margin-right: 10%;
+    margin-bottom: 10px;
+}
+.profile-photo img {
+    width: 100%;
+    display: block;
+}
+img {
+    border: 0;
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+    border: 1px solid gray;
+}
+.col-xs-7 {
+    width: 58.33333%;
+    float: left;
+}
+.section-about .profile-info {
+    color: #3d4451;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #dedede;
+}
+.profile-preword {
+    margin-bottom: 28px;
+}
+.profile-preword span:before {
+    content: '';
+    width: 0;
+    height: 0;
+    top: 100%;
+    left: 5px;
+    display: block;
+    position: absolute;
+    border-style: solid;
+    border-width: 0 0 8px 8px;
+    border-color: transparent;
+    border-left-color: #56c8d2;
+}
+.profile-preword span {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.1;
+    display: inline-block;
+    padding: 7px 12px;
+    text-transform: uppercase;
+    position: relative;
+    background-color: #56c8d2;
+}
+.section-about .profile-title {
+    font-size: 36px;
+    line-height: 1.1;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.section-about .profile-title span {
+    font-weight: 300;
+}
+.section-about .profile-position {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 0;
+}
+.profile-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.profile-list li {
+    margin-bottom: 13px;
+}
+.clearfix {
+}
+.clearfix:before, .clearfix:after {
+    content: " ";
+    display: table;
+}
+.profile-list .title {
+    display: block;
+    width: 120px;
+    float: left;
+    color: #333333;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+    text-transform: uppercase;
+}
+.profile-list .cont {
+    display: block;
+    margin-left: 125px;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #9da0a7;
+}
+.profile-social {
+    padding: 15px 0;
+    background-color: #56c8d2;
+}
+.social {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+.social li {
+    display: inline-block;
+    margin: 5px 15px;
+}
+.social li a, .social li a .rsicon {
+    line-height: 45;
+}
+.social li a {
+    width: 45px;
+    height: 45px;
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    -webkit-transition: -webkit-transition, background-color 0.25s linear 0s;
+    -moz-transition: -moz-transition, background-color 0.25s linear 0s;
+    transition: transition, background-color 0.25s linear 0s;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.social li a .rsicon {
+    color: #fff;
+    font-size: 20px;
+    line-height: 45px;
+    display: block;
+}
+.rsicon-facebook:before {
+    content: "\f09a";
+}
+.desktop .animate-up.animated {
+    opacity: 1;
+    visibility: visible;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    transform: translate(0, 0);
+    -webkit-transition: -webkit-transform 400ms ease-out 100ms, opacity 400ms ease-out 100ms;
+    -moz-transition: -moz-transform 400ms ease-out 100ms, opacity 400ms ease-out 100ms;
+    transition: transform 400ms ease-out 100ms, opacity 400ms ease-out 100ms;
+}
+.section-title {
+    color: #3d4451;
+    font-size: 34px;
+    line-height: 1.2;
+    font-weight: 600;
+    /* text-align: center; */
+    margin: 30px 10px 15px 10px;
+}
+.section-skills .section-box {
+    padding-bottom: 50px;
+}
+.section-box {
+    padding: 40px 50px;
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+}
+.section-title .inline-text {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 10px 0;
+}
+/* ########################## END fanpage ################################ */
