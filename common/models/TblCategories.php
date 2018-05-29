@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use common\models\TblStudio;
+use common\models\Occupation;
 
 /**
  * This is the model class for table "tbl_categories".
@@ -76,5 +77,10 @@ class TblCategories extends \yii\db\ActiveRecord
     public function getStudio()
     {
         return $this->hasOne(TblStudio::className(), ['id' => 's_id']);
+    }
+
+    public function getOccupations()
+    {
+        return $this->hasMany(Occupation::className(), ['initials' => 'cateWork']);
     }
 }

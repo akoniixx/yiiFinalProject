@@ -35,13 +35,22 @@ AppAsset::register($this);
 
     $id = Yii::$app->user->getId();
     $identity = UProfile::find()->where(['userType' => 'P', 'u_id' => $id])->one();
+    $profile = UProfile::findOne(['id' => $id]);
     
     if (!Yii::$app->user->isGuest && isset($identity)) { 
         $sid = TblStudio::find()->where(['u_id' => $id])->one();
+        
+        
         if (!isset($sid)) {
             $sid = $sid->u_id;
         }
     }
+    
+    if (!Yii::$app->user->isGuest) {
+        $img = $profile->imgProfile;
+        $imgDiv = '<div class="img-rounded profile-img" style="background: url('. $img .') 50% 50% no-repeat; background-size: auto 100%;"></div>';
+    }
+    
 
         
     NavBar::begin([
@@ -115,12 +124,14 @@ AppAsset::register($this);
                 ['label' => 'ออกจากระบบ', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
             ]];
         } else {
-            $menuItems[] = ['label' => Yii::$app->user->identity->username, 'items' => [
+            $menuItems[] = ['label' => $imgDiv . Yii::$app->user->identity->username, 'items' => [
                 ['label' => 'แก้ไขข้อมูลส่วนตัว', 'url' => ['/profile/view', 'id' => $uid->id],],
                 ['label' => 'สร้างสตูดิโอ <span class="glyphicon glyphicon-home"style="color:#00bfff; padding-left:10px"></span>', 'url' => ['/tbl-studio/create'], 'linkOptions' => ['style' => 'color: #00bfff;']],
                 '<li class="divider"></li>',
                 ['label' => 'ออกจากระบบ', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
-            ]];
+            ],
+                //'options' => ['']
+            ];
         }
     }
 

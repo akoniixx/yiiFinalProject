@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\TblCategories;
 
 /**
  * This is the model class for table "occupation".
@@ -29,6 +30,7 @@ class Occupation extends \yii\db\ActiveRecord
         return [
             [['occupationName', 'TH_name'], 'required'],
             [['occupationName', 'TH_name'], 'string', 'max' => 100],
+            [['initials'], 'string', 'max' => 2],
         ];
     }
 
@@ -41,6 +43,12 @@ class Occupation extends \yii\db\ActiveRecord
             'id' => 'ID',
             'occupationName' => 'Occupation Name',
             'TH_name' => 'Th Name',
+            'initials' => 'initials',
         ];
+    }
+
+    public function getCategoriesResult()
+    {
+        return $this->hasMany(TblCategories::className(), ['cateWork' => 'initials']);
     }
 }
