@@ -17,6 +17,10 @@ class Occupation extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $budget;
+    public $workHours;
+
     public static function tableName()
     {
         return 'occupation';
@@ -31,6 +35,7 @@ class Occupation extends \yii\db\ActiveRecord
             [['occupationName', 'TH_name'], 'required'],
             [['occupationName', 'TH_name'], 'string', 'max' => 100],
             [['initials'], 'string', 'max' => 2],
+            [['budget', 'workHours'], 'safe'],
         ];
     }
 
@@ -50,5 +55,11 @@ class Occupation extends \yii\db\ActiveRecord
     public function getCategoriesResult()
     {
         return $this->hasMany(TblCategories::className(), ['cateWork' => 'initials']);
+    }
+
+    public function getWorkHours()
+    {
+        $wh = ['1' => 'เต็มวัน', '2' => 'ครึ่งวัน'];
+        return $wh;
     }
 }

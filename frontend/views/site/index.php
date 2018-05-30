@@ -7,6 +7,9 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\Occupation;
 use common\models\TblStudioSearch;
+use kartik\select2\Select2;
+use common\models\Locations;
+
 ?>
 <style>
     
@@ -56,39 +59,66 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
   font-size: 16px;
 }
 </style>
+
 </head>
 <body>
 
-<div class="jumbotron">
-  <div class="container text-center">
-    <!-- <h1>My Portfolio</h1>      
-    <p>Some text that represents "Me"...</p> -->
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
-      <div class="input-group">
-        <!-- <select id="searchbygenerals_currency" name="searchbygenerals[currency]" class="form-control">
-            <option value="1">HUF</option>
-            <option value="2">EUR</option>
-        </select><span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span> -->
-        <!-- <input type="text" id="searchbygenerals_priceFrom" name="searchbygenerals[priceFrom]" class="form-control"> -->
+<div class="container text-center">
+  <div class="input-group" id="boot-search-box">
+      <input type="text" class="form-control" placeholder="<?= Yii::t('search', 'Search') ?>" />
+      <div class="input-group-btn">
+          <div class="btn-group" role="group">
+              <div class="dropdown dropdown-lg">
+                <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                  <div class="dropdown-menu dropdown-menu-right" role="menu">
+                      <div class="form-group">
+                        <label for="filter"> <?= Yii::t('search', 'Manage Search') ?> :</label>
+                        <?= $form->field($occupation, 'id')->dropDownList(
+                          ArrayHelper::map(Occupation::find()->all(), 'id','TH_name'),
+                          [
+                            'prompt' => '-- อาชีพ --',
+                            //'onchange' => 'checkOccupation();',
+                            'required'=> true,
+                          ]
+                        ); ?>
+                      </div>
+                      <div class="form-group" id="hide-locations" style="display: none;">
+                        <label for="contain">Brand:</label>
+                        <?= $form->field($locations, 'location_id')->widget(Select2::classname(), [
+                          'data' => ArrayHelper::map(Locations::find()->all(), 'location_id', 'location_name'),
+                          'options' => ['placeholder' => Yii::t('search', 'Province'), 'multiple' => true],
+                          'pluginOptions' => [
+                              'tags' => true,
+                              'tokenSeparators' => [',', ' '],
+                              'maximumInputLength' => 10
+                            ],
+                        ])->label('Tag Multiple'); ?>
+                        
+                      </div>
+                      <div class="form-group" id="hide-budget" style="display: none;">
+                        <?= $form->field($occupation, 'budget')->textInput(['type' => 'number', 'step' => 100]) ?>
+                      </div>
 
-        <?= $form->field($occupation, 'id')->dropDownList(
-            ArrayHelper::map(Occupation::find()->all(), 'id','TH_name'),
-            [
-              'prompt' => '-- อาชีพ --',
-              //'onchange' =>
-            ]
-          ); ?>
-
-        <?= $form->field($searchModel, 'searchStudio')->label(false)->textInput(['placeholder' => 'Search']); ?>
-        
-    </div>
-    <div class="form-group">
-        <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-info']); ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+                      <div class="form-group" id="hide-work-hours" style="display: none;">
+                        <?= $form->field($occupation, 'workHours')->dropDownList($workHours); ?>
+                      </div>
+                      
+                     <div class="form-group"><!-- </div> -->
+                        
+                      <br /><br />                    
+                      <?= Html::submitButton(Yii::t('search', 'Search').' :: <span class="glyphicon glyphicon-search" aria-hidden="true">', ['class' => 'btn btn-info btn-block']) ?>
+                  </div>
+                <!-- end activeform -->
+              </div>
+              <?php echo Html::submitButton('<span class="glyphicon glyphicon-search" aria-hidden="true"></span>', ['class' => 'btn btn-info']); ?>
+              <?php ActiveForm::end(); ?>
+          </div>
+      </div>
   </div>
 </div>
+
+
 
 <div class="container bg-3" id="masonry">    
   <h3>Some of my Work</h3><br>
@@ -155,5 +185,60 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
   <p>Footer Text</p>
 </footer>
 
+<?php
+
+$js = <<< JS
+
+$("#occupation-id").on("click", function() {
+    
+    var current_value = this.value;
+
+    if (current_value == 1) {
+        
+      document.getElementById("hide-locations").style.display = "block";
+      document.getElementById("hide-budget").style.display = "block";
+      document.getElementById("hide-work-hours").style.display = "block";
+
+    } else if (current_value == 2) {
+        
+      document.getElementById("hide-locations").style.display = "block";
+      document.getElementById("hide-budget").style.display = "block";
+      document.getElementById("hide-work-hours").style.display = "none";
+
+    } else if (current_value == 3) {
+        
+      document.getElementById("hide-locations").style.display = "block";
+      document.getElementById("hide-budget").style.display = "block";
+      document.getElementById("hide-work-hours").style.display = "none";
+
+    } else if (current_value == '') {
+
+      document.getElementById("hide-locations").style.display = "none";
+      document.getElementById("hide-budget").style.display = "none";
+      document.getElementById("hide-work-hours").style.display = "none";
+
+    }
+
+});
+
+JS;
+ 
+// register your javascript
+$this->registerJs($js);
+
+?>
+
 </body>
 </html>
+
+<!--  $("#occupation-id").change(function(){
+   var value = this.value;
+   if(value == 1){
+   $(".Salutation").val("0");
+   }
+   if(value == 2){
+   $(".Salutation").val("4");
+   }
+   if(value == 3){
+   $(".Salutation").val("23");
+} -->

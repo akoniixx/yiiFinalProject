@@ -19,6 +19,7 @@ use common\models\TblStudio;
 use common\models\TblStudioSearch;
 use yii\data\ActiveDataProvider;
 use common\models\Occupation;
+use common\models\Locations;
 
 /**
  * Site controller
@@ -106,9 +107,11 @@ class SiteController extends Controller
             ],
         ]);*/
         $occupation = new Occupation();
+        $workHours = $occupation->getWorkHours();
         $model = new TblStudio();
         $searchModel = new TblStudioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $locations = new Locations();
 
         if ($searchModel->load(Yii::$app->request->post())) {
             $s = $searchModel->search(Yii::$app->request->queryParams);
@@ -121,6 +124,8 @@ class SiteController extends Controller
             'dataProvider' => $dataProvider,
             'model' => $model,
             'occupation' => $occupation,
+            'workHours' => $workHours,
+            'locations' => $locations,
         ]);
         //return $this->render('index');
     }
