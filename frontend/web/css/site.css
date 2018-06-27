@@ -245,8 +245,7 @@ a.desc:after {
 }
 .container {
     width: 100%;
-    max-width: 960px;
-    
+    max-width: 1060px; 
     margin: 0 auto;
 }
 .section-about {
@@ -256,6 +255,7 @@ a.desc:after {
 .animate-up.animated {
     opacity: 1;
     visibility: visible;
+    filter: opacity(93%);
 }
 .section-about .section-box {
     padding: 0;
@@ -360,7 +360,7 @@ img {
     width: 120px;
     float: left;
     color: #333333;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 700;
     line-height: 20px;
     text-transform: uppercase;
@@ -368,10 +368,10 @@ img {
 .profile-list .cont {
     display: block;
     margin-left: 125px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 400;
     line-height: 20px;
-    color: #9da0a7;
+    color: #404040;
 }
 .profile-social {
     padding: 15px 0;
@@ -510,3 +510,17 @@ img {
     }
 }
 /* ########################## END search box ####################### */
+
+.btn-xs {
+    width: 60%;
+}
+.h3-style {
+    background-color: #3c3c3c;
+    color: white;
+    /*padding: 4px;*/
+}
+.h3-style > span {
+    padding: 8px;
+    font-size: 22px;
+}
+/* ########################## END Header ############################ */

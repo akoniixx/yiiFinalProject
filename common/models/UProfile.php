@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "u_profile".
@@ -37,7 +38,8 @@ class UProfile extends \yii\db\ActiveRecord
             [['tel'], 'string', 'max' => 30],
             //[['usreType'], 'string', 'max' => 5],
             //[['imgProfile'], 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 5, 'skipOnEmpty' => false],
-            [['imgProfile'], 'string', 'max' => 255],
+            // [['imgProfile'], 'string', 'max' => 255],
+            [['imgProfile'], 'file', 'extensions'=>'jpg, png', 'skipOnEmpty' => true],
         ];
     }
 
@@ -68,4 +70,19 @@ class UProfile extends \yii\db\ActiveRecord
     /*public function getUsername(){
         return $this->user->username;
     }*/
+
+    public function uploadProfileImage($id)
+    {
+        $findUser = UProfile::findOne($id);
+        // return $findUser->id;
+        $dirName = 'profile'.$id;
+        $path = Yii::getAlias('@app').'/web/uploads/profile/'.$dirName;
+        FileHelper::createDirectory($path);
+        $fileName = 'icon-profile';
+        // $files=\yii\helpers\FileHelper::findFiles('/path/to');
+        // $delete = FileHelper::findFiles($path) ? unlink($path . '/' . $findUser->imgProfile) : null;
+        $this->imgProfile->saveAs($path . '/' . $fileName . '.' . $this->imgProfile->extension);
+        $fullName = $fileName . '.' . $this->imgProfile->extension;
+        return $fullName;
+    }
 }

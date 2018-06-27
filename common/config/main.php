@@ -5,6 +5,8 @@ return [
         '@npm'   => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'language' => 'th-TH',
+    'timezone' => 'Asia/Bangkok',
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -16,6 +18,9 @@ return [
                     'basePath' => '@common/messages',
                 ],
             ],
+        ],
+        'studio' => [
+            'class' => 'common\components\Studio',
         ],
     ],
 ];

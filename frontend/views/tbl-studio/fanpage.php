@@ -3,28 +3,185 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ListView;
 use kartik\dialog\Dialog;
-use yii\widgets\ActiveForm;
+// use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
+
+$this->registerJsFile("//cdn.jsdelivr.net/jquery/1/jquery.min.js");
+$this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.min.js");
 ?>
 <head>
+<style>
+    .avatar-wrapper{
+    position: relative;
+    height: 200px;
+    width: 200px;
+    margin: 20px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 1px 1px 15px -5px black;
+    transition: all .3s ease;
+    &:hover{
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+    &:hover .profile-pic{
+        opacity: .5;
+    }
+    .profile-pic {
+        height: 100%;
+        width: 100%;
+        transition: all .3s ease;
+        &:after{
+            /*font-family: FontAwesome;*/
+            content: "\f007";
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            font-size: 190px;
+            background: #ecf0f1;
+            color: #34495e;
+            text-align: center;
+        }
+    }
+    /*.upload-button {
+        position: absolute;
+        top: 0; left: 0;
+        height: 100%;
+        width: 100%;
+        .fa-arrow-circle-up{
+            position: absolute;
+            font-size: 234px;
+            top: -17px;
+            left: 0;
+            text-align: center;
+            opacity: 0;
+            transition: all .3s ease;
+            color: #34495e;
+        }
+        &:hover .fa-arrow-circle-up{
+            opacity: .9;
+        }
+    }*/
+}
 
+.file-upload {
+  color: #878787;
+}
+.file-upload::-webkit-file-upload-button {
+  background: #56c8d2;
+  border: 2px solid #56c8d2;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  outline: none;
+  padding: 10px 25px;
+  text-transform: uppercase;
+  transition: all 1s ease;
+}
+
+.file-upload::-webkit-file-upload-button:hover {
+  background: #fff;
+  border: 2px solid #535353;
+  color: #000;
+}
+.cover-image {
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    max-height: 760px;
+}
+</style>
 </head>
 <body>
 
-<div class="head-bg" style="background-image: url('http://backgroundcheckall.com/wp-content/uploads/2017/12/background-img-4.jpg')">
+<div class="head-bg">
+<img id="blah" class="cover-image" src="<?= $img_cover ?>" alt="your image" />
 
 </div>
 
 <div class="content">
     <div class="container">
     <section class="section-about">
+
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['tbl-studio/upload-cover-image', 'id' => $id]),
+            'options' => ['enctype' => 'multipart/form-data']
+        ]); ?>
+        
+        <?= $form->field($studio, 'cover_image')->fileInput(['class' => 'file-upload', 'id' => 'imgInp'])->label(false); ?>
+        <!-- <input type='file' id="imgInp" /> -->
+        <div class="form-group" style="display: none;" id="check-cover-image">
+            <?= Html::submitButton('อับโหลด', [
+                'class' => 'btn btn-info',
+                'id' => 'ok',
+                // 'style' => 'display:none'
+            ]) ?>
+            
+            <?= Html::a('ยกเลิก', null, [
+                'class'=>'btn btn-default',
+                'onclick' => '(function ( $event ) {
+                    document.getElementById("imgInp").style.display = "block";
+                    document.getElementById("check-cover-image").style.display = "none";
+                    location.reload();
+                 })();'
+            ]) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
+
         <div class="animate-up animated">
             <div class="section-box">
                 <div class="profile">
                     <div class="row">
                         <div class="col-xs-5">
-                            <div class="profile-photo">
-                                <img src="https://blog.onabags.com/wp-content/uploads/2013/05/oliviaraejames.jpg">
+                            <!-- <div class="profile-photo"> -->
+                            
+                                <div class="avatar-wrapper">
+                                    <img class="profile-pic" src="<?= $img_profile ?>" />
+                                    <!-- <div class="upload-button">
+                                        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                                    </div> -->
+                                    <!-- <input class="file-upload" type="file" accept="image/*"/> -->
+                                </div>
+
+                                <!-- <img src="https://blog.onabags.com/wp-content/uploads/2013/05/oliviaraejames.jpg">
+                            </div> -->
+                            <?php $form = ActiveForm::begin([
+                                'action' => Url::to(['tbl-studio/upload-profile-image', 'id' => $id]),
+                                'options' => ['enctype' => 'multipart/form-data']
+                            ]); ?>
+                            
+                            <!-- <button class='btn  btn-primary upload-btn'>upload</button> -->
+                            <?= $form->field($profile, 'imgProfile')->fileInput(['class' => 'file-upload', 'id' => 'file-upload-profile'])->label(false); ?>
+
+                            <div class="form-group" style="text-align: center; display: none;" id="check">
+                                <?= Html::submitButton('อับโหลด', [
+                                    'class' => 'btn btn-info',
+                                    'id' => 'ok',
+                                    // 'style' => 'display:none'
+                                ]) ?>
+                                
+                                <?= Html::a('ยกเลิก', null, [
+                                    'class'=>'btn btn-default',
+                                    'onclick' => '(function ( $event ) {
+                                        document.getElementById("file-upload-profile").style.display = "block";
+                                        document.getElementById("check").style.display = "none";
+                                        location.reload();
+                                     })();'
+                                ]) ?>
                             </div>
+                            
+                            <!-- <input type='file' name ='upload-file' id='upload-file' multiple> -->
+
+                            <?php ActiveForm::end(); ?>
                         </div>
                         <div class="col-xs-7">
                             <div class="profile-info">
@@ -34,11 +191,11 @@ use yii\widgets\ActiveForm;
                                     <?php echo Dialog::widget();
                                     ?>
                                     
-                                        <button type="button" id="btn-alert" class="btn btn-primary" style="float: right;">เปลี่ยนรูปภาพประจำตัว</button>
+                                        <!-- <button type="button" id="btn-alert" class="btn btn-primary" style="float: right;">เปลี่ยนรูปภาพประจำตัว</button>  -->                   
                                     
                                 </div>
                                 <h1 class="profile-title">
-                                    <span>I'm</span> <?= $modelStudio->studioName; ?>
+                                    <!-- <span>I'm</span> --> <?= $modelStudio->studioName; ?>
                                 </h1>
                                 <h2 class="profile-position">ข้อมูลส่วนตัว</h2>
                             </div>
@@ -117,40 +274,93 @@ use yii\widgets\ActiveForm;
 $urlto = Url::to(['/tbl-studio/index']);
 /*message: 'เปลี่ยนรูปภาพโปรไฟล์: <input type="file" name = "pimage" class="form-control">'+'<br>'+
                 'เปลี่ยนรูปภาพพื้นหลัง: <input type="file" name = "cimage" class="form-control">',*/
-$js = <<< JS
-$("#btn-alert").on("click", function() {
-    var id = "$modelStudio->id";
-    var url = "$urlto";
-    BootstrapDialog.show({
+// $js = <<< JS
+// $("#btn-alert").on("click", function() {
+//     var id = "$modelStudio->id";
+//     var url = "$urlto";
+//     BootstrapDialog.show({
 
-            message: function (dialogItself) {
-                var formupload = $('<form action="'+url+'" method="POST"></form>');
-                var plabel = 'เปลี่ยนรูปภาพประจำตัว';
-                var pinput = $('<input type="file" name="UProfile[imgProfile]" class="form-control">');
-                var clabel = 'เปลี่ยนรูปภาพพื้นหลัง:';
-                var cinput = $('<input type="file" name="cimage" class="form-control">');
-                var button = $('<button type="submit" class="btn btn-primary">อับโหลด</button>');
-                formupload.append(plabel).append(pinput).append(clabel).append(cinput).append(button);
-                return formupload;
-            },
+//             message: function (dialogItself) {
+//                 var formupload = $('<form action="'+url+'" method="POST"></form>');
+//                 var plabel = 'เปลี่ยนรูปภาพประจำตัว';
+//                 var pinput = $('<input type="file" name="UProfile[imgProfile]" class="form-control">');
+//                 var clabel = 'เปลี่ยนรูปภาพพื้นหลัง:';
+//                 var cinput = $('<input type="file" name="cimage" class="form-control">');
+//                 var button = $('<button type="submit" class="btn btn-primary">อับโหลด</button>');
+//                 formupload.append(plabel).append(pinput).append(clabel).append(cinput).append(button);
+//                 return formupload;
+//             },
 
             
-            buttons: [{
-                label: 'อับโหลด',
-                type: 'submit',
-                cssClass: 'btn-primary',
-            }, {
-                label: 'ยกเลิก',
-                action: function(dialogRef) {
-                    dialogRef.close();
-                }
-            }]
-        });
+//             buttons: [{
+//                 label: 'อับโหลด',
+//                 type: 'submit',
+//                 cssClass: 'btn-primary',
+//             }, {
+//                 label: 'ยกเลิก',
+//                 action: function(dialogRef) {
+//                     dialogRef.close();
+//                 }
+//             }]
+//         });
+// });
+
+// JS;
+ 
+// // register your javascript
+
+$js = <<< JS
+
+$(document).ready(function() {
+    
+    var readURL = function(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.profile-pic').attr('src', e.target.result);
+            }
+    
+            reader.readAsDataURL(input.files[0]);
+            document.getElementById("file-upload-profile").style.display = "none";
+            document.getElementById("check").style.display = "block";
+
+        }
+    }
+
+    
+   
+    $("#file-upload-profile").on('change', function(){
+        readURL(this);
+    });
+    
+    $("#upload-button").on('click', function() {
+       $(".file-upload-profile").click();
+    });
+
+});
+
+function readURLCover(input) {
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('#blah').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+    document.getElementById("imgInp").style.display = "none";
+    document.getElementById("check-cover-image").style.display = "block";
+  }
+}
+
+$("#imgInp").change(function() {
+  readURLCover(this);
 });
 
 JS;
- 
-// register your javascript
+
 $this->registerJs($js);
 
 ?>

@@ -35,7 +35,7 @@ class TblCategories extends \yii\db\ActiveRecord
         return [
             [['s_id', 'cateWork', 'workDetails', 'placeOfWork'], 'required'],
             [['s_id'], 'integer'],
-            [['workDetails', 'placeOfWork'], 'string'],
+            [['workDetails'], 'string'],
             [['cateWork'], 'string', 'max' => 30],
             [['workDetails'], 'safe'],
         ];
@@ -49,9 +49,9 @@ class TblCategories extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             's_id' => 'S ID',
-            'cateWork' => 'Cate Work',
-            'workDetails' => 'Work Details',
-            'placeOfWork' => 'Place Of Work',
+            'cateWork' => 'อาชีพ',
+            'workDetails' => 'รายละเอียดงาน',
+            'placeOfWork' => 'สถานที่รับงาน',
         ];
     }
 
@@ -69,9 +69,15 @@ class TblCategories extends \yii\db\ActiveRecord
 
     public function searchOccupation($id)
     {
-        $search = TblCategories::find()->where(['id' => $id])->one();
+        $search = TblCategories::find()->where(['s_id' => $id])->all();
+        $arrayItem = array();
+        foreach ($search as $key => $value) {
+            $item = new TblCategories();
+            $item->cateWork = $value['cateWork'];
+            $arrayItem[] = $item->cateWork;
+        }
         //$search = TblCategories::find(['id' => $id])->orderBy(['id' => SORT_DESC])->all();
-        return $search;
+        return $arrayItem;
     }
 
     public function getStudio()

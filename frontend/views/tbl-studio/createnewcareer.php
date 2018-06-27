@@ -7,6 +7,7 @@ use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
 use yii\db\Query;
 use common\models\Locations;
+use kartik\select2\Select2;
 
 use unclead\multipleinput\MultipleInput;
 ?>
@@ -14,31 +15,20 @@ use unclead\multipleinput\MultipleInput;
 <div class="tbl-studio-form" >
 	<?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
 
-    <?= $form->field($cate, 'cateWork')->dropDownList($arrDiff, ['prompt'=>'กรุณาเลือกอาชีพ']) ?>
+    <?= $form->field($cate, 'cateWork')->dropDownList(
+        ArrayHelper::map($findOccupation, 'id', 'TH_name'), 
+        ['prompt'=>'-- กรุณาเลือกอาชีพ --'])
+    ?>
 
-    <?= $form->field($cate, 'placeOfWork')->widget(MultipleInput::className(), [
-        'max'               => 77,
-        'min'               => 1, // should be at least 2 rows
-        'allowEmptyList'    => false,
-        'enableGuessTitle'  => true,
-        'addButtonPosition' => MultipleInput::POS_HEADER,
-        'columns' => [
-        [
-            'name' => 'location_name',
-            'title' => 'จังหวัดที่รับงาน',
-            'type'  => 'dropDownList',
-            /*'value' => function($data){
-                 return $data['placeOfWork'];
-            },*/
-            'items' => ArrayHelper::map(Locations::find()->orderBy(['location_id' => SORT_ASC])->all(), 'location_id', function($item){return $item->location_name;}),
-            'enableError' => true,
-            'options' => [
-                'prompt' => 'เลือกจังหวัด',
-                //'onchange' => '$(this).init_change();' //ส่งค่าไปเรียก Ajax
-            ]
-        ]
-        ], // show add button in the header
-    ])->label(false); ?>
+    <?= $form->field($cate, 'placeOfWork')->widget(Select2::classname(), [
+      'data' => ArrayHelper::map(Locations::find()->orderBy(['location_name' => SORT_ASC])->all(), 'location_id', 'location_name'),
+      'options' => ['placeholder' => Yii::t('search', 'เลือกจังหวัด') . '..', 'multiple' => true],
+      'pluginOptions' => [
+          'tags' => true,
+          'tokenSeparators' => [',', ' '],
+          'maximumInputLength' => 10
+        ],
+    ])->label('Tag Multiple'); ?>
 
     <h2>ประเภทงานที่รับและราคา</h2>
 
@@ -108,8 +98,10 @@ use unclead\multipleinput\MultipleInput;
         </div>
     </div>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    <div class="form-group text-center" style="padding-top: 50px;">
+        <div style="padding-left: 15px; padding-right: 15px;">
+            <?= Html::submitButton('ยืนยืน', ['class' => 'btn btn-primary btn-block']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

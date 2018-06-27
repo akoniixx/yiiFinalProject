@@ -22,6 +22,10 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\data\ActiveDataProvider;
 use common\models\TblAlbumSearch;
+use common\models\Occupation;
+use yii\helpers\Json;
+use yii\web\BadRequestHttpException;
+
 /*use common\models\VerifyMember;
 use common\models\VerifyMemberSearch;*/
 /**
@@ -102,6 +106,16 @@ class TblStudioController extends Controller
         $album = new TblAlbum();
         $model = new TblGallery();
         $studio = new TblStudio();
+        $category = new TblCategories();
+        $findCate = TblCategories::find()->where(['s_id' => $id])->all();
+        $arrayOccupation = array();
+        foreach ($findCate as $key => $value) {
+            $newCategory = new TblCategories();
+            $newCategory->cateWork = $value->cateWork;
+            // return print_r($newCategory);
+            $arrayOccupation[] = $newCategory->cateWork;
+        }
+        // return print_r($arrayOccupation);
         $query = new Query();
         $qid = Yii::$app->user->getId();
         $query->select('id')->from('tbl_studio')->where('u_id = '.$qid.'')->all();
@@ -183,6 +197,9 @@ class TblStudioController extends Controller
         return $this->render('uploadform', [
             'model' => $model,
             'album' => $album,
+            'category' => $category,
+            'newCategory' => $newCategory,
+            'arrayOccupation' => $arrayOccupation,
         ]);
     }
 
@@ -210,7 +227,7 @@ class TblStudioController extends Controller
         $profile = new UProfile();
         $item = new Locations();
         $cate = new TblCategories();
-        $occupation = $cate->addOccupation();
+        $occupation = Occupation::find()->asArray()->all();
         $query = new Query();
         $id = Yii::$app->user->getId();
         $query->select('*')->from('uProfile')->where('u_id = '.$id.'')->all();
@@ -249,7 +266,25 @@ class TblStudioController extends Controller
                         $arr[] = $val;
                     }
                 }
-                $cate->placeOfWork = json_encode($arr, JSON_UNESCAPED_UNICODE);
+                // echo print_r($arr). "<br>";
+                // $model->delete();
+                // return true;
+                
+                $province = Locations::find()->where(['location_id' => $arr])->all();
+                // if (isset($province)) {
+                //     echo print_r($province);
+                // }
+                // echo "null";
+                // return true;
+                $arrayProvince = array();
+                foreach ($province as $key => $value) {
+                    $provinceName = new Locations();
+                    $provinceName->location_name = $value['location_name'];
+                    $arrayProvince[] = $provinceName->location_name;
+                }
+
+                // $cate->placeOfWork = json_encode($arrayProvince, JSON_UNESCAPED_UNICODE);
+                $cate->placeOfWork = Json::encode($arrayProvince);
                 //return print_r(json_decode($js));
                 //return $js;
 
@@ -270,6 +305,7 @@ class TblStudioController extends Controller
                     Yii::$app->db->createCommand()->update('uprofile', ['userType' => 'P'], 'id = '.$model->u_id.'')->execute();
                     return $this->redirect(['fanpage', 'id' => $model->id]);
                 }
+                $model->delete();
             }
 
                 
@@ -332,6 +368,8 @@ class TblStudioController extends Controller
 
     public function actionFanpage($id)
     {
+        $profile = new UProfile();
+        $studio = new TblStudio();
         $modelCategory = TblCategories::findOne($id);
         $modelStudio = TblStudio::findOne($id);
         $modelAlbum = TblAlbum::findOne(['studioID' => $id]);
@@ -358,9 +396,23 @@ class TblStudioController extends Controller
 
         $test = TblStudio::findOne($id);
         $tt = $test->userProfile;
-        $uploadImg = new UProfile;
+        $uploadImg = new UProfile();
         
-        
+        if ($modelProfile->imgProfile == 'profile-default-icon.png') {
+            $url_profile_img = Yii::getAlias('@web').'/uploads/profile/default/';
+            $img_profile = $url_profile_img . $modelProfile->imgProfile;
+        } else {
+            $url_profile_img = Yii::getAlias('@web').'/uploads/profile/profile'.$modelProfile->id.'/';
+            $img_profile = $url_profile_img . $modelProfile->imgProfile;
+        }
+
+        if ($modelStudio->cover_image == 'background-default.png') {
+            $url_cover_img = Yii::getAlias('@web').'/uploads/profile/default/';
+            $img_cover = $url_cover_img . $modelStudio->cover_image;
+        } else {
+            $url_cover_img = Yii::getAlias('@web').'/uploads/profile/profile'.$modelProfile->id.'/';
+            $img_cover = $url_cover_img . $modelStudio->cover_image;
+        }
 
         return $this->render('fanpage', [
             'modelCategory' => $modelCategory,
@@ -370,11 +422,15 @@ class TblStudioController extends Controller
             'dataProvider' => $dataProvider,
             'modelAlbum' => $modelAlbum,
             //'aName' => $aName,
+            'studio' => $studio,
             'baseUrl' => $baseUrl,
             'id' => $id,
             'tt' => $tt,
             'uploadImg' => $uploadImg,
+            'profile' => $profile,
             'textStatus' => $textStatus,
+            'img_cover' => $img_cover,
+            'img_profile' => $img_profile,
         ]);
     }
 
@@ -388,35 +444,58 @@ class TblStudioController extends Controller
     {
         $modelStudio = new TblStudio();
         $cate = new TblCategories();
-        $occupation = $cate->arrOccupation();
+        // $occupation = $cate->arrOccupation();
         $sid = $modelStudio->getIDPartner();
+        $listOcc = array();
         $listOcc = $cate->searchOccupation($sid->id);
-        $add = array();
-        array_push($add, $listOcc->cateWork);
-        $arrDiff = array_diff($occupation, $add);
+        // $add = array();
+        // array_push($add, $listOcc->cateWork);
+
+        $occupation = Occupation::find()->all();
+        $arrayOccupation = array();
+        foreach ($occupation as $key => $value) {
+            $occ = new Occupation();
+            $occ->initials = $value['initials'];
+            $arrayOccupation[] = $occ->initials;
+        }
+
+        $arrDiff = array_diff($arrayOccupation, $listOcc);
+        $arrayFindOcc = array();
+        $findOccupation = Occupation::find()->where(['initials' => $arrDiff])->all();
 
         if ($cate->load(Yii::$app->request->post())) {
-            if ($cate->cateWork == 0) {
-                $cate->cateWork = "Photographer";
-            } else if ($cate->cateWork == 1) {
-                $cate->cateWork = "MakeupArtist";
-            } else {
-                $cate->cateWork = "DreesRental";
-            }
+
+            $post = Yii::$app->request->post();
+
+            $newOccupation = $post['TblCategories']['cateWork'];
+            $place = $post['TblCategories']['placeOfWork'];
+
+            $queryOccupation = Occupation::findOne(['id' => $newOccupation]);
+            $cate->cateWork = $queryOccupation->initials;
+
+
             $cate->s_id = $sid->id;
             $ar = $cate->workDetails;
             $arr = array();
             $arr_results = array();
 
-            $it = Yii::$app->request->post();
-            //$arr = array();
             $listDetail = $cate->placeOfWork;
             if (is_array($listDetail)) {
-               foreach ($it['TblCategories']['placeOfWork'] as $key => $val) {
+               foreach ($place as $key => $val) {
                     $arr[] = $val;
                 }
             }
-            $cate->placeOfWork = json_encode($arr);
+
+            $province = Locations::find()->where(['location_id' => $arr])->all();
+            $arrayProvince = array();
+            foreach ($province as $key => $value) {
+                $provinceName = new Locations();
+                $provinceName->location_name = $value['location_name'];
+                $arrayProvince[] = $provinceName->location_name;
+            }
+
+            // $cate->placeOfWork = json_encode($arr);
+            $cate->placeOfWork = Json::encode($arrayProvince);
 
             foreach( $ar as $val )
             {
@@ -425,13 +504,14 @@ class TblStudioController extends Controller
                 $arr_results[] = $val ;
               }
             }
-            $cate->workDetails = json_encode($arr_results);
+            $cate->workDetails = Json::encode($arr_results);
             if ($cate->save()) {
                 //return 'success';
                 return $this->redirect(['fanpage', 'id' => $cate->s_id]);
-            } else {
-                return 'fail';
-            }
+            } 
+
+            $cate->delete();
+            throw new BadRequestHttpException("Create new occupation fail.");
             //return $cate->s_id;
         }
 
@@ -441,9 +521,50 @@ class TblStudioController extends Controller
             'modelStudio' => $modelStudio,
             'sid' => $sid,
             'listOcc' => $listOcc,
-            'arrDiff' => $arrDiff,
-            'add' => $add,
+            'findOccupation' => $findOccupation,
+            // 'add' => $add,
         ]);
+    }
+
+    public function actionUploadProfileImage($id)
+    {
+        $model = new UProfile();
+        $studio =TblStudio::findOne($id);
+        // return $studio->id;
+        $profile_id = $studio->userProfile->id;
+        // return $profile_id;
+        $post = Yii::$app->request->post();
+        if (isset($post)) {
+            $model->imgProfile = UploadedFile::getInstance($model, 'imgProfile');
+            // return $id;
+            $saveFile = $model->uploadProfileImage($profile_id);
+            // return $saveFile;
+            if (isset($saveFile)) {
+                // return "upload success";
+                // Yii::$app->session->setFlash('success', Yii::t('notifications', 'Upload Success'));
+                Yii::$app->db->createCommand()->update('uprofile', ['imgProfile' => $saveFile], 'id = '.$profile_id.'')->execute();
+                return $this->redirect(['fanpage', 'id' => $id]);
+            }
+        }
+        throw new BadRequestHttpException("file is found");
+    }
+
+    public function actionUploadCoverImage($id)
+    {
+        $post = Yii::$app->request->post();
+        $model = new TblStudio();
+        $studio = TblStudio::findOne($id);
+        $profile_id = $studio->userProfile->id;
+
+        if (isset($post)) {
+            $model->cover_image = UploadedFile::getInstance($model, 'cover_image');
+            $saveFile = $model->uploadCoverImage($profile_id, $studio->cover_image);
+            if (isset($saveFile)) {
+                Yii::$app->db->createCommand()->update('tbl_studio', ['cover_image' => $saveFile], 'id = '.$id.'')->execute();
+                return $this->redirect(['fanpage', 'id' => $id]);
+            }
+        }
+        throw new BadRequestHttpException("file is found");
     }
 
     /**

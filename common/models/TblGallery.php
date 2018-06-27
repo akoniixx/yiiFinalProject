@@ -51,7 +51,7 @@ class TblGallery extends \yii\db\ActiveRecord
             'gID' => 'G ID',
             'aID' => 'A ID',
             'gName' => 'G Name',
-            'gimages' => 'Gimages',
+            'gimages' => 'ไฟล์รูปภาพ',
             'date' => 'Date',
             'status' => 'Status',
         ];

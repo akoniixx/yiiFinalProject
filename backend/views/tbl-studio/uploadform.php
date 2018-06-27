@@ -21,10 +21,10 @@ use kartik\file\FileInput;
 	<?= $form->field($album, 'albumName')->textInput() ?>
 
 	<?= $form->field($album, 'type')->dropdownList([
-			'congratulations' => 'รับปริญญา',
+			'congratulation' => 'รับปริญญา',
 			'fashion' => 'ภาพบุคคล/แฟชัน',
 			'wedding' => 'งานแต่ง',
-			'prewedding' => 'พรีเวดเด้ง',
+			'pre-wedding' => 'พรีเวดเด้ง',
 			'event' => 'งานอีเวนต์',
 			'architecture' => 'สถาปัตยกรรม',
 			'productAndFood' => 'สินค้า/อาหาร',

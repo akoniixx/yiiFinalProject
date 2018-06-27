@@ -47,7 +47,18 @@ AppAsset::register($this);
     }
     
     if (!Yii::$app->user->isGuest) {
-        $img = $profile->imgProfile;
+        $type = $profile->userType;
+        if ($type == 'FB') {
+            $img = $profile->imgProfile;
+        } else {
+            if ($profile->imgProfile == 'profile-default-icon.png') {
+                $baseUrl = Yii::getAlias('@web').'/uploads/profile/default/';
+                $img = $baseUrl . $profile->imgProfile;
+            } else {
+                $baseUrl = Yii::getAlias('@web').'/uploads/profile/profile'.$profile->id.'/';
+                $img = $baseUrl . $profile->imgProfile;
+            }
+        }
         $imgDiv = '<div class="img-rounded profile-img" style="background: url('. $img .') 50% 50% no-repeat; background-size: auto 100%;"></div>';
     }
     
@@ -80,7 +91,7 @@ AppAsset::register($this);
             )
             . Html::endForm()
             . '</li>';*/
-            ['label' => Yii::$app->user->identity->username, 'items' => [
+            ['label' => $imgDiv . Yii::$app->user->identity->username, 'items' => [
                 [
                     'label' => 'หน้าโปรไฟล์',
                     'url' => ['/tbl-studio/fanpage', 'id' => $sid->id],
@@ -147,7 +158,8 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= Alert::widget() ?>
+        <?php //Alert::widget() ?>
+        <?php $this->render('/layouts/alert')?> <!-- ######## alert  ######## -->
         <?= $content ?>
     </div>
 </div>

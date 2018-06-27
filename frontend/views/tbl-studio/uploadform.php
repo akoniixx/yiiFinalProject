@@ -1,12 +1,15 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+// use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\web\UploadedFile;
 use yii\widgets\ActiveField;
 use common\models\TblAlbum;
-
+use common\models\Occupation;
 use kartik\file\FileInput;
+use yii\helpers\ArrayHelper;
+use common\models\WorkType;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\TblStudio */
@@ -14,37 +17,45 @@ use kartik\file\FileInput;
 ?>
 
 <div class="tbl-studio-form">
-
+	<div class="row">
 
 	<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+	
+	<div class="col-sm-6 col-md-6">
+		<?= $form->field($category, 'cateWork')->dropdownList(
+			ArrayHelper::map(Occupation::find()->where(['initials' => $arrayOccupation])->all(), 'id', 'TH_name')
+		) ?>
+	</div>
 
-	<?= $form->field($album, 'albumName')->textInput() ?>
+	<div class="col-sm-6 col-md-6">
+		<?= $form->field($album, 'albumName')->textInput() ?>
+	</div>
 
-	<?= $form->field($album, 'type')->dropdownList([
-			'congratulations' => 'รับปริญญา',
-			'fashion' => 'ภาพบุคคล/แฟชัน',
-			'wedding' => 'งานแต่ง',
-			'prewedding' => 'พรีเวดเด้ง',
-			'event' => 'งานอีเวนต์',
-			'architecture' => 'สถาปัตยกรรม',
-			'productAndFood' => 'สินค้า/อาหาร',
-		]) ?>
+	<div class="col-md-6 col-md-offset-3">
+		<?= $form->field($album, 'type')->dropdownList(
+			ArrayHelper::map(WorkType::find()->all(), 'id', 'name_type_TH'),
+	          [
+	            'prompt' => '-- ประเภทงาน --',
+	          ]
+		) ?>
+	</div>
+	
+	<div class="col-lg-12 col-md-12">
+	    <?= $form->field($model, 'gimages[]')->widget(FileInput::classname(), [
+	    'options' => ['accept' => 'image/*', 'multiple' => true], ]); ?>
+	</div>
+    
 
-    <?php //echo $form->field($model, 'gimages[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
-
-    <?= $form->field($model, 'gimages[]')->widget(FileInput::classname(), [
-    'options' => ['accept' => 'image/*', 'multiple' => true], ]); ?>
-
-    <?= '<label class="control-label">Add Attachments</label>';
-	 FileInput::widget([
-	    'model' => $model,
-	    'name' => 'attachment_1[]',
-	    'options' => ['multiple' => true]
-	]); ?>
-
-    <button type="submit" class="btn btn-primary" style="text-align: center;">Submit</button>
+    <!-- <button type="submit" class="btn btn-primary" style="text-align: center;">Submit</button> -->
+    <div class="form-group text-center" style="padding-top: 50px;">
+        <div style="padding-left: 15px; padding-right: 15px;">
+            <?= Html::submitButton('อัพโหลด', ['class' => 'btn btn-primary btn-block']) ?>
+        </div>
+    </div>
  
-<?php ActiveForm::end() ?>
+	<?php ActiveForm::end() ?>
+
+	</div>
 </div>
 
 <?php

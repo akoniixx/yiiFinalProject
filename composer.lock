@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "042825ec2d194f03be27d47c1c132ac6",
+    "content-hash": "51546b105b3adce2182119393c3c4290",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -140,7 +140,7 @@
             "version": "v1.3.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/bestiejs/punycode.js.git",
+                "url": "git@github.com:bestiejs/punycode.js.git",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "dist": {
@@ -148,6 +148,25 @@
                 "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
                 "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
                 "shasum": null
+            },
+            "type": "bower-asset"
+        },
+        {
+            "name": "bower-asset/toastr",
+            "version": "2.1.2",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:johnpapa/toastr-bower.git",
+                "reference": "e648a870a60103bbc3986c1fe2b2de86ea4a9569"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpapa/toastr-bower/zipball/e648a870a60103bbc3986c1fe2b2de86ea4a9569",
+                "reference": "e648a870a60103bbc3986c1fe2b2de86ea4a9569",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.6.3"
             },
             "type": "bower-asset"
         },
@@ -859,6 +878,59 @@
             "time": "2017-11-06T16:04:54+00:00"
         },
         {
+            "name": "kartik-v/yii2-grid",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-grid.git",
+                "reference": "99c1bf1e9b1fb55c7496020f80395febdbc5c3a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/99c1bf1e9b1fb55c7496020f80395febdbc5c3a7",
+                "reference": "99c1bf1e9b1fb55c7496020f80395febdbc5c3a7",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-dialog": "~1.0",
+                "kartik-v/yii2-krajee-base": "~1.7"
+            },
+            "suggest": {
+                "kartik-v/yii2-mpdf": "For exporting grids to PDF"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\grid\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Yii 2 GridView on steroids. Various enhancements and utilities for the Yii 2.0 GridView widget.",
+            "homepage": "https://github.com/kartik-v/yii2-grid",
+            "keywords": [
+                "extension",
+                "grid",
+                "widget",
+                "yii2"
+            ],
+            "time": "2018-05-03T13:25:56+00:00"
+        },
+        {
             "name": "kartik-v/yii2-krajee-base",
             "version": "v1.8.9",
             "source": {
@@ -961,6 +1033,60 @@
                 "tabs-x"
             ],
             "time": "2017-05-04T12:30:21+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-widget-datepicker",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-widget-datepicker.git",
+                "reference": "eb7e829b8a0b341dc22ef2dc28d1bb4ff08e3550"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-datepicker/zipball/eb7e829b8a0b341dc22ef2dc28d1bb4ff08e3550",
+                "reference": "eb7e829b8a0b341dc22ef2dc28d1bb4ff08e3550",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": "~1.7"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\date\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Enhanced Yii2 wrapper for the bootstrap datepicker plugin (sub repo split from yii2-widgets).",
+            "homepage": "https://github.com/kartik-v/yii2-widget-datepicker",
+            "keywords": [
+                "date",
+                "extension",
+                "form",
+                "jquery",
+                "picker",
+                "plugin",
+                "select2",
+                "widget",
+                "yii2"
+            ],
+            "time": "2017-09-06T06:18:08+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-depdrop",
@@ -1118,6 +1244,52 @@
                 "yii2"
             ],
             "time": "2018-02-24T05:28:25+00:00"
+        },
+        {
+            "name": "lavrentiev/yii2-toastr",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lavrentiev/yii2-toastr.git",
+                "reference": "a5392f09c64285fc15d5be17bb23ae959b3b382d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lavrentiev/yii2-toastr/zipball/a5392f09c64285fc15d5be17bb23ae959b3b382d",
+                "reference": "a5392f09c64285fc15d5be17bb23ae959b3b382d",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/toastr": "^2.1",
+                "yiisoft/yii2": "~2.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "lavrentiev\\widgets\\toastr\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Eugene Lavrentiev (RyanTedder)",
+                    "email": "lavrentiev.e@gmail.com",
+                    "homepage": "https://github.com/lavrentiev"
+                }
+            ],
+            "description": "Simple javascript toast notifications",
+            "homepage": "https://github.com/lavrentiev/yii2-toastr",
+            "keywords": [
+                "extension",
+                "jquery",
+                "notification",
+                "toastr",
+                "yii2"
+            ],
+            "time": "2017-10-24T08:49:46+00:00"
         },
         {
             "name": "perminder-klair/yii2-dropzone",
@@ -4291,7 +4463,9 @@
     "stability-flags": {
         "perminder-klair/yii2-dropzone": 20,
         "kartik-v/yii2-widget-fileinput": 20,
-        "kartik-v/yii2-widget-select2": 20
+        "kartik-v/yii2-widget-select2": 20,
+        "kartik-v/yii2-widget-datepicker": 20,
+        "kartik-v/yii2-grid": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

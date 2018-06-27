@@ -62,6 +62,15 @@
                             ],*/
                         ],
                     ],
+                    [
+                        'label' => Yii::t('schedule', 'Graduation Schedule'),
+                        'icon' => 'calendar',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => Yii::t('schedule', 'Create Schedule'), 'icon' => 'calendar-plus-o', 'url' => ['/graduation-schedule/create']],
+                            ['label' => Yii::t('schedule', 'Update Schedule'), 'icon' => 'calendar-check-o', 'url' => ['/graduation-schedule/index']],
+                        ],
+                    ],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [

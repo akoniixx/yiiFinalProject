@@ -62,7 +62,7 @@ class TblAlbum extends \yii\db\ActiveRecord
             'studioID' => 'Studio ID',
             'albumName' => 'ชื่ออัลบั้ม',
             //'cateAlbum' => 'ประเภทอัลบั้ม',
-            'type' => 'Type',
+            'type' => 'ประเภทงาน',
             'image' => 'Image',
             //'date' => 'Date',
             'status' => 'Status',

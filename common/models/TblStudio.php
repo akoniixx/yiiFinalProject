@@ -9,6 +9,7 @@ use common\models\TblAlbum;
 use common\models\TblCategories;
 use common\models\VerifyMember;
 use common\models\Confirmation;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "tbl_studio".
@@ -44,6 +45,8 @@ class TblStudio extends \yii\db\ActiveRecord
     {
         return [
             [['u_id', 'url', 'studioName'], 'required'],
+            [['url'], 'unique'],
+            ['url', 'match', 'pattern' => '/^[0-9A-Za-z-_]{6,25}$/'],
             [['u_id'], 'integer'],
             //[['placeOfWork'], 'string'],
             [['url', 'confirmation'], 'string', 'max' => 30],
@@ -52,7 +55,7 @@ class TblStudio extends \yii\db\ActiveRecord
             [['lineID'], 'string', 'max' => 20],
             [['searchstring'], 'safe'],
             //[['workType'], 'string', 'max' => 50],
-            //[['gimages'], 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 5, 'skipOnEmpty' => false],
+            [['cover_image'], 'file', 'extensions' => 'png, jpg, jpeg', 'maxSize' => 3072000, 'skipOnEmpty' => true],
         ];
     }
 
@@ -88,6 +91,21 @@ class TblStudio extends \yii\db\ActiveRecord
             }
         }
         return $sid;
+    }
+
+    public function uploadCoverImage($id, $img)
+    {
+        $findStudio = TblStudio::findOne($id);
+        // return $findUser->id;
+        $dirName = 'profile'.$id;
+        $path = Yii::getAlias('@app').'/web/uploads/profile/'.$dirName;
+        FileHelper::createDirectory($path);
+        $fileName = 'background-cover';
+        // $files=\yii\helpers\FileHelper::findFiles('/path/to');
+        // $delete = FileHelper::findFiles($path) ? unlink($path . '/' . $img) : null;
+        $this->cover_image->saveAs($path . '/' . $fileName . '.' . $this->cover_image->extension);
+        $fullName = $fileName . '.' . $this->cover_image->extension;
+        return $fullName;
     }
 
     public function getUserProfile()

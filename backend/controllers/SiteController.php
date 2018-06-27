@@ -6,6 +6,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\TblStudio;
 
 /**
  * Site controller
@@ -26,7 +27,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'camera-add'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -96,5 +97,18 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionCameraAdd()
+    {
+        $model = new TblStudio();
+        // $post = Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+            echo "Hi";
+            return true;
+        }
+        return $this->render('camera-add', [
+            'model' => $model
+        ]);
     }
 }

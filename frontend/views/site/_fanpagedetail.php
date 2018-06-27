@@ -4,8 +4,19 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 
 //$value = ArrayHelper::getValue($model, 'foo.bar.name');
-$map = ArrayHelper::map($model->categories,'id','cateWork');
+$category = $model->categories;
+// $oc = $test->occupations;
+$map = ArrayHelper::map($category,'id','cateWork');
 $list = implode(" ", $map);
+$find_profile = $model->userProfile->imgProfile;
+// $img_profile = isset($find_profile) ? $find_profile : 'hooo';
+if ($find_profile == 'profile-default-icon.png') {
+    $url_profile_img = Yii::getAlias('@web').'/uploads/profile/default/';
+    $img = $url_profile_img . $find_profile;
+} else {
+    $url_profile_img = Yii::getAlias('@web').'/uploads/profile/profile'.$model->userProfile->id.'/';
+    $img = $url_profile_img . $find_profile;
+}
 ?>
 
 
@@ -16,7 +27,7 @@ $list = implode(" ", $map);
     	<h4><?= $model->studioName; ?></h4>
         <p class="subtitle"><?= $list; ?></p>
         <div class="avatar">
-        	<img src="https://www.mills.edu/uniquely-mills/students-faculty/student-profiles/images/student-profile-gabriela-mills-college.jpg" class="img-responsive img-circle" />
+        	<img src="<?= $img ?>" class="img-responsive img-circle" />
         </div>
     </div>
   </div>
