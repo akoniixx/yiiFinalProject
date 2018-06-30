@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use common\models\TblCategories;
 use common\models\WorkSchedule;
+use common\models\TblStudio;
 
 /**
  * GraduationScheduleController implements the CRUD actions for GraduationSchedule model.
@@ -135,6 +136,41 @@ class GraduationScheduleController extends Controller
         ]);
     }
 
+    public function actionList($id, $type)
+    {
+        $get = Yii::$app->request->get();
+        // return $id;
+        $query = WorkSchedule::find()->where(['graduation_id' => $id])
+                    ->andWhere(['typeOfWork' => $type])
+                    // ->orderBy('id DESC');
+                    ->all();
+
+        // $studio = TblStudio::find()->where(['id' => 11])->all();
+
+        // $arr = [];
+        // foreach ($studio as $key => $value) {
+        //     $arr[] = $value
+        // }
+        $find_profile = $query->studio->userProfile->imgProfile;
+        // $img_profile = isset($find_profile) ? $find_profile : 'hooo';
+        if ($find_profile == 'profile-default-icon.png') {
+            $url_profile_img = Yii::getAlias('@web').'/uploads/profile/default/';
+            $img = $url_profile_img . $find_profile;
+        } else {
+            $url_profile_img = Yii::getAlias('@web').'/uploads/profile/profile'.$model->studio->userProfile->id.'/';
+            $img = $url_profile_img . $find_profile;
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('list', [
+            'dataProvider' => $dataProvider,
+
+        ]);
+    }
+
     /**
      * Creates a new GraduationSchedule model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -172,36 +208,6 @@ class GraduationScheduleController extends Controller
             'model' => $model,
         ]);
     }
-
-    // public function actionJoinGraduate()
-    // {
-    //     $model = new WorkSchedule();
-    //     $studioId = Yii::$app->studio->getStudioId();
-    //     $post = Yii::$app->request->post();
-    //     $request = "";
-    //     $type = "";
-    //     if (isset($post)) {
-    //         // return $post['submit'];
-    //         if (isset($post['submit_ph'])) {
-    //             $request = $post['submit_ph'];
-    //             $type = "Ph";
-    //         } else {
-    //             $request = $post['submit_ma'];
-    //             $type = "Ma";
-    //         }
-
-    //         $model->graduation_id = $request;
-    //         $model->s_id = $studioId;
-    //         $model->typeOfWork = $type;
-
-    //         if ($model->save()) {
-    //             Yii::$app->session->setFlash('success', Yii::t('norifications', 'Successfully Added'));
-    //             return $this->redirect(['index', 'data' => $model->graduation_id]);
-    //         }
-
-    //     }
-    //     return $this->render('index');
-    // }
 
     /**
      * Deletes an existing GraduationSchedule model.

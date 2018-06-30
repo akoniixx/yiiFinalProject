@@ -255,7 +255,7 @@ a.desc:after {
 .animate-up.animated {
     opacity: 1;
     visibility: visible;
-    filter: opacity(93%);
+    filter: opacity(96%);
 }
 .section-about .section-box {
     padding: 0;
@@ -437,7 +437,8 @@ img {
     margin: 30px 10px 15px 10px;
 }
 .section-skills .section-box {
-    padding-bottom: 50px;
+    /*padding-bottom: 50px;*/
+    display: inline-block;
 }
 .section-box {
     padding: 40px 50px;

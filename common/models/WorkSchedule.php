@@ -24,6 +24,11 @@ class WorkSchedule extends \yii\db\ActiveRecord
     const MAKEUP_ARTIST = "Ma";
 
     public $cnt;
+    public $userProfile;
+    public $categories;
+    public $occupations;
+    public $confirmStatus;
+    public $studio;
 
     public static function tableName()
     {
@@ -60,5 +65,10 @@ class WorkSchedule extends \yii\db\ActiveRecord
     public function getGraduation()
     {
         return $this->hasOne(GraduationSchedule::className(), ['id' => 'graduation_id']);
+    }
+
+    public function getStudio()
+    {
+        return $this->hasOne(TblStudio::className(), ['id' => 's_id']);
     }
 }

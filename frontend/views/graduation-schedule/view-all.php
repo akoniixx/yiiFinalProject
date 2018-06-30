@@ -83,12 +83,12 @@ $this->params['breadcrumbs'][] = $this->title;
                       ->groupBy(['id'])
                       ->count();
                 // return $find;
-                return Html::a($find, ['view', 'id' => $model->id], [
+                return Html::a($find, ['list', 'id' => $model->id, 'type' => WorkSchedule::PHOTOGRAPHER], [
                     'class' => 'btn btn-success btn-xs',
-                    'data' => [
-                        // 'confirm' => 'กดยืนยันเพื่อลบ',
-                        'method' => 'post',
-                    ],
+                    // 'data' => [
+                    //     // 'confirm' => 'กดยืนยันเพื่อลบ',
+                    //     'method' => 'get',
+                    // ],
                 ]);
               },
             ],
@@ -104,12 +104,12 @@ $this->params['breadcrumbs'][] = $this->title;
                       ->groupBy(['id'])
                       ->count();
                 // return $find;
-                return Html::a($find, ['view', 'id' => $model->id], [
+                return Html::a($find, ['list', 'id' => $model->id, 'type' => WorkSchedule::MAKEUP_ARTIST], [
                     'class' => 'btn btn-info btn-xs',
-                    'data' => [
-                        // 'confirm' => 'กดยืนยันเพื่อลบ',
-                        'method' => 'post',
-                    ],
+                    // 'data' => [
+                    //     // 'confirm' => 'กดยืนยันเพื่อลบ',
+                    //     'method' => 'get',
+                    // ],
                 ]);
               },
             ]
