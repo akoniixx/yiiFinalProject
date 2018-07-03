@@ -14,7 +14,10 @@ class Studio extends Component {
     {
     	$id = Yii::$app->user->getId();
     	$stu = TblStudio::find()->where(['u_id' => $id])->one();
-        return $stu->id;
+    	if (isset($stu)) {
+    		return $stu->id;
+    	}
+        return false;
     }
      
 }

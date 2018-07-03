@@ -24,6 +24,10 @@ class VerifyMember extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    const WAIT = 2;
+    const CONFIRM = 50;
+
     public static function tableName()
     {
         return 'verify_member';

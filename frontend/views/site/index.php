@@ -302,7 +302,7 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
     <div style="padding-left: 15px; padding-right: 15px;">
         <?php
         // $studioId = Yii::$app->studio->getStudioId();
-        if (!Yii::$app->user->isGuest && Yii::$app->studio->getStudioId() !== NULL) {
+        if (!Yii::$app->user->isGuest && Yii::$app->studio->getStudioId() != NULL) {
           echo Html::a(Yii::t('index', 'Register Graduation Schedule'),
               ['graduation-schedule/index'],
               ['class' => 'btn btn-info btn-block', 'style' => 'font-size:18px']);

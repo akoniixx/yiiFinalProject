@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]),
               'contentOptions' => function ($model, $key, $index, $column) {
                   return ['style' => 'color:' 
-                      . ($model->verify_status == 50 ? 'green' : '#ff8f18')];
+                      . ($model->verify_status == VerifyMember::CONFIRM ? 'green' : '#ff8f18')];
               },
             ],
             [
@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'ok' => function($url,$model,$key){
                         $vid = VerifyMember::findOne($model->verify_id);
                         $sid = $vid->studioValidation;
-                        return $sid->confirmation == 10 ? Html::a('<i class="glyphicon glyphicon-ok" style="color:green;"></i>',false,['class'=>'btn btn-default']) : NULL;
+                        return $sid->confirmation == Confimation::VERIFY ? Html::a('<i class="glyphicon glyphicon-ok" style="color:green;"></i>',false,['class'=>'btn btn-default']) : NULL;
                       }
                 ]
             ],

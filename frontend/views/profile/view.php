@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\UProfile */
@@ -32,7 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'value'=> function($model) {
                 if ($model->userType == 'FB') {
                     $path = $model->imgProfile;
-                } else {
+                } else if ($model->imgProfile == 'profile-default-icon.png') {
+                    $url_profile_img = Yii::getAlias('@web').'/uploads/profile/default/';
+                    $path = $url_profile_img . $model->imgProfile;
+                }else {
                     $path = Url::to(Yii::getAlias('@web').'/uploads/profile/userid'.$models->id.'/'.$model->imgProfile);
                 }
                 return '<a href="'. $path .'"  data-fancybox="images">'.
