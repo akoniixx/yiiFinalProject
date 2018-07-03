@@ -16,6 +16,9 @@ class Confirmation extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    const NONE_VERIFY = 1;
+    const VERIFY = 40;
+
     public static function tableName()
     {
         return 'confirmation';

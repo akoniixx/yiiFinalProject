@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\behaviors\TimestampBehavior;
+use common\models\Confirmation;
+use common\models\Verifymember;
+
 /**
  * VerifyMemberController implements the CRUD actions for VerifyMember model.
  */
@@ -148,8 +151,8 @@ class VerifyMemberController extends Controller
     {
         $vid = VerifyMember::findOne($id);
         $sid = $vid->studio_id;
-        Yii::$app->db->createCommand()->update('tbl_studio', ['confirmation' => 'verified'], 'id = '.$sid.'')->execute();
-        Yii::$app->db->createCommand()->update('verify_member', ['verify_status' => 'confirm'], 'studio_id = '.$sid.'')->execute();
+        Yii::$app->db->createCommand()->update('tbl_studio', ['confirmation' => Confirmation::VERIFY], 'id = '.$sid.'')->execute();
+        Yii::$app->db->createCommand()->update('verify_member', ['verify_status' => VerifyMember::CONFIRM], 'studio_id = '.$sid.'')->execute();
         Yii::$app->session->setFlash('success', 'อับเดทสถานะของลูกค้าเสร็จสิ้น');
         return $this->redirect(['view', 'id' => $id]);
     }

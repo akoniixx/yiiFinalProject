@@ -29,7 +29,7 @@ class m180402_033118_create_profile extends Migration
     public function safeDown()
     {
         //echo "m180402_033118_create_profile cannot be reverted.\n";
-        $this->dropTable('profile')
+        $this->dropTable('profile');
         //return false;
     }
 
