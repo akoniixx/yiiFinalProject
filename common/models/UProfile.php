@@ -35,7 +35,7 @@ class UProfile extends \yii\db\ActiveRecord
             [['firstName', 'lastName', 'u_id'], 'required'],
             [['u_id'], 'integer'],
             [['firstName', 'lastName'], 'string', 'max' => 100],
-            [['tel'], 'string', 'max' => 30],
+            [['tel'], 'string', 'max' => 10],
             //[['usreType'], 'string', 'max' => 5],
             //[['imgProfile'], 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 5, 'skipOnEmpty' => false],
             // [['imgProfile'], 'string', 'max' => 255],

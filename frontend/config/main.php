@@ -23,6 +23,17 @@ return [
                 ],
             ],
         ],
+        'assetManager' => [
+            'bundles' => [
+                'dosamigos\google\maps\MapAsset' => [
+                'options' => [
+                    'key' => 'AIzaSyDhwvJrkjYHfpjd2DKiPhcqliTOo9NssAI',// ใส่ API ตรงนี้ครับ
+                    'language' => 'th',
+                    'version' => '3.1.18'
+                    ]
+                ]
+            ]
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],

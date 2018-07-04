@@ -7,5 +7,6 @@ return [
 	'Tel' => 'เบอร์โทรศัพท์ (User)',
 	'Email' => 'อีแมล',
 	'User Member List' => 'แสดงข้อมูลผู้ใช้งาน',
+	'Create Tbl Studio' => 'สร้างสตูดิโอ'
 ];
 ?>
