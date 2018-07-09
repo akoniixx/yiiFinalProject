@@ -26,9 +26,9 @@ class WorkSchedule extends \yii\db\ActiveRecord
     public $cnt;
     public $userProfile;
     public $categories;
-    public $occupations;
-    public $confirmStatus;
-    public $studio;
+    // public $occupations;
+    // public $confirmStatus;
+    // public $studio;
 
     public static function tableName()
     {

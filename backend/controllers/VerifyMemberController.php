@@ -10,7 +10,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\behaviors\TimestampBehavior;
 use common\models\Confirmation;
-use common\models\Verifymember;
 
 /**
  * VerifyMemberController implements the CRUD actions for VerifyMember model.

@@ -476,8 +476,18 @@ class SiteController extends Controller
                     $profile->email = $user->email;
                     $profile->imgProfile = 'profile-default-icon.png';
                     $profile->save();
+
+                    Yii::$app->mailer->compose(['html' => 'signupConfirm-html', 'text' => 'signupConfirm-text'], ['user' => $user]) //สามารพเลือกเฉพาะ html หรือ text ในการส่ง
+                    ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ''])
+                    ->setTo($user->email)
+                    ->setSubject('ยืนยันผู้ใช้งาน ' . \Yii::$app->name)
+                    ->send();
+
+                    // return $this->goHome();
+
                     $transaction->commit();
                         if (Yii::$app->getUser()->login($user)) {
+                            Yii::$app->session->setFlash('success', 'สมัครสมาชิกเรียบร้อย กรุณาตรวจสอบอีเมลล์เพื่อยืนยันการใช้งานอีกครั้ง');
                             return $this->goHome();
                         }
                         
@@ -494,6 +504,11 @@ class SiteController extends Controller
             'model' => $model,
             'profile' => $profile,
         ]);
+    }
+
+    public function actionSignupConfirm($auth_key)
+    {
+        
     }
 
     /**

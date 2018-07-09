@@ -7,12 +7,14 @@ use common\models\TblStudio;
 use common\models\VerifyMember;
 use common\models\VerifyStatus;
 use yii\helpers\ArrayHelper;
+use common\models\Confirmation;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\VerifyMemberSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Verify Members';
+$this->title = Yii::t('manageUser', 'Verify Member');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="verify-member-index">
@@ -20,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -105,11 +108,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'ok' => function($url,$model,$key){
                         $vid = VerifyMember::findOne($model->verify_id);
                         $sid = $vid->studioValidation;
-                        return $sid->confirmation == Confimation::VERIFY ? Html::a('<i class="glyphicon glyphicon-ok" style="color:green;"></i>',false,['class'=>'btn btn-default']) : NULL;
+                        return $sid->confirmation == Confirmation::VERIFY ? Html::a('<i class="glyphicon glyphicon-ok" style="color:green;"></i>',false,['class'=>'btn btn-default']) : NULL;
                       }
                 ]
             ],
         ],
     ]); ?>
+    <?php Pjax::end(); ?>
 
 </div>

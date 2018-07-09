@@ -13,6 +13,11 @@ use kartik\date\DatePicker;
 /* @var $model common\models\GraduationSchedule */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+<style>
+	.select2-container .select2-selection--single .select2-selection__rendered {
+		margin-top: 0;
+	}
+</style>
 
 <div class="graduation-schedule-form">
 

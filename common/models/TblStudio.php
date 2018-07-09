@@ -32,6 +32,8 @@ class TblStudio extends \yii\db\ActiveRecord
      */
     public $sid;
     public $searchstring;
+    public $latitude;
+    public $longitude;
 
     public static function tableName()
     {
@@ -54,6 +56,7 @@ class TblStudio extends \yii\db\ActiveRecord
             [['tel'], 'string', 'max' => 10],
             [['lineID'], 'string', 'max' => 20],
             [['searchstring'], 'safe'],
+            [['description', 'latitude', 'longitude'], 'string'],
             //[['workType'], 'string', 'max' => 50],
             [['cover_image'], 'file', 'extensions' => 'png, jpg, jpeg', 'maxSize' => 3072000, 'skipOnEmpty' => true],
         ];
@@ -72,9 +75,12 @@ class TblStudio extends \yii\db\ActiveRecord
             //'email' => 'email',
             'tel' => 'เบอร์โทรศัพท์',
             'lineID' => 'ไลน์ไอดี',
+            'description' => 'รายละเอียดเพิ่มเติม',
             'placeOfWork' => 'สถานที่รับงาน',
             'workType' => 'ประเภทงานที่รับ',
             'coverImg' => 'ภาพพื้นหลัง',
+            'latitude' => 'ละติจูด',
+            'longitude' => 'ลองจิจูด',
             //'gimages' => 'uploadImage',
         ];
     }

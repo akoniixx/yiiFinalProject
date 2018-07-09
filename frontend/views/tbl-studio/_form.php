@@ -15,24 +15,33 @@ use unclead\multipleinput\MultipleInput;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="tbl-studio-form" >
+<div class="tbl-studio-form" style="padding-top: 20px">
 
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+    <?php $form = ActiveForm::begin(/*['layout' => 'horizontal']*/); ?>
 
     <!-- $form->field($model, 'gimages[]')->fileInput(['multiple' => true]) -->
+    <div class="col-xs-12 col-md-6" style="padding-right: 15px;">
 
     <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'studioName')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'lineID')->textInput(['maxlength' => true]) ?>
-
+    <div class="col-xs-6 col-md-6" style="padding-left: 0px">
     <?= $form->field($cate, 'cateWork')->dropDownList(
         ArrayHelper::map($occupation, 'initials', 'TH_name'),
         ['prompt'=>'กรุณาเลือกอาชีพ'])
     ?>
+    </div>
+
+    <div class="col-xs-6 col-md-6" style="padding-right: 0px">
+    <?= $form->field($model, 'studioName')->textInput(['maxlength' => true]) ?>
+    </div>
+
+    <div class="col-xs-6 col-md-6" style="padding-left: 0px">
+    <?= $form->field($model, 'tel')->textInput(['maxlength' => true, 'value' => $myProfile->tel ? $myProfile->tel : NULL]) ?>
+    </div>
+
+    <div class="col-xs-6 col-md-6" style="padding-right: 0px">
+    <?= $form->field($model, 'lineID')->textInput(['maxlength' => true]) ?>
+    </div>
 
     <?= $form->field($cate, 'placeOfWork')->widget(Select2::classname(), [
       'data' => ArrayHelper::map(Locations::find()->orderBy(['location_name' => SORT_ASC])->all(), 'location_id', 'location_name'),
@@ -43,6 +52,23 @@ use unclead\multipleinput\MultipleInput;
           'maximumInputLength' => 10
         ],
     ])->label('Tag Multiple'); ?>
+
+    </div>
+
+    <div class="col-xs-12 col-md-6" style="padding-left: 15px; border-left: 1px solid #cac8c8">
+        
+        <div class="col-xs-12 col-md-12" style="padding-left: 0px; padding-right: 0px">
+        <?= $form->field($model, 'description')->textarea(['rows' => '6']) ?>
+        </div>
+
+        <div class="col-xs-6 col-md-6" style="padding-left: 0px">
+        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true]) ?>
+        </div>
+
+        <div class="col-xs-6 col-md-6" style="padding-right: 0px">
+        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
     <?php /*echo $form->field($cate, 'placeOfWork')->widget(MultipleInput::className(), [
         'max'               => 77,
@@ -64,9 +90,9 @@ use unclead\multipleinput\MultipleInput;
         ]
         ], // show add button in the header
     ])->label(false);*/ ?>
-
+    <div class="col-xs-12 col-md-12">
     <h2>ประเภทงานที่รับและราคา</h2>
-
+    
     <div class="border-price-div" id="hide-elements">
         <div class="inline form-inline" style="border-radius: 15px;">
             <?= $form->field($cate, 'workDetails[]')->checkbox(['uncheck' => null, 'class' => 'checkbox-inline-type', 'value' => 'congratulation'])->label(false); ?>          
@@ -132,6 +158,9 @@ use unclead\multipleinput\MultipleInput;
             <input type="hidden" name="quantity[]" value="-"> -->
         </div>
     </div>
+    </div>
+
+    <div id="map" style="width:100%;height:400px;display:none;"></div>
 
     <div class="form-group text-center" style="padding-top: 50px;">
         <div style="padding-left: 15px; padding-right: 15px;">
@@ -142,3 +171,96 @@ use unclead\multipleinput\MultipleInput;
     <?php ActiveForm::end(); ?>
 
 </div>
+<!-- <script>
+    function myMap() {
+      var mapCanvas = document.getElementById("map");
+      var mapOptions = {
+        center: new google.maps.LatLng(13.777234, 100.561981),
+        zoom: 7,
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+          style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+          position: google.maps.ControlPosition.TOP_CENTER
+        }
+      };
+      var map = new google.maps.Map(mapCanvas ,mapOptions);
+    }
+    </script> -->
+
+<script>
+  function myMap() {
+        var mapOptions = {
+          center: {lat: 13.847860, lng: 100.604274},
+          zoom: 18,
+        }
+            
+        var maps = new google.maps.Map(document.getElementById("map"),mapOptions);
+        
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found. lat: ' + position.coords.latitude + ', lng: ' + position.coords.longitude + ' ');
+            infoWindow.open(maps);
+            // map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+        
+    }
+
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: The Geolocation service failed.' :
+                          'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+  }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhwvJrkjYHfpjd2DKiPhcqliTOo9NssAI&callback=myMap"></script>
+
+<?php
+
+$js = <<< JS
+
+$("#tblcategories-catework").on("click", function() {
+    
+    var current_value = this.value;
+
+    if (current_value == "Ph") {
+        
+      document.getElementById("hide-elements").style.display = "block";
+      document.getElementById("map").style.display = "none";
+
+    } else if (current_value == "Ma") {
+        
+      document.getElementById("hide-elements").style.display = "block";
+      document.getElementById("map").style.display = "none";
+
+    } else if (current_value == "Dr") {
+        
+      document.getElementById("hide-elements").style.display = "none";
+      document.getElementById("map").style.display = "block";
+
+    }
+
+});
+
+JS;
+ 
+// register your javascript
+$this->registerJs($js);
+
+?>

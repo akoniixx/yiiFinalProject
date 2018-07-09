@@ -34,10 +34,15 @@ border-radius: 15px;
     margin-bottom: 20px;
 }
 .img-responsive {
-    display: block;
+    /*display: block;
     max-width: 100%;
     height: 50%;
-    width: 50%;
+    width: 50%;*/
+    width: 100px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
 }
 .team p.subtitle {
     margin-bottom: 10px;

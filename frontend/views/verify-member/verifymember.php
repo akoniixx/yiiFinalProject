@@ -55,7 +55,7 @@ use yii\bootstrap\ActiveForm;
 
 			<?= $form->field($uploadModel, 'lname')->textInput(); ?>
 			
-			<?= $form->field($uploadModel, 'tel')->textInput(); ?>
+			<?= $form->field($uploadModel, 'tel')->textInput(['value' => $studioModel->tel]); ?>
 
 			<div class="form-group" style="text-align: center;">
 		        <?= Html::submitButton('ส่งข้อมูล', ['class' => 'btn btn-info']) ?>
