@@ -142,8 +142,8 @@ class GraduationScheduleController extends Controller
         // return $id;
         $query = WorkSchedule::find()->where(['graduation_id' => $id])
                     ->andWhere(['typeOfWork' => $type])
-                    // ->orderBy('id DESC');
-                    ->all();
+                    ->orderBy('id DESC');
+                    // ->all();
 
         // $studio = TblStudio::find()->where(['id' => 11])->all();
 
@@ -151,15 +151,15 @@ class GraduationScheduleController extends Controller
         // foreach ($studio as $key => $value) {
         //     $arr[] = $value
         // }
-        $find_profile = $query->studio->userProfile->imgProfile;
-        // $img_profile = isset($find_profile) ? $find_profile : 'hooo';
-        if ($find_profile == 'profile-default-icon.png') {
-            $url_profile_img = Yii::getAlias('@web').'/uploads/profile/default/';
-            $img = $url_profile_img . $find_profile;
-        } else {
-            $url_profile_img = Yii::getAlias('@web').'/uploads/profile/profile'.$model->studio->userProfile->id.'/';
-            $img = $url_profile_img . $find_profile;
-        }
+        // $find_profile = $query->studio->userProfile->imgProfile;
+        // // $img_profile = isset($find_profile) ? $find_profile : 'hooo';
+        // if ($find_profile == 'profile-default-icon.png') {
+        //     $url_profile_img = Yii::getAlias('@web').'/uploads/profile/default/';
+        //     $img = $url_profile_img . $find_profile;
+        // } else {
+        //     $url_profile_img = Yii::getAlias('@web').'/uploads/profile/profile'.$model->studio->userProfile->id.'/';
+        //     $img = $url_profile_img . $find_profile;
+        // }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

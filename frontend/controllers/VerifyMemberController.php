@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\behaviors\TimestampBehavior;
+use common\models\TblStudio;
 /**
  * VerifyMemberController implements the CRUD actions for VerifyMember model.
  */
@@ -117,6 +118,7 @@ class VerifyMemberController extends Controller
     public function actionVerifymember($id)
     {
         $uploadModel = new VerifyMember();
+        $studioModel = TblStudio::findOne($id);
 
         if ($uploadModel->load(Yii::$app->request->post())) {
 
@@ -136,6 +138,7 @@ class VerifyMemberController extends Controller
 
         return $this->render('verifymember',[
             'uploadModel' => $uploadModel,
+            'studioModel' => $studioModel,
         ]);
     }
 

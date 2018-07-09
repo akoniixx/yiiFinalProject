@@ -230,6 +230,9 @@ class TblStudioController extends Controller
         $occupation = Occupation::find()->asArray()->all();
         $query = new Query();
         $id = Yii::$app->user->getId();
+        $myProfile = UProfile::findOne(['id' => $id]);
+
+        // Yii::info($myProfile);
         $query->select('*')->from('uProfile')->where('u_id = '.$id.'')->all();
         $command = $query->createCommand();
         $name = $command->queryAll();
@@ -237,7 +240,7 @@ class TblStudioController extends Controller
             //$profile->email = $value['email'];
             $profile->u_id = $value['u_id'];
         }
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $cate->load(Yii::$app->request->post())) {
             //return $this->redirect(['view', 'id' => $model->id]);
             //return $profile->email $profile->tel;
             //$model->email = $profile->email;
@@ -245,6 +248,12 @@ class TblStudioController extends Controller
 
             //$transaction = Yii::$app->db->beginTransaction();
             //try {
+            // Yii::info($model);
+            // Yii::info($cate);
+            // Yii::info($cate->workDetails);
+            // trim(var_dump($cate->workDetails));
+            // return "yes";
+
             $model->u_id = $profile->u_id;
             $cate->s_id = $model->id;
             if ($model->save()) {
@@ -253,49 +262,49 @@ class TblStudioController extends Controller
                 $cate->s_id = $model->id;
 
                 if ($cate->load(Yii::$app->request->post())) {
-                $ar = $cate->workDetails;
-                $pow = $cate->placeOfWork;
-                $arr = array();
-                $arr_results = array();
+                    $ar = $cate->workDetails;
+                    $pow = $cate->placeOfWork;
+                    $arr = array();
+                    $arr_results = array();
 
-                $it = Yii::$app->request->post();
-                //$arr = array();
-                $listDetail = $cate->placeOfWork;
-                if (is_array($listDetail)) {
-                   foreach ($it['TblCategories']['placeOfWork'] as $key => $val) {
-                        $arr[] = $val;
+                    $it = Yii::$app->request->post();
+                    //$arr = array();
+                    $listDetail = $cate->placeOfWork;
+                    if (is_array($listDetail)) {
+                       foreach ($it['TblCategories']['placeOfWork'] as $key => $val) {
+                            $arr[] = $val;
+                        }
                     }
-                }
-                // echo print_r($arr). "<br>";
-                // $model->delete();
-                // return true;
-                
-                $province = Locations::find()->where(['location_id' => $arr])->all();
-                // if (isset($province)) {
-                //     echo print_r($province);
-                // }
-                // echo "null";
-                // return true;
-                $arrayProvince = array();
-                foreach ($province as $key => $value) {
-                    $provinceName = new Locations();
-                    $provinceName->location_name = $value['location_name'];
-                    $arrayProvince[] = $provinceName->location_name;
-                }
+                    // echo print_r($arr). "<br>";
+                    // $model->delete();
+                    // return true;
+                    
+                    $province = Locations::find()->where(['location_id' => $arr])->all();
+                    // if (isset($province)) {
+                    //     echo print_r($province);
+                    // }
+                    // echo "null";
+                    // return true;
+                    $arrayProvince = array();
+                    foreach ($province as $key => $value) {
+                        $provinceName = new Locations();
+                        $provinceName->location_name = $value['location_name'];
+                        $arrayProvince[] = $provinceName->location_name;
+                    }
 
-                // $cate->placeOfWork = json_encode($arrayProvince, JSON_UNESCAPED_UNICODE);
-                $cate->placeOfWork = Json::encode($arrayProvince);
-                //return print_r(json_decode($js));
-                //return $js;
+                    // $cate->placeOfWork = json_encode($arrayProvince, JSON_UNESCAPED_UNICODE);
+                    $cate->placeOfWork = Json::encode($arrayProvince);
+                    //return print_r(json_decode($js));
+                    //return $js;
 
-                foreach( $ar as $val )
-                {
-                  if( $val )
-                  {
-                    $arr_results[] = $val ;
-                  }
-                }
-                $cate->workDetails = json_encode($arr_results);
+                    foreach( $ar as $val )
+                    {
+                      if( $val )
+                      {
+                        $arr_results[] = $val ;
+                      }
+                    }
+                    $cate->workDetails = json_encode($arr_results);
 
                 //return $js . " " . $js2. " ". $cate->cateWork;
                 }
@@ -324,6 +333,7 @@ class TblStudioController extends Controller
             'profile' => $profile,
             'item' => $item,
             'cate'=> $cate,
+            'myProfile' => $myProfile,
             'occupation' => $occupation,
         ]);
     }
@@ -340,6 +350,8 @@ class TblStudioController extends Controller
         $model = $this->findModel($id);
         $cate = new TblCategories();
         $occupation = $cate->addOccupation();
+        $studioId = Yii::$app->studio->getStudioId();
+        $myProfile = TblStudio::findOne(['id' => $studioId]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -349,6 +361,7 @@ class TblStudioController extends Controller
             'model' => $model,
             'cate' => $cate,
             'occupation' => $occupation,
+            'myProfile' => $myProfile,
         ]);
     }
 
@@ -413,6 +426,16 @@ class TblStudioController extends Controller
             $url_cover_img = Yii::getAlias('@web').'/uploads/profile/profile'.$modelProfile->id.'/';
             $img_cover = $url_cover_img . $modelStudio->cover_image;
         }
+        // $tblCategory = TblCategories::findOne
+        $arrayLocation = Json::decode($modelCategory->workDetails);
+        $modelStudio->updateCounters(['view_count' => 1]);
+        // return var_dump($location);
+        // return print_r($location);
+        // $arrayLocation = [];
+        // foreach ($location as $value) {
+        //     $arrayLocation[] = $value;
+        // }
+        // // return print_r($arrayLocation);
 
         return $this->render('fanpage', [
             'modelCategory' => $modelCategory,
@@ -431,6 +454,7 @@ class TblStudioController extends Controller
             'textStatus' => $textStatus,
             'img_cover' => $img_cover,
             'img_profile' => $img_profile,
+            'arrayLocation' => $arrayLocation,
         ]);
     }
 
@@ -475,7 +499,7 @@ class TblStudioController extends Controller
 
 
             $cate->s_id = $sid->id;
-            $ar = $cate->workDetails;
+            
             $arr = array();
             $arr_results = array();
 
@@ -497,14 +521,20 @@ class TblStudioController extends Controller
             // $cate->placeOfWork = json_encode($arr);
             $cate->placeOfWork = Json::encode($arrayProvince);
 
-            foreach( $ar as $val )
-            {
-              if( $val )
-              {
-                $arr_results[] = $val ;
-              }
-            }
-            $cate->workDetails = Json::encode($arr_results);
+            // if ($cate->cateWork == TblCategories::DRESS_RENTAL) {
+            //     $cate->workDetails = TblCategories::DRESS_RENTAL;
+            // } else {
+                $ar = $cate->workDetails;
+                foreach( $ar as $val )
+                {
+                  if( $val )
+                  {
+                    $arr_results[] = $val ;
+                  }
+                }
+                $cate->workDetails = Json::encode($arr_results);
+            // }
+            
             if ($cate->save()) {
                 //return 'success';
                 return $this->redirect(['fanpage', 'id' => $cate->s_id]);

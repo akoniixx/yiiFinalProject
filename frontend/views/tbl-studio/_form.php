@@ -20,24 +20,28 @@ use unclead\multipleinput\MultipleInput;
     <?php $form = ActiveForm::begin(/*['layout' => 'horizontal']*/); ?>
 
     <!-- $form->field($model, 'gimages[]')->fileInput(['multiple' => true]) -->
-    <div class="col-xs-6 col-md-6" style="padding-right: 15px;">
+    <div class="col-xs-12 col-md-6" style="padding-right: 15px;">
 
     <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
 
+    <div class="col-xs-6 col-md-6" style="padding-left: 0px">
+    <?= $form->field($cate, 'cateWork')->dropDownList(
+        ArrayHelper::map($occupation, 'initials', 'TH_name'),
+        ['prompt'=>'กรุณาเลือกอาชีพ'])
+    ?>
+    </div>
+
+    <div class="col-xs-6 col-md-6" style="padding-right: 0px">
     <?= $form->field($model, 'studioName')->textInput(['maxlength' => true]) ?>
+    </div>
 
     <div class="col-xs-6 col-md-6" style="padding-left: 0px">
-    <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'tel')->textInput(['maxlength' => true, 'value' => $myProfile->tel ? $myProfile->tel : NULL]) ?>
     </div>
 
     <div class="col-xs-6 col-md-6" style="padding-right: 0px">
     <?= $form->field($model, 'lineID')->textInput(['maxlength' => true]) ?>
     </div>
-
-    <?= $form->field($cate, 'cateWork')->dropDownList(
-        ArrayHelper::map($occupation, 'initials', 'TH_name'),
-        ['prompt'=>'กรุณาเลือกอาชีพ'])
-    ?>
 
     <?= $form->field($cate, 'placeOfWork')->widget(Select2::classname(), [
       'data' => ArrayHelper::map(Locations::find()->orderBy(['location_name' => SORT_ASC])->all(), 'location_id', 'location_name'),
@@ -51,8 +55,19 @@ use unclead\multipleinput\MultipleInput;
 
     </div>
 
-    <div class="col-xs-6 col-md-6" style="padding-left: 15px; border-left: 1px solid #cac8c8">
-        <?= $form->field($model, 'studioName')->textarea(['rows' => '6']) ?>
+    <div class="col-xs-12 col-md-6" style="padding-left: 15px; border-left: 1px solid #cac8c8">
+        
+        <div class="col-xs-12 col-md-12" style="padding-left: 0px; padding-right: 0px">
+        <?= $form->field($model, 'description')->textarea(['rows' => '6']) ?>
+        </div>
+
+        <div class="col-xs-6 col-md-6" style="padding-left: 0px">
+        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true]) ?>
+        </div>
+
+        <div class="col-xs-6 col-md-6" style="padding-right: 0px">
+        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true]) ?>
+        </div>
     </div>
 
     <?php /*echo $form->field($cate, 'placeOfWork')->widget(MultipleInput::className(), [
@@ -156,7 +171,7 @@ use unclead\multipleinput\MultipleInput;
     <?php ActiveForm::end(); ?>
 
 </div>
-<script>
+<!-- <script>
     function myMap() {
       var mapCanvas = document.getElementById("map");
       var mapOptions = {
@@ -170,9 +185,52 @@ use unclead\multipleinput\MultipleInput;
       };
       var map = new google.maps.Map(mapCanvas ,mapOptions);
     }
-    </script>
+    </script> -->
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhwvJrkjYHfpjd2DKiPhcqliTOo9NssAI&callback=myMap"></script>
+<script>
+  function myMap() {
+        var mapOptions = {
+          center: {lat: 13.847860, lng: 100.604274},
+          zoom: 18,
+        }
+            
+        var maps = new google.maps.Map(document.getElementById("map"),mapOptions);
+        
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found. lat: ' + position.coords.latitude + ', lng: ' + position.coords.longitude + ' ');
+            infoWindow.open(maps);
+            // map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+        
+    }
+
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: The Geolocation service failed.' :
+                          'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+  }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhwvJrkjYHfpjd2DKiPhcqliTOo9NssAI&callback=myMap"></script>
+
 <?php
 
 $js = <<< JS

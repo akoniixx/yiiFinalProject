@@ -20,6 +20,10 @@ class TblCategories extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    const PHOTOGRAPHER = 'Ph';
+    const MAKEUP_ARTICT = 'Ma';
+    const DRESS_RENTAL = 'Dr';
+
      public $listDetail;
 
     public static function tableName()
@@ -33,7 +37,7 @@ class TblCategories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['s_id', 'cateWork', 'workDetails', 'placeOfWork'], 'required'],
+            [['s_id', 'cateWork', 'placeOfWork'], 'required'],
             [['s_id'], 'integer'],
             [['workDetails'], 'string'],
             [['cateWork'], 'string', 'max' => 30],
