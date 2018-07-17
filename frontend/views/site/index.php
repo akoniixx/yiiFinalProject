@@ -24,54 +24,6 @@ footer {
   padding: 25px;
 }
 
-.boxed-grey {
-background: #f9f9f9;
-padding: 20px;
-background-image: url(https://s3.amazonaws.com/Syntaxxx/background-gold-bokeh.jpg);
-border-radius: 15px;
-}
-.avatar {
-    margin-bottom: 20px;
-}
-.img-responsive {
-    /*display: block;
-    max-width: 100%;
-    height: 50%;
-    width: 50%;*/
-    width: 100px;
-    height: 100px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 50%;
-}
-.team p.subtitle {
-    margin-bottom: 10px;
-}
-.inner {
-	margin-bottom: -15px
-}
-div#masonry:hover .col-sm-3 { opacity: 0.8; }
-div#masonry:hover .col-sm-3:hover { opacity: 1; } 
-
-/* fallback for earlier versions of Firefox */
-
-@supports not (flex-wrap: wrap) {
-  div#masonry { display: block; }
-  div#masonry img {  
-  display: inline-block;
-  vertical-align: top;
-  }
-}
-.text-link {
-  color: black;
-  cursor: pointer;
-}
-.text-link p {
-  font-size: 16px;
-}
-.btn-xs {
-        width: 60%;
-    }
 </style>
 
 </head>
@@ -161,11 +113,53 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
 </div> -->
 
 <div class="container bg-3" id="masonry">    
-  <h3><?= Yii::t('index', 'Studio Recommend') ?></h3><br>
+  <h3><?= Yii::t('index', 'Photographer Recommend') ?></h3><hr>
   <div class="row">
     <?=
         ListView::widget([
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProviderPhotographer,
+            'itemView' => '/site/_fanpagedetail',
+            'summary' => false,
+            'itemOptions' => [
+                'class' => 'col-sm-3',
+                'style' => 'padding-bottom: 15px;'
+            ],
+            /*'viewParams' => [
+                'aName' => $aName,
+                'baseUrl' => $baseUrl,
+            ],*/
+        ]);
+    ?>
+  </div>
+</div><br>
+
+<div class="container bg-3" id="masonry">    
+  <h3><?= Yii::t('index', 'Makeup-Artist Recommend') ?></h3><hr>
+  <div class="row">
+    <?=
+        ListView::widget([
+            'dataProvider' => $dataProviderMakeup,
+            'itemView' => '/site/_fanpagedetail',
+            'summary' => false,
+            'itemOptions' => [
+                'class' => 'col-sm-3',
+                'style' => 'padding-bottom: 15px;'
+            ],
+            /*'viewParams' => [
+                'aName' => $aName,
+                'baseUrl' => $baseUrl,
+            ],*/
+        ]);
+    ?>
+  </div>
+</div><br>
+
+<div class="container bg-3" id="masonry">    
+  <h3><?= Yii::t('index', 'Rental Services Recommend') ?></h3><hr>
+  <div class="row">
+    <?=
+        ListView::widget([
+            'dataProvider' => $dataProviderDress,
             'itemView' => '/site/_fanpagedetail',
             'summary' => false,
             'itemOptions' => [
@@ -203,13 +197,15 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
 // ]);
 ?>
 
+
+<h3 class="studio-name"><?= Yii::t('index', 'Graduation Schedule') ?></h3>
 <div class="table-responsive">
 <?php Pjax::begin(); ?>
 <?= GridView::widget([
     'dataProvider' => $dataProviderSchedule,
-    'filterModel' => $graduationSchedule,
+    // 'filterModel' => $graduationSchedule,
     'options' => ['style' => 'font-size: 16px;'],
-    // 'layout'=>"\n{pager}\n{items}",
+    'layout'=>"\n{items}",
     'columns' => [
         // ['class' => 'yii\grid\SerialColumn'],
 
@@ -278,7 +274,7 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
           },
         ],
         [
-          'label' => 'ช่างแต่หน้าที่ว่าง',
+          'label' => 'ช่างแต่งหน้าที่ว่าง',
           'headerOptions' => ['style' => 'width:10%;text-align: center;'],
           'contentOptions' => ['style' => 'padding: 15px;text-align: center;'],
           'content' => function ($model) {
@@ -303,7 +299,7 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
 <?php Pjax::end(); ?>
 </div>
 
-<div class="form-group text-center" style="padding-top: 50px;">
+<div class="form-group text-center" style="padding-top: 10px;">
     <div style="padding-left: 15px; padding-right: 15px;">
         <?php
         // $studioId = Yii::$app->studio->getStudioId();

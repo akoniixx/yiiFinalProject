@@ -24,7 +24,8 @@ class TblCategories extends \yii\db\ActiveRecord
     const MAKEUP_ARTICT = 'Ma';
     const DRESS_RENTAL = 'Dr';
 
-     public $listDetail;
+    public $listDetail;
+    public $userProfile;
 
     public static function tableName()
     {
@@ -91,6 +92,6 @@ class TblCategories extends \yii\db\ActiveRecord
 
     public function getOccupations()
     {
-        return $this->hasMany(Occupation::className(), ['initials' => 'cateWork']);
+        return $this->hasOne(Occupation::className(), ['initials' => 'cateWork']);
     }
 }

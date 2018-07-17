@@ -21,9 +21,9 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            // ['username', 'trim'],
+            // ['username', 'required'],
+            // ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'trim'],
@@ -33,9 +33,19 @@ class SignupForm extends Model
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
             ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'string', 'min' => 8],
             ['password_repeat', 'required'],
             ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"รหัสผ่านไม่ถูกต้อง" ],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'username',
+            'email' => 'อีเมล',
+            'password' => 'พาสเวิร์ด',
+            'password_repeat' => 'พาสเวิร์ดซ้ำ',
         ];
     }
 
@@ -51,7 +61,10 @@ class SignupForm extends Model
         }
         
         $user = new User();
+        $name = explode("@", $this->email);
+        $this->username = $name[0];
         $user->username = $this->username;
+        // $user->username = null;
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();

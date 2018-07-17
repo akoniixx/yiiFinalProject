@@ -27,6 +27,8 @@ class VerifyMember extends \yii\db\ActiveRecord
 
     const WAIT = 2;
     const CONFIRM = 50;
+    const READ = 10;
+    const NOT_READ = 0;
 
     public static function tableName()
     {

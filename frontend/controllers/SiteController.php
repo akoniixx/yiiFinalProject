@@ -116,15 +116,39 @@ class SiteController extends Controller
         $model = new TblStudio();
         $searchModel = new TblStudioSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $photographer = TblCategories::find()->where(['cateWork' => TblCategories::PHOTOGRAPHER]);
+        $dataProviderPhotographer = new ActiveDataProvider([
+                'query' => $photographer,
+                'sort'=> ['defaultOrder' => ['id'=> SORT_DESC]],
+                'pagination' => [ 'pageSize' => 10 ]
+            ]);
+
+        $makeup = TblCategories::find()->where(['cateWork' => TblCategories::MAKEUP_ARTICT]);
+        $dataProviderMakeup = new ActiveDataProvider([
+                'query' => $makeup,
+                'sort'=> ['defaultOrder' => ['id'=> SORT_DESC]],
+                'pagination' => [ 'pageSize' => 10 ]
+            ]);
+
+        $dress = TblCategories::find()->where(['cateWork' => TblCategories::DRESS_RENTAL]);
+        $dataProviderDress = new ActiveDataProvider([
+                'query' => $dress,
+                'sort'=> ['defaultOrder' => ['id'=> SORT_DESC]],
+                'pagination' => [ 'pageSize' => 5 ]
+            ]);
+
         // $dataProvider->pagination->pageSize = 5;
         $locations = new Locations();
         $workType = new WorkType();
-        $graduationSchedule = new GraduationScheduleSearch();
-        $dataProviderSchedule = $graduationSchedule->search(Yii::$app->request->queryParams);
-        // $graduationSchedule = GraduationSchedule::find()->with(['graduationDetails']);
-        // $dataProviderSchedule = new ActiveDataProvider([
-        //         'query' => $graduationSchedule,
-        //     ]);
+        // $graduationSchedule = new GraduationScheduleSearch();
+        // $dataProviderSchedule = $graduationSchedule->search(Yii::$app->request->queryParams);
+        $graduationSchedule = GraduationSchedule::find();
+        $dataProviderSchedule = new ActiveDataProvider([
+                'query' => $graduationSchedule,
+                'sort'=> ['defaultOrder' => ['id'=> SORT_DESC]],
+                'pagination' => [ 'pageSize' => 5 ]
+            ]);
 
         if ($searchModel->load(Yii::$app->request->post())) {
             $s = $searchModel->search(Yii::$app->request->queryParams);
@@ -144,6 +168,9 @@ class SiteController extends Controller
             'workType' => $workType,
             'graduationSchedule' => $graduationSchedule,
             'dataProviderSchedule' => $dataProviderSchedule,
+            'dataProviderMakeup' => $dataProviderMakeup,
+            'dataProviderDress' => $dataProviderDress,
+            'dataProviderPhotographer' => $dataProviderPhotographer,
         ]);
         //return $this->render('index');
     }
@@ -153,8 +180,11 @@ class SiteController extends Controller
         //$modelStudio = new TblStudio();
         $occupation = new Occupation();
         $text = Yii::$app->request->post('text-search');
+        return $text;
         $post = Yii::$app->request->post();
         //$oc = $occupation->load(Yii::$app->request->post());
+        Yii::info('testtttttttt');
+        Yii::info($text);
 
         $postOccupation = $post['Occupation'];
         $postLocations = $post['Locations'];
@@ -189,10 +219,10 @@ class SiteController extends Controller
                         'tbl_categories',
                         'tbl_categories.s_id = tbl_studio.id'
                     )
-                    ->where([
-                        '=', 'tbl_studio.confirmation', 1
-                    ])
-                    ->andWhere(['like', 'studioName', $text]);
+                    ->Where(['like', 'studioName', $text]);
+                    // ->andWhere([
+                    //     '=', 'tbl_studio.confirmation', 1
+                    // ]);
 
             if (empty($itemQuery)) {
                 echo Yii::t('search', 'Search Empty');
@@ -281,9 +311,9 @@ class SiteController extends Controller
                         'tbl_categories',
                         'tbl_categories.s_id = tbl_studio.id'
                     )
-                    ->where([
-                        '=', 'tbl_studio.confirmation', 1
-                    ]);
+                    /*->where([
+                        '=', 'tbl_studio.confirmation', 40
+                    ])*/;
 
             if (!empty($queryOccupation)) {
                 //echo $queryOccupation->TH_name;

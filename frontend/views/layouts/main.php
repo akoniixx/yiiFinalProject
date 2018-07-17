@@ -65,22 +65,22 @@ AppAsset::register($this);
 
         
     NavBar::begin([
-        'brandLabel' => 'PICPOST',
+        'brandLabel' => 'Postzii',
         //'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
-        //['label' => 'Original', 'url' => ['/site/originalindex']],
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
+    // $menuItems = [
+    //     //['label' => 'Original', 'url' => ['/site/originalindex']],
+    //     ['label' => 'Home', 'url' => ['/site/index']],
+    //     ['label' => 'About', 'url' => ['/site/about']],
+    //     ['label' => 'Contact', 'url' => ['/site/contact']],
+    // ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => Yii::t('index', 'Signup'), 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => Yii::t('index', 'Login'), 'url' => ['/site/login']];
     } else if(isset($identity)) {
         $vid = VerifyMember::findOne(['studio_id' => $sid->id]);
         $menuItems[] = /*'<li>'

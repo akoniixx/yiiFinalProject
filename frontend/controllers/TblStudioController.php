@@ -177,7 +177,8 @@ class TblStudioController extends Controller
                     $arr[] = $imgFullName;
                 }
 
-                return print_r($arr);
+                // return print_r($arr);
+                return $this->redirect(['fanpage', 'id' => $id]);
             } else {
                 return "upload fail.";
             }

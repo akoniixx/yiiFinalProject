@@ -525,3 +525,128 @@ img {
     font-size: 22px;
 }
 /* ########################## END Header ############################ */
+/* ########################## START index ####################### */
+.boxed-grey:before {
+  content: "";
+  z-index: -1;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+.boxed-grey {
+background: #f9f9f9;
+padding: 20px;
+/*background-image: url(https://s3.amazonaws.com/Syntaxxx/background-gold-bokeh.jpg);*/
+border-radius: 15px;
+}
+.avatar {
+    margin-bottom: 20px;
+    text-shadow:2px 2px 1px white;
+}
+.img-responsive {
+    /*display: block;
+    max-width: 100%;
+    height: 50%;
+    width: 50%;*/
+    width: 100px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.team p.subtitle {
+    margin-bottom: 10px;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+.inner {
+    margin-bottom: -15px
+}
+.inner > h4 {
+  color: white;
+  text-shadow:2px 2px 1px black;
+}
+div#masonry:hover .col-sm-3 { opacity: 0.8; }
+div#masonry:hover .col-sm-3:hover { opacity: 1; } 
+
+/* fallback for earlier versions of Firefox */
+
+@supports not (flex-wrap: wrap) {
+  div#masonry { display: block; }
+  div#masonry img {  
+  display: inline-block;
+  vertical-align: top;
+  }
+}
+.text-link {
+  color: black;
+  cursor: pointer;
+}
+.text-link p {
+  font-size: 16px;
+}
+.btn-xs {
+        width: 60%;
+    }
+
+
+/* ########################## START Graduation list view ####################### */
+.thumbnail {
+    margin-bottom: 0px;
+}
+.thumbnail.right-caption > img {
+    float: left;
+    margin-right: 9px;
+}
+
+.thumbnail.right-caption {
+    float: left;
+}
+
+.thumbnail.right-caption > .caption {
+    padding: 4px;
+}
+
+.image {
+  display: table-cell;    
+}
+
+.caption {
+    /*width: 100%;*/
+    display: table-cell;
+    /*vertical-align: top;*/
+    height: 180px;
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+.caption > img {
+    /*max-width: 200px;*/
+     max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto; 
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+@media (max-width: 768px) {
+    .image, .caption {
+      display: block; 
+    }   
+}
+
+.studio-name {
+    margin-top: 0px;
+    padding: 5px;
+    background-color: #3c3c3c;
+    color: white;
+}
