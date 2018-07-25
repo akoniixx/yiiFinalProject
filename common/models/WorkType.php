@@ -43,4 +43,9 @@ class WorkType extends \yii\db\ActiveRecord
             'name_type_TH' => 'Name Type  Th',
         ];
     }
+
+    // public function getWorkType()
+    // {
+        
+    // }
 }

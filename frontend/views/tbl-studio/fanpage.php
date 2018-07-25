@@ -10,6 +10,7 @@ use dosamigos\google\maps\overlays\InfoWindow;
 use dosamigos\google\maps\overlays\Marker;
 use dosamigos\google\maps\Map;
 use common\models\TblCategories;
+use yii\bootstrap\Modal;
 
 $this->registerJsFile("//cdn.jsdelivr.net/jquery/1/jquery.min.js");
 $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.min.js");
@@ -116,31 +117,35 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
     <div class="container">
     <section class="section-about">
 
-        <?php $form = ActiveForm::begin([
-            'action' => Url::to(['tbl-studio/upload-cover-image', 'id' => $id]),
-            'options' => ['enctype' => 'multipart/form-data']
-        ]); ?>
-        
-        <?= $form->field($studio, 'cover_image')->fileInput(['class' => 'file-upload', 'id' => 'imgInp'])->label(false); ?>
-        <!-- <input type='file' id="imgInp" /> -->
-        <div class="form-group" style="display: none;" id="check-cover-image">
-            <?= Html::submitButton('อับโหลด', [
-                'class' => 'btn btn-info',
-                'id' => 'ok',
-                // 'style' => 'display:none'
-            ]) ?>
-            
-            <?= Html::a('ยกเลิก', null, [
-                'class'=>'btn btn-default',
-                'onclick' => '(function ( $event ) {
-                    document.getElementById("imgInp").style.display = "block";
-                    document.getElementById("check-cover-image").style.display = "none";
-                    location.reload();
-                 })();'
-            ]) ?>
-        </div>
+        <?php if (Yii::$app->studio->getStudioId() == $id) { ?>
 
-        <?php ActiveForm::end(); ?>
+            <?php $form = ActiveForm::begin([
+                'action' => Url::to(['tbl-studio/upload-cover-image', 'id' => $id]),
+                'options' => ['enctype' => 'multipart/form-data']
+            ]); ?>
+            
+            <?= $form->field($studio, 'cover_image')->fileInput(['class' => 'file-upload', 'id' => 'imgInp'])->label(false); ?>
+            <!-- <input type='file' id="imgInp" /> -->
+            <div class="form-group" style="display: none;" id="check-cover-image">
+                <?= Html::submitButton('อับโหลด', [
+                    'class' => 'btn btn-info',
+                    'id' => 'ok',
+                    // 'style' => 'display:none'
+                ]) ?>
+                
+                <?= Html::a('ยกเลิก', null, [
+                    'class'=>'btn btn-default',
+                    'onclick' => '(function ( $event ) {
+                        document.getElementById("imgInp").style.display = "block";
+                        document.getElementById("check-cover-image").style.display = "none";
+                        location.reload();
+                     })();'
+                ]) ?>
+            </div>
+
+            <?php ActiveForm::end(); ?>
+
+        <?php } ?>
 
         <div class="animate-up animated">
             <div class="section-box">
@@ -159,34 +164,38 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
 
                                 <!-- <img src="https://blog.onabags.com/wp-content/uploads/2013/05/oliviaraejames.jpg">
                             </div> -->
-                            <?php $form = ActiveForm::begin([
-                                'action' => Url::to(['tbl-studio/upload-profile-image', 'id' => $id]),
-                                'options' => ['enctype' => 'multipart/form-data']
-                            ]); ?>
-                            
-                            <!-- <button class='btn  btn-primary upload-btn'>upload</button> -->
-                            <?= $form->field($profile, 'imgProfile')->fileInput(['class' => 'file-upload', 'id' => 'file-upload-profile'])->label(false); ?>
+                            <?php if (Yii::$app->studio->getStudioId() == $id) { ?>
 
-                            <div class="form-group" style="text-align: center; display: none;" id="check">
-                                <?= Html::submitButton('อับโหลด', [
-                                    'class' => 'btn btn-info',
-                                    'id' => 'ok',
-                                    // 'style' => 'display:none'
-                                ]) ?>
+                                <?php $form = ActiveForm::begin([
+                                    'action' => Url::to(['tbl-studio/upload-profile-image', 'id' => $id]),
+                                    'options' => ['enctype' => 'multipart/form-data']
+                                ]); ?>
                                 
-                                <?= Html::a('ยกเลิก', null, [
-                                    'class'=>'btn btn-default',
-                                    'onclick' => '(function ( $event ) {
-                                        document.getElementById("file-upload-profile").style.display = "block";
-                                        document.getElementById("check").style.display = "none";
-                                        location.reload();
-                                     })();'
-                                ]) ?>
-                            </div>
-                            
-                            <!-- <input type='file' name ='upload-file' id='upload-file' multiple> -->
+                                <!-- <button class='btn  btn-primary upload-btn'>upload</button> -->
+                                <?= $form->field($profile, 'imgProfile')->fileInput(['class' => 'file-upload', 'id' => 'file-upload-profile'])->label(false); ?>
 
-                            <?php ActiveForm::end(); ?>
+                                <div class="form-group" style="text-align: center; display: none;" id="check">
+                                    <?= Html::submitButton('อับโหลด', [
+                                        'class' => 'btn btn-info',
+                                        'id' => 'ok',
+                                        // 'style' => 'display:none'
+                                    ]) ?>
+                                    
+                                    <?= Html::a('ยกเลิก', null, [
+                                        'class'=>'btn btn-default',
+                                        'onclick' => '(function ( $event ) {
+                                            document.getElementById("file-upload-profile").style.display = "block";
+                                            document.getElementById("check").style.display = "none";
+                                            location.reload();
+                                         })();'
+                                    ]) ?>
+                                </div>
+                                
+                                <!-- <input type='file' name ='upload-file' id='upload-file' multiple> -->
+
+                                <?php ActiveForm::end(); ?>
+
+                            <?php } ?>
 
                             <div class="col-xs-12" style="margin-top: 35px">
                                 <h5 style="font-size: 16px"><?= Yii::t('user', 'Page View') ?> : <?= $modelStudio->view_count ?> ครั้ง</h5>
@@ -242,10 +251,18 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
     <section class="section section-skills">
         <div class="animate-up animated">
             <div class="section-title">
-                <h2 class="inline-text">ช่างภาพ</h2>
-                <p class="inline-text" style="float: right;">
-                <?= Html::a('อัพโหลดรูป', Url::to(['tbl-studio/uploadform', 'id' => $modelStudio->id]), ['class' => 'btn btn-primary']) ?>
-                </p>
+                <h2 class="inline-text"><?= $modelCategory->occupations->TH_name ?></h2>
+                <?php if (Yii::$app->studio->getStudioId() == $id) { ?>
+                    <p class="inline-text" style="float: right;">
+                    <?= Html::a('อัพโหลดรูป', Url::to(['tbl-studio/uploadform', 'id' => $modelStudio->id]), ['class' => 'btn btn-primary']) ?>
+                    </p>
+                <?php } else { ?>
+                    <p class="inline-text" style="float: right;">
+                    <?php /*Html::a('จอง', Url::to(['tbl-studio/uploadform', 'id' => $modelStudio->id]), ['class' => 'btn btn-info btn-lg'])*/ ?>
+                    <?= Html::button('จอง', ['id' => 'reservationsButton', 'value' => Url::to(['reservations/create', 'id' => $modelStudio->id]), 'class' => 'btn btn-info btn-lg']) ?>
+                    </p>
+
+                <?php } ?>
             </div>
             
             <div class="section-box">
@@ -321,6 +338,20 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
     <?php } ?>
     </div>
 </div>
+
+<?php
+            
+    Modal::begin([
+            'header' => '<h4>Reservations</h4>',
+            'id'     => 'modal',
+            'size'   => 'modal-md',
+    ]);
+    
+    echo "<div id='modelContent' style='display: inline-block'></div>";
+    
+    Modal::end();
+            
+?>
 
 </body>
 

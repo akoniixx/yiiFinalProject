@@ -297,15 +297,46 @@ class TblStudioController extends Controller
                     $cate->placeOfWork = Json::encode($arrayProvince);
                     //return print_r(json_decode($js));
                     //return $js;
+                    $itemKey = 0;
+                    $keys = array_keys($ar);
+                    Yii::info('is array');
+                    Yii::info($ar);
+                    Yii::info($keys);
+                    // $model->delete();
+                    foreach( $ar as $k => $val ) {
+                        // if( $val ) {
+                        // $arr_results[] = $val ;
+                            // $arr_results['congratulation'][] = $val[]
+                        if ($ar[$k] == 'congratulation') {
 
-                    foreach( $ar as $val )
-                    {
-                      if( $val )
-                      {
-                        $arr_results[] = $val ;
-                      }
+                            $arr_results['congratulation'][] = $ar[$k+1];
+                            $arr_results['congratulation'][] = $ar[$k+2];
+                        }
+                        if ($ar[$k] == 'fashion') {
+                            $arr_results['fashion'][] = $ar[$k+1];
+                            $arr_results['fashion'][] = $ar[$k+2];
+                        }
+                        if ($ar[$k] == 'wedding') {
+                            $arr_results['wedding'][] = 'wedding';
+                        }
+                        if ($ar[$k] == 'pre-wedding') {
+                            $arr_results['pre-wedding'][] = 'pre-wedding';
+                        }
+                        if ($ar[$k] == 'event') {
+                            $arr_results['event'][] = $ar[$k+1];
+                            $arr_results['event'][] = $ar[$k+2];
+                        }
+                        if ($ar[$k] == 'architecture') {
+                            $arr_results['architecture'][] = $ar[$k+1];
+                            $arr_results['architecture'][] = $ar[$k+2];
+                        }
+                        if ($ar[$k] == 'productAndFood') {
+                            $arr_results['productAndFood'][] = $val['productAndFood'];
+                        }
+                        // }
                     }
-                    $cate->workDetails = json_encode($arr_results);
+                    $cate->workDetails = Json::encode($arr_results);
+                    // return $cate->workDetails;
 
                 //return $js . " " . $js2. " ". $cate->cateWork;
                 }
@@ -384,7 +415,7 @@ class TblStudioController extends Controller
     {
         $profile = new UProfile();
         $studio = new TblStudio();
-        $modelCategory = TblCategories::findOne($id);
+        $modelCategory = TblCategories::findOne(['s_id' => $id]);
         $modelStudio = TblStudio::findOne($id);
         $modelAlbum = TblAlbum::findOne(['studioID' => $id]);
         $pid = $modelStudio->u_id;
@@ -525,15 +556,40 @@ class TblStudioController extends Controller
             // if ($cate->cateWork == TblCategories::DRESS_RENTAL) {
             //     $cate->workDetails = TblCategories::DRESS_RENTAL;
             // } else {
-                $ar = $cate->workDetails;
-                foreach( $ar as $val )
-                {
-                  if( $val )
-                  {
-                    $arr_results[] = $val ;
-                  }
+            $ar = $cate->workDetails;
+            foreach( $ar as $k => $val ) {
+                // if( $val ) {
+                // $arr_results[] = $val ;
+                    // $arr_results['congratulation'][] = $val[]
+                if ($ar[$k] == 'congratulation') {
+
+                    $arr_results['congratulation'][] = $ar[$k+1];
+                    $arr_results['congratulation'][] = $ar[$k+2];
                 }
-                $cate->workDetails = Json::encode($arr_results);
+                if ($ar[$k] == 'fashion') {
+                    $arr_results['fashion'][] = $ar[$k+1];
+                    $arr_results['fashion'][] = $ar[$k+2];
+                }
+                if ($ar[$k] == 'wedding') {
+                    $arr_results['wedding'][] = 'wedding';
+                }
+                if ($ar[$k] == 'pre-wedding') {
+                    $arr_results['pre-wedding'][] = 'pre-wedding';
+                }
+                if ($ar[$k] == 'event') {
+                    $arr_results['event'][] = $ar[$k+1];
+                    $arr_results['event'][] = $ar[$k+2];
+                }
+                if ($ar[$k] == 'architecture') {
+                    $arr_results['architecture'][] = $ar[$k+1];
+                    $arr_results['architecture'][] = $ar[$k+2];
+                }
+                if ($ar[$k] == 'productAndFood') {
+                    $arr_results['productAndFood'][] = $val['productAndFood'];
+                }
+                // }
+            }
+            $cate->workDetails = Json::encode($arr_results);
             // }
             
             if ($cate->save()) {

@@ -449,6 +449,8 @@ img {
     display: inline-block;
     vertical-align: middle;
     margin: 10px 0;
+    text-shadow: 2px 2px 2px black;
+    color: white;
 }
 /* ########################## END fanpage ################################ */
 

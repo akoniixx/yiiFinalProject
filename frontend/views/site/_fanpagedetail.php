@@ -29,7 +29,7 @@ if ($bg_cover == 'background-default.png') {
 
 
 <!-- <div class="col-sm-3"> -->
-<a href="<?= Url::to(['/tbl-studio/fanpage', 'id' => $model->id]); ?>" class="text-link" style="text-decoration: none;">
+<a href="<?= Url::to(['/tbl-studio/fanpage', 'id' => $model->s_id]); ?>" class="text-link" style="text-decoration: none;">
   <div class="team boxed-grey" style="background-image: url(<?= $bg ?>); background-size: 500px 300px; background-repeat: no-repeat;">
   	<div class="inner">      
     	<h4><?= $model->studio->studioName; ?></h4>
