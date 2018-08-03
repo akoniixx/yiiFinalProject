@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "transfer".
@@ -23,13 +24,20 @@ class Transfer extends \yii\db\ActiveRecord
         return 'transfer';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['user_id', 'created_at', 'updated_at'], 'required'],
+            [['user_id'], 'required'],
             [['user_id', 'status', 'created_at', 'updated_at'], 'integer'],
         ];
     }

@@ -18,7 +18,7 @@ class m180802_125140_create_transfer_slip_table extends Migration
             'name' => $this->string()->notNull(),
             'studio_name' => $this->string(100),
             'tel' => $this->string(10),
-            'transfer_time' => $this->timestamp(),
+            'transfer_time' => $this->datetime(),
             'amount' => $this->integer(7)->notNull(),
             'slip_image' => $this->string()->notNull(),
             'bank_from' => $this->string(),

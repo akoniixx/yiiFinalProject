@@ -3,7 +3,17 @@ use \yii\web\UploadedFile;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
-use kartik\widgets\TimePicker
+use kartik\time\TimePicker;
+use kartik\spinner\Spinner;
+use kartik\widgets\TypeaheadBasic;
+// use kartik\typeahead\TypeaheadBasic;
+use kartik\typeahead\Typeahead;
+$this->registerCss("
+div.field-transferslip-slip_image label.control-label:after {
+    content: \" *\";
+    color: red;
+}
+");
 ?>
 
 <style>
@@ -17,7 +27,7 @@ use kartik\widgets\TimePicker
 		font-size: 18px;
 	}
 	.box-upload {
-		margin-top: 40px;
+		margin-top: 30px;
 	}
 	.edit-label {
 		text-align: left;
@@ -29,22 +39,27 @@ use kartik\widgets\TimePicker
 <div class="col-md-8 col-md-offset-2">
 	<div class="box">
 		<div class="box-title">
-			<h3 style="margin: 0"><span class="glyphicon glyphicon-align-left"></span>&nbsp;&nbsp;รายละเอียดสำหรับยืนยันตน</h3>
+			<h3 style="margin: 0"><span class="glyphicon glyphicon-align-left"></span>&nbsp;&nbsp;รายละเอียดสำหรับการส่งข้อมูลการโอนเงิน</h3>
 		</div>
 		<div class="box-content">
-			<h4>ขั้นตอนการยืนยันตัวตน Verified Member</h4><hr>
-			<p>1. ถ่ายภาพ บัตรประจำตัวประชาชน ด้วยกล้องมือถือ หรือ กล้อง DSLR ให้เห็นเลขประจำตัวประชาชน และวันที่หมดอายุชัดเจน</p>
-			<p>2. ถ่ายภาพ คุณเอง ขณะถือบัตรประจำตัวประชาชน ให้เห็นใบหน้าชัดเจน ด้วย กล้องมือถือ หรือ กล้อง DSLR</p>
-			<!-- <p>3. ชำระเงินค่าดำเนินการ ยืนยันตัวตนบน GraduateTH จำนวนเงิน 500 บาท (ตลอดชีพ) พร้อมเศษสตางค์เพื่อง่ายในการตรวจสอบ จากนั้น
-			    ถ่ายภาพ หลักฐานการชำระเงิน ให้เห็นจำนวนเงิน และวันเวลาที่ชำระเงินชัดเจน ด้วยกล้องมือถือ หรือ กล้อง DSLR</p> -->
-			<p>3. นำภาพถ่าย ทั้ง 2 รายการ อับโหลดลงใน แบบฟอร์มด้านล่างนี้ พร้อมทั้ง ระบุชื่อ และเบอร์โทรศัพท์ติดต่อที่สามารถติดต่่อได้ สำหรับยืนยันตัวตน </p><hr>
+
+			<!-- <div class="well">
+				<?php Spinner::widget([
+				    'preset' => Spinner::LARGE,
+				    'color' => 'blue',
+				    'align' => 'left'
+				])?>
+			</div> -->
+			<h4>วิธีส่งหลักฐานการโอนเงิน</h4><hr>
+			<p>1. กรอกข้อมูลในช่อที่มีเครื่องหมายดอกจัน (<span class="star">*</span>) ให้ครบถ้วน</p>
+			<p>2. รูปถ่ายหลักฐานการโทนเงินควรเป็นรูปภาพที่ชัดและเห็นข้อมูลครบถ้วน ชัดเจน</p>
+			<p>3. ในช่อที่<span style="color: red">ไม่มีเครื่องหมายดอกจัน</span> (<span class="star">*</span>) ผู้ใช้ลือกที่จะใส่ข้อมูลหรือไม่ก็ได้ แต่การใส่ข้อมูลให้ครบจะทำให้การตรวจสอบข้อมูลเป็นไปได้รวดเร็วยิ่งขึ้น </p><hr>
 			<p>
-				<span class="star">*</span> เอกสารทั้งหมด ให้ทำลายน้ำระบุการใช้งาน "เฉพาะยืนยันตัวตนบน postzii เท่านั้น" (ตามมาตรฐานการทำสำเนาเอกสาร)<br>
 				<span class="star">*</span> หลักฐานทั้งหมดจะถูกเก็บรักษาด้วยความปลอดภัยสูงสุด และจะไม่เปิดเผยสู่สาธารณะเป็นอันขาด
 			</p>
 		</div>
 		<div class="box-upload">
-			<h4>แบบฟอร์มขอดำเนินการยืนยันตัวตน</h4>
+			<h4 style="padding-bottom: 15px; text-align: center;">แบบฟอร์มการส่งหลักฐานการโอนเงิน</h4>
 			
 			<?php $form = ActiveForm::begin(['layout' => 'horizontal', 'options' => ['enctype' => 'multipart/form-data']]); ?>
 			
@@ -52,29 +67,55 @@ use kartik\widgets\TimePicker
 
 			<?= $form->field($slipModel, 'studio_name')->textInput(); ?>
 
-			<?= $form->field($slipModel, 'slip_image')->fileInput(); ?>
+			<?= $form->field($slipModel, 'bank_from')->widget(Typeahead::classname(), [
+			    'options' => ['placeholder' => 'รายชื่อธนาคาร ...'],
+			    'pluginOptions' => ['highlight'=>true],
+			    'dataset' => [
+			        [
+			            'local' => $slipModel->bankList(),
+			            'limit' => 10
+			        ]
+			    ]
+			]); ?>
 
-			<?= $form->field($slipModel, 'bank_from')->textInput(); ?>
+			<?= $form->field($slipModel, 'bank_to')->widget(Typeahead::classname(), [
+			    'options' => ['placeholder' => 'รายชื่อธนาคาร ...'],
+			    'pluginOptions' => ['highlight'=>true],
+			    'dataset' => [
+			        [
+			            'local' => $slipModel->bankList(),
+			            'limit' => 10
+			        ]
+			    ]
+			]); ?>
 
-			<?= $form->field($slipModel, 'bank_to')->textInput(); ?>
-
-			<?= $form->field($slipModel, 'bank_id')->textInput(); ?>
-
-			<?= $form->field($slipModel, 'transfer_time')->textInput(); ?>
+			<?= $form->field($slipModel, 'bank_id')->textInput(['maxlength' => true]); ?>
 
 			<?= $form->field($slipModel, 'amount')->textInput(); ?>
+
+			<?= $form->field($slipModel, 'transfer_time')->widget(TimePicker::className(), [
+				'name' => 't1',
+			    'pluginOptions' => [
+			        'showSeconds' => true,
+			        'showMeridian' => false,
+			        'minuteStep' => 1,
+			        'secondStep' => 5,
+			    ]
+			]); ?>
 			
-			<?= $form->field($slipModel, 'tel')->textInput(['value' => $user->tel]); ?>
+			<?= $form->field($slipModel, 'tel')->textInput(['value' => $user->tel ? $user->tel : null, 'maxlength' => true]); ?>
+
+			<?= $form->field($slipModel, 'slip_image')->fileInput(); ?>
 
 			<div class="form-group" style="text-align: center;">
-		        <?= Html::submitButton('ส่งข้อมูล', ['class' => 'btn btn-info']) ?>
+		        <?= Html::submitButton('ส่งข้อมูล', ['class' => 'btn btn-info', 'style' => 'width: 37%']) ?>
 		    </div>
 
 			<?php ActiveForm::end(); ?>
 			<hr>
 			<p style="color: red;">
 				<span class="star">*</span> กรุณาตรวจสอบข้อมูลให้ครบถ้วนก่อนส่งข้อมูล<br>
-				<span class="star">*</span> การตรวจสอบข้อมูลใช้เวลาไม่เกิน 24 ชั่วโมง
+				<span class="star">*</span> ความเร็วในการตรวจสอบข้อมูลขึ้นอยู่กับข้อมูลที่ผู้ใช้กรอก
 			</p>
 
 		</div>

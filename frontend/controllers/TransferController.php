@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\TransferSlip;
 use common\models\UProfile;
+use yii\web\BadRequestHttpException;
 
 /**
  * TransferController implements the CRUD actions for Transfer model.
@@ -69,10 +70,20 @@ class TransferController extends Controller
         $transferModel = new Transfer();
         $slipModel = new TransferSlip();
         $user = UProfile::findOne($id);
-        if ($transferModel->load(Yii::$app->request->post())) {
-            $slipModel->user_id = Yii::$app->user->getId();
-
-            return $this->redirect(['view', 'id' => $slipModel->id]);
+        if ($slipModel->load(Yii::$app->request->post())) {
+            // return "now";
+            // $transferModel->user_id = Yii::$app->user->getId();
+            $transferModel->user_id = $id;
+            if ($transferModel->save()) {
+                $slip_image = $slipModel->uploadImages($slipModel, 'slip_image', $id);
+                $slipModel->transfer_id = $transferModel->id;
+                $slipModel->slip_image = $slip_image;
+                if ($slipModel->save()) {
+                    return $this->redirect(['view', 'id' => $transferModel->id]);
+                }
+                $transferModel->delete();
+                throw new BadRequestHttpException("Value isn't save");
+            }
         }
 
         return $this->render('create', [

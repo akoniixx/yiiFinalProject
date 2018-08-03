@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use \yii\web\UploadedFile;
 
 /**
  * This is the model class for table "transfer_slip".
@@ -35,9 +36,10 @@ class TransferSlip extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['transfer_id', 'name', 'amount', 'slip_image'], 'required'],
+            [['transfer_id', 'name', 'amount'], 'required'],
             [['transfer_id', 'amount'], 'integer'],
-            [['transfer_time'], 'safe'],
+            [['transfer_time'], 'date'],
+            [['slip_image'],  'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
             [['name', 'slip_image', 'bank_from', 'bank_to'], 'string', 'max' => 255],
             [['studio_name'], 'string', 'max' => 100],
             [['tel'], 'string', 'max' => 10],
@@ -53,15 +55,53 @@ class TransferSlip extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'transfer_id' => 'Transfer ID',
-            'name' => 'Name',
-            'studio_name' => 'Studio Name',
-            'tel' => 'Tel',
-            'transfer_time' => 'Transfer Time',
-            'amount' => 'Amount',
-            'slip_image' => 'Slip Image',
-            'bank_from' => 'Bank From',
-            'bank_to' => 'Bank To',
-            'bank_id' => 'Bank ID',
+            'name' => 'ชื่อ-นามสกุล',
+            'studio_name' => 'ชื่อสตูดิโอที่คุณจ้าง',
+            'tel' => 'เบอร์โทรศัพท์',
+            'transfer_time' => 'เวลาที่โอนเงิน',
+            'amount' => 'จำนวนเงิน',
+            'slip_image' => 'หลักฐานการโอนเงิน',
+            'bank_from' => 'ชื่อธนาคารของคุณ',
+            'bank_to' => 'ชื่อธนาคารของเว็บไซต์',
+            'bank_id' => 'หมายเลข 4 ตัวท้ายของบัญชี',
         ];
+    }
+
+    public function bankList()
+    {
+        return [
+            'ธ. กรุงเทพ จำกัด (มหาชน)',
+            'ธ. กรุงไทย จำกัด (มหาชน)',
+            'ธ. กรุงศรีอยุธยา จำกัด (มหาชน)',
+            'ธ. กสิกรไทย จำกัด (มหาชน)',
+            'ธ. เกียรตินาคิน จำกัด (มหาชน)',
+            'ธ. ซีไอเอ็มบี ไทย จำกัด (มหาชน)',
+            'ธ. ทหารไทย จำกัด (มหาชน)',
+            'ธ. ทิสโก้ จำกัด (มหาชน)',
+            'ธ. ไทยพาณิชย์ จำกัด (มหาชน)',
+            'ธ. ธนชาต จำกัด (มหาชน)',
+            'ธ. นครหลวงไทย จำกัด (มหาชน)',
+            'ธ. ยูโอบี จำกัด (มหาชน)',
+            'ธ. สแตนดาร์ดชาร์เตอร์ด (ไทย) จำกัด (มหาชน)',
+            'ธนาคารไอซีบีซี (ไทย) จำกัด (มหาชน)',
+        ];
+    }
+
+    public function uploadImages($model, $attr, $id)
+    {
+        $image = UploadedFile::getInstance($model, $attr);
+        $path = Yii::getAlias('@app').'/web/uploads/transfer_slip/';
+
+        if ($image !== NULL) {
+            if ($attr == 'slip_image') {
+                $fileName = $attr.$id.'.'.$image->extension;
+            } else {
+                $fileName = $attr.$id.'.'.$image->extension;
+            }
+            if ($image->saveAs($path.$fileName)) {
+                return $fileName;
+            }   
+            //return $fileName; 
+        }
     }
 }

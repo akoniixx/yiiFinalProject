@@ -16,6 +16,12 @@ use yii\helpers\Url;
 use common\models\Reservations;
 
 AppAsset::register($this);
+$this->registerCss("
+div.required label.control-label:after {
+    content: \" *\";
+    color: red;
+}
+");
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
