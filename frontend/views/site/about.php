@@ -18,6 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 Enter some text: <input type="text" name="txt" value="Hello" onchange="myFunction(this.value)">
 
+<?= $test; ?>
+
 <p id="textt"></p>
 
 <div ng-app="">

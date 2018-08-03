@@ -15,20 +15,20 @@ use common\models\WorkSchedule;
 use kartik\date\DatePicker;
 use yii\widgets\Pjax;
 
+$this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js");
 ?>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<style>
-    
-footer {
-  background-color: #f2f2f2;
-  padding: 25px;
-}
 
-</style>
-
-</head>
-<body>
-
+<!-- background: url(http://www.lambertgroupproductions.com/canyon/full_screen_background/images/bulletsFullWidth/03_bullets.jpg) no-repeat; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; -->
+<body style="background: url(<?= Yii::getAlias('@web').'/img/background_d.jpg' ?>) no-repeat">
+<!-- <div class="carousel"> center right fixed
+  <div class="carousel-inner">
+      <img src="https://i.ytimg.com/vi/yqXC4wlIAbI/maxresdefault.jpg">
+  </div>
+</div> -->
 <div class="container text-center" style="padding-top: inherit;">
   <div class="input-group" id="boot-search-box">
       <input type="text" class="form-control" placeholder="<?= Yii::t('search', 'Search') ?>" onchange="checkText(this.value)"/>
@@ -113,7 +113,7 @@ footer {
 </div> -->
 
 <div class="container bg-3" id="masonry">    
-  <h3><?= Yii::t('index', 'Photographer Recommend') ?></h3><hr>
+  <h3 class="min-screen"><?= Yii::t('index', 'Photographer Recommend') ?></h3><hr>
   <div class="row">
     <?=
         ListView::widget([

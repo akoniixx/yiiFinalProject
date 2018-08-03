@@ -1,4 +1,5 @@
 $(function(){
+
     $('#reservationsButton').click(function(){
         $('#modal').modal('show')
             .find('#modelContent')

@@ -239,7 +239,7 @@ $verify = VerifyMember::find()->where(['read' => VerifyMember::NOT_READ])->group
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?= $directoryAsset ?>/img/admin-icon.jpg" class="user-image" alt="User Image"/>
+                        <img src="<?= $directoryAsset ?>/img/admin-icon.png" class="user-image" alt="User Image"/>
                         <span class="hidden-xs">
                             <?php if (!Yii::$app->user->isGuest) {
                                 $emailAccount = Yii::$app->user->identity->email;
@@ -250,7 +250,7 @@ $verify = VerifyMember::find()->where(['read' => VerifyMember::NOT_READ])->group
                     <ul class="dropdown-menu">
 
                         <li class="user-header">
-                            <img src="<?= $directoryAsset ?>/img/admin-icon.jpg" class="img-circle"
+                            <img src="<?= $directoryAsset ?>/img/admin-icon.png" class="img-circle"
                                  alt="User Image"/>
 
                             <p>

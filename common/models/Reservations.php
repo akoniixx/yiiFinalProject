@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "reservations".
@@ -18,6 +19,22 @@ class Reservations extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+    public $created_at;
+    public $updated_at;
+    public $name;
+    public $work;
+    public $work_detail;
+    public $reservation_date;
+    public $type;
+    public $contact;
+
+    const VISITED = 1;
+    const NO_VISITED = 0;
+    const CONFIRM = 'confirm';
+    const PENDING = 'pending';
+    const DELETE = 'delete';
+
     public static function tableName()
     {
         return 'reservations';
@@ -26,7 +43,12 @@ class Reservations extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'create_time',
+                'updatedAtAttribute' => 'update_time',
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
@@ -38,7 +60,9 @@ class Reservations extends \yii\db\ActiveRecord
         return [
             [['user_id', 'studio_id'], 'required'],
             [['user_id', 'studio_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['create_time', 'update_time', 'reservation_date'], 'safe'],
+            [['status_view'], 'integer'],
+            [['status'], 'string', 'max' => 10]
         ];
     }
 
@@ -51,8 +75,18 @@ class Reservations extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'studio_id' => 'Studio ID',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'create_time' => 'Created At',
+            'status' => 'Status',
+            ''
+        ];
+    }
+
+    public function arrayStatus()
+    {
+        return [
+            'confirm' => 'จองสำเร็จ',
+            'delete' => 'จองล้มเหลว',
+            'pending' => 'รอการตวจสอบ',
         ];
     }
 
@@ -60,4 +94,10 @@ class Reservations extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ReservationDetail::className(), ['reservation_id' => 'id']);
     }
+
+    public function getStudioDetail()
+    {
+        return $this->hasOne(TblStudio::className(), ['id' => 'studio_id']);
+    }
+
 }

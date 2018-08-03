@@ -16,6 +16,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/reservationsMain.js',
+        // 'js/reservationsCalendar.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

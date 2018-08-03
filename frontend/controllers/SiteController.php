@@ -25,6 +25,7 @@ use common\models\TblCategories;
 use yii\helpers\Json;
 use common\models\GraduationScheduleSearch;
 use common\models\GraduationSchedule;
+use common\models\Reservations;
 
 /**
  * Site controller

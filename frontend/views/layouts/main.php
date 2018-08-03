@@ -13,6 +13,7 @@ use common\models\UProfile;
 use common\models\TblStudio;
 use common\models\VerifyMember;
 use yii\helpers\Url;
+use common\models\Reservations;
 
 AppAsset::register($this);
 ?>
@@ -39,7 +40,7 @@ AppAsset::register($this);
     
     if (!Yii::$app->user->isGuest && isset($identity)) { 
         $sid = TblStudio::find()->where(['u_id' => $id])->one();
-        
+        $countModel = Reservations::find()->where(['studio_id' => $sid, 'status_view' => Reservations::NO_VISITED])->groupBy(['create_time'])->count();
         
         if (!isset($sid)) {
             $sid = $sid->u_id;
@@ -100,6 +101,10 @@ AppAsset::register($this);
                 ['label' => 'สร้างอัลบั้ม', 'url' => ['/tbl-studio/uploadform', 'id' => $sid->id]],
                 ['label' => 'เพิ่มอาชีพ', 'url' => ['/tbl-studio/createnewcareer', 'id' => $sid->id]],
                 ['label' => 'แก้ไขข้อมูลส่วนตัว', 'url' => ['/tbl-studio/update', 'id' => $sid->id]],
+                ['label' => 
+                    $countModel == 0 ? 'ตารางงาน' : 'ตารางงาน <span class="label label-danger" style="margin-left:10px">'.$countModel.'</span>', 
+                    'url' => ['/reservations/list', 'id' => $sid->id]],
+                // <span class="label label-warning">10</span>
                 [
                     'label' => 'ยืนยันตัวตน', 'url' => ['/verify-member/verifymember', 'id' => $sid->id],
                     'visible' => empty($vid->verify_status) ? TRUE : FALSE,
@@ -138,6 +143,8 @@ AppAsset::register($this);
             $menuItems[] = ['label' => $imgDiv . Yii::$app->user->identity->username, 'items' => [
                 ['label' => 'แก้ไขข้อมูลส่วนตัว', 'url' => ['/profile/view', 'id' => $uid->id],],
                 ['label' => 'สร้างสตูดิโอ <span class="glyphicon glyphicon-home"style="color:#00bfff; padding-left:10px"></span>', 'url' => ['/tbl-studio/create'], 'linkOptions' => ['style' => 'color: #00bfff;']],
+                ['label' => 'ตรวจสอบการจอง', 'url' => ['/reservations/list', 'id' => $uid->id]],
+                ['label' => 'ส่งหลักฐานการโอนเงิน', 'url' => ['/transfer/create', 'id' => $uid->id]],
                 '<li class="divider"></li>',
                 ['label' => 'ออกจากระบบ', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
             ],

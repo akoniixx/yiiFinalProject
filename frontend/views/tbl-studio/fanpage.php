@@ -259,6 +259,8 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
                 <?php } else { ?>
                     <p class="inline-text" style="float: right;">
                     <?php /*Html::a('จอง', Url::to(['tbl-studio/uploadform', 'id' => $modelStudio->id]), ['class' => 'btn btn-info btn-lg'])*/ ?>
+                    <?= Html::a('ตารางงาน', Url::to(['reservations/work-schedule', 'id' => $modelStudio->id]), ['class' => 'btn btn-info btn-lg']) ?>
+
                     <?= Html::button('จอง', ['id' => 'reservationsButton', 'value' => Url::to(['reservations/create', 'id' => $modelStudio->id]), 'class' => 'btn btn-info btn-lg']) ?>
                     </p>
 

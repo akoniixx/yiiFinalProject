@@ -4,6 +4,26 @@ body {
     height: 100%;
     font-family: 'Prompt', sans-serif;
 }
+footer {
+  background-color: #f2f2f2;
+  padding: 25px;
+}
+
+@media screen and (min-width: 768px) {
+    .text-center {
+        padding-bottom: 200px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .text-center {
+        padding-bottom: 50px;
+    }
+    .min-screen {
+        color: white;
+        text-shadow: 2px 2px 1px black;
+    }
+}
 
 .wrap {
     min-height: 100%;
@@ -36,6 +56,9 @@ body {
 .not-set {
     color: #c55;
     font-style: italic;
+}
+.header-content {
+    padding-bottom: 10px;
 }
 
 /* add sorting icons to gridview sort links */
@@ -619,7 +642,7 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
     /*width: 100%;*/
     display: table-cell;
     /*vertical-align: top;*/
-    height: 180px;
+    /*height: 180px;*/
     width: 100%;
     display: inline-block;
     vertical-align: top;

@@ -16,7 +16,8 @@ class m180719_174621_create_reservations_table extends Migration
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'studio_id' => $this->integer()->notNull(),
-            'created_at' => $this->timestamp()
+            'create_time' => $this->timestamp(),
+            'update_time' => $this->timestamp()
         ]);
     }
 

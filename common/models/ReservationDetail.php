@@ -71,4 +71,14 @@ class ReservationDetail extends \yii\db\ActiveRecord
             '2' => 'เต็มวัน',
         ];
     }
+
+    public function getWorkType()
+    {
+        return $this->hasOne(WorkType::className(), ['id' => 'work_detail']);
+    }
+
+    public function getOccupation()
+    {
+        return $this->hasOne(Occupation::className(), ['id' => 'work']);
+    }
 }

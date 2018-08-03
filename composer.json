@@ -32,7 +32,8 @@
         "lavrentiev/yii2-toastr": "^2.0",
         "2amigos/yii2-google-maps-library": "*",
         "miloschuman/yii2-highcharts-widget": "^6.0",
-        "kartik-v/yii2-datecontrol": "dev-master"
+        "kartik-v/yii2-datecontrol": "dev-master",
+        "philippfrenzel/yii2fullcalendar": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

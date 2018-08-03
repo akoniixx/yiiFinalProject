@@ -13,6 +13,8 @@ use common\models\TblCategories;
 use common\models\Occupation;
 use yii\helpers\Json;
 use common\models\WorkType;
+use yii\data\ActiveDataProvider;
+use common\models\UProfile;
 
 /**
  * ReservationsController implements the CRUD actions for Reservations model.
@@ -57,9 +59,96 @@ class ReservationsController extends Controller
      */
     public function actionView($id)
     {
+        $modelDetail = ReservationDetail::find()->where(['reservation_id' => $id])->one();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'modelDetail' => $modelDetail,
         ]);
+    }
+
+    public function actionConfirm($id)
+    {
+        $modelDetail = ReservationDetail::find()->where(['reservation_id' => $id])->one();
+        $model = $this->findModel($id);
+        $model->status = Reservations::CONFIRM;
+        $studioId = Yii::$app->studio->getStudioId();
+        if ($model->save()) {
+            $find_res = Reservations::find()
+                ->leftJoin('reservation_detail', 'reservations.id = reservation_detail.reservation_id')
+                ->where([
+                    'reservations.studio_id' => $studioId,
+                    'reservations.status' => Reservations::PENDING,
+                ])
+                ->andWhere([
+                    'reservation_detail.reservation_date' => $modelDetail->reservation_date
+                ])->all();
+            $arr = [];
+            Yii::info($find_res);
+            if (isset($find_res)) {
+                foreach ($find_res as $key => $value) {
+                    $newFindRes = Reservations::find()->where([
+                        'id' => $value->id
+                    ])->one();
+                    $newFindRes->status = Reservations::DELETE;
+                    $newFindRes->save();
+                    // $arr[] = $newFindRes->id;
+                }
+            }
+            // Yii::info($arr);
+            // return true;
+            Yii::$app->session->setFlash('success', Yii::t('common', 'Confirmation success'));
+            return $this->render('view', [
+                'model' => $model,
+                'modelDetail' => $modelDetail,
+            ]);
+        }
+        Yii::$app->session->setFlash('error', Yii::t('common', 'Confirmation failed'));
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+            'modelDetail' => $modelDetail,
+        ]); 
+    }
+
+    public function actionWorkSchedule($id)
+    {
+        $model = Reservations::find()->where(['studio_id' => $id, 'status' => Reservations::CONFIRM])->all();
+        $arrayId = [];
+        foreach ($model as $value) {
+            $arrayId[] = $value->id;
+        }
+
+        $modelDetail = ReservationDetail::find()->where(['reservation_id' => $arrayId])->all();
+
+        $events = array();
+
+        foreach ($modelDetail AS $time){
+          $hours = $time->type == ReservationDetail::ALL_DAY ? Yii::t('common', 'All day') : Yii::t('common', 'Half day');
+          $event = new \yii2fullcalendar\models\Event();
+          $event->id = $time->id;
+          $event->title = $time->workType->name_type_TH . " [" . $hours ."]";
+          $event->backgroundColor = 'red';
+          // $event->durationEditable = true;
+          // $event->color = 'yellow';
+          $event->start = $time->reservation_date;
+          // $Event->end = date('Y-m-d\TH:i:s\Z',strtotime($time->date_end.' '.$time->time_end));
+          $events[] = $event;
+        }
+
+        $searchModel = new ReservationsSearch();
+        $query = Reservations::find()->where(['studio_id' => $id, 'status' => Reservations::CONFIRM]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
+        ]);
+
+        return $this->render('work_schedule', [
+            'events' => $events,
+            'id' => $id,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
     }
 
     /**
@@ -70,10 +159,16 @@ class ReservationsController extends Controller
     public function actionCreate()
     {
         $get = Yii::$app->request->get();
+        // return $get['date'];
         $model = new Reservations();
         $modelDetail = new ReservationDetail();
         $findCategory = TblCategories::find()->where(['s_id' => $get['id']])->all();
         // return Yii::$app->user->getId();
+        $userModel = UProfile::findOne(Yii::$app->user->getId());
+        $currentDate = null;
+        if (isset($get['date'])) {
+            $currentDate = $get['date'];
+        }
 
         Yii::info('reservation Sql');
         Yii::info($findCategory);
@@ -115,6 +210,9 @@ class ReservationsController extends Controller
             $model->studio_id = $get['id'];
             if ($model->save()) {
                 $modelDetail->reservation_id = $model->id;
+                if (isset($get['date'])) {
+                    $modelDetail->reservation_date = $get['date'];
+                }
                 if ($modelDetail->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -132,19 +230,44 @@ class ReservationsController extends Controller
             'findCategory' => $findCategory,
             'findOccupation' => $findOccupation,
             'findWorkType' => $findWorkType,
-            // 'arrOccupation' => 
+            'currentDate' => $currentDate,
+            'userModel' => $userModel,
         ]);
     }
 
-    public function actionList()
+    public function actionList($id)
     {
         $searchModel = new ReservationsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->studio->getStudioId() != NULL) {
+            $query = Reservations::find()->where(['studio_id' => $id]);
+            $now = date('Y-m-d H:i:s');
+            // return $now;
+            $updateNow = Yii::$app->db->createCommand()
+                    ->update('reservations', ['status_view' => Reservations::VISITED], 'studio_id = '.$id.' AND create_time <='.'"'.$now.'"')
+                    ->execute();
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => false,
+                'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
+            ]);
 
-        return $this->render('list', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('list', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'id' => $id,
+            ]);
+        } else {
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
+            $arrayModel = new Reservations();
+            return $this->render('status_list', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'id' => $id,
+                'arrayModel' => $arrayModel,
+            ]);
+        }
+        
     }
 
     /**

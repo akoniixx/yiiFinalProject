@@ -5,24 +5,20 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Reservations;
+use common\models\Transfer;
 
 /**
- * ReservationsSearch represents the model behind the search form of `common\models\Reservations`.
+ * TransferSearch represents the model behind the search form of `common\models\Transfer`.
  */
-class ReservationsSearch extends Reservations
+class TransferSearch extends Transfer
 {
     /**
      * {@inheritdoc}
      */
-    public $reservation_date;
-
     public function rules()
     {
         return [
-            [['id', 'user_id', 'studio_id'], 'integer'],
-            [['create_time', 'update_time', 'status', 'reservation_date'], 'safe'],
-            // [['status'], 'string'],
+            [['id', 'user_id', 'status', 'created_at', 'updated_at'], 'integer'],
         ];
     }
 
@@ -42,14 +38,10 @@ class ReservationsSearch extends Reservations
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $id = null)
+    public function search($params)
     {
-        $query = Reservations::find()
-            ->innerJoinWith('reservationDetail', true);
-        if (isset($id)) {
-            $query->andWhere(['user_id' => $id]);
-        }
-        // $query->innerJoinWith('reservationDetail', true);
+        $query = Transfer::find();
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -68,11 +60,9 @@ class ReservationsSearch extends Reservations
         $query->andFilterWhere([
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'studio_id' => $this->studio_id,
-            'create_time' => $this->create_time,
-            'update_time' => $this->update_time,
             'status' => $this->status,
-            'reservation_date' => $this->reservation_date,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
         return $dataProvider;
