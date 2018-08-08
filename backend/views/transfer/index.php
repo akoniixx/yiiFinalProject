@@ -8,20 +8,21 @@ use common\models\Transfer;
 /* @var $searchModel common\models\TransferSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transfers';
+$this->title = 'ข้อมูลการโอนเงิน';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transfer-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2 style="font-family: 'Prompt', sans-serif;"><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        // 'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
+            'user_id',
             [
                 'attribute' => 'name',
                 'value' => function ($model) {
@@ -51,13 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw'
             ],
             [
-                'attribute' => 'amount',
-                'value' => function ($model) {
-                    return $model->transferList->amount;
-                },
-                'format' => 'raw'
-            ],
-            [
                 'attribute' => 'status',
                 'value' => function ($model) {
                     $status = $model->status;
@@ -72,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw'
             ],
 
-            // ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

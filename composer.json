@@ -36,7 +36,8 @@
         "philippfrenzel/yii2fullcalendar": "*",
         "kartik-v/yii2-widget-spinner": "@dev",
         "kartik-v/yii2-widget-timepicker": "*",
-        "kartik-v/yii2-widget-typeahead": "*"
+        "kartik-v/yii2-widget-typeahead": "*",
+        "kartik-v/yii2-widget-datetimepicker": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -16,7 +16,7 @@ class m180802_125140_create_transfer_slip_table extends Migration
             'id' => $this->primaryKey(),
             'transfer_id' => $this->integer()->notNull(),
             'name' => $this->string()->notNull(),
-            'studio_name' => $this->string(100),
+            'reservation_date' => $this->date(),
             'tel' => $this->string(10),
             'transfer_time' => $this->datetime(),
             'amount' => $this->integer(7)->notNull(),
@@ -24,6 +24,7 @@ class m180802_125140_create_transfer_slip_table extends Migration
             'bank_from' => $this->string(),
             'bank_to' => $this->string(),
             'bank_id' => $this->string(5),
+            // 'status' => $this->integer(2)->defaultValue(10),
         ]);
     }
 

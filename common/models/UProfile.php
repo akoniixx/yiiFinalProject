@@ -21,6 +21,9 @@ class UProfile extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $array_status = ['A' => 'Admin', 'U' => 'User', 'P' => 'Partner', 'FB' => 'Facebook'];
+
     public static function tableName()
     {
         return 'uProfile';
@@ -84,5 +87,14 @@ class UProfile extends \yii\db\ActiveRecord
         $this->imgProfile->saveAs($path . '/' . $fileName . '.' . $this->imgProfile->extension);
         $fullName = $fileName . '.' . $this->imgProfile->extension;
         return $fullName;
+    }
+
+    public function checkStatus($status)
+    {
+        foreach ($this->array_status as $key => $value) {
+            if ($status == $key) {
+                return $value;
+            }
+        }
     }
 }

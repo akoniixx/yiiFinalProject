@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\controllers;
+namespace backend\controllers;
 
 use Yii;
 use common\models\Transfer;
@@ -36,11 +36,13 @@ class TransferController extends Controller
      * Lists all Transfer models.
      * @return mixed
      */
-    public function actionIndex($id)
+    public function actionIndex()
     {
         $searchModel = new TransferSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
-        
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $updateNow = Yii::$app->db->createCommand()
+                    ->update('transfer', ['status_view' => 0])
+                    ->execute();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -127,6 +129,22 @@ class TransferController extends Controller
         ]);
     }
 
+    public function actionConfirm($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = Transfer::STATUS_ACTIVE;
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('common', 'Confirmation success'));
+            $searchModel = new TransferSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+    }
+
     /**
      * Deletes an existing Transfer model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -136,9 +154,13 @@ class TransferController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        // $this->findModel($id)->delete();
+        $findModel = Transfer::find($id);
+        $findModel->status = Transfer::STATUS_DELETE;
+        if ($findModel->save()) {
+            return $this->redirect(['index']);
+        }
+        
     }
 
     /**

@@ -1,10 +1,16 @@
 <?php
 use yii\helpers\Html;
 use common\models\VerifyMember;
+use common\models\Transfer;
+use yii\helpers\Url;
+use common\models\Reservations;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-$verify = VerifyMember::find()->where(['read' => VerifyMember::NOT_READ])->groupBy(['verify_id'])->count();
+$countVerify = VerifyMember::find()->where(['read' => VerifyMember::NOT_READ])->groupBy(['verify_id'])->count();
+$countTrans = Transfer::find()->where(['status_view' => 1])->groupBy(['id'])->count();
+$countRes = Reservations::find()->where(['status_view' => Reservations::NO_VISITED])->groupBy(['create_time'])->count();
+$sum = $countVerify + $countTrans + $countRes;
 ?>
 <style>
     @import url('https://fonts.googleapis.com/css?family=Prompt');
@@ -110,49 +116,43 @@ $verify = VerifyMember::find()->where(['read' => VerifyMember::NOT_READ])->group
                         </li>
                         <li class="footer"><a href="#">See All Messages</a></li>
                     </ul>
-                </li>
+                </li> -->
                 <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-warning">10</span>
+                        <span class="label label-danger"><?= $sum ?></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 10 notifications</li>
+                        <li class="header">คุณมี <?= $sum ?> การแจ้งเตือน</li>
                         <li>
                            
                             <ul class="menu">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-warning text-yellow"></i> Very long description here that may
-                                        not fit into the page and may cause design problems
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users text-red"></i> 5 new members joined
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-shopping-cart text-green"></i> 25 sales made
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-user text-red"></i> You changed your username
-                                    </a>
-                                </li>
+                                <?php if($countVerify != 0) { ?>
+                                    <li style="background-color: aquamarine">
+                                        <a href="<?= Url::to(['/verify-member/index']) ?>">
+                                            <i class="fa fa-check-circle" style="color: green"></i> <span class="label label-danger" style="margin-left:10px"><?= $countVerify ?></span> การยืนยันตัวตน
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                                <?php if($countRes != 0) { ?>
+                                    <li style="background-color: darkturquoise">
+                                        <a href="<?= Url::to(['/reservation/index']) ?>">
+                                            <i class="fa fa-dollar" style="color: green"></i> <span class="label label-danger" style="margin-left:10px"><?= $countRes ?></span> ข้อมูลการจองงาน
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                                <?php if($countTrans != 0) { ?>
+                                    <li style="background-color: lightseagreen">
+                                        <a href="<?= Url::to(['/transfer/index']) ?>">
+                                            <i class="fa fa-calendar-check-o" style="color: green"></i> <span class="label label-danger" style="margin-left:10px"><?= $countTrans ?></span> ข้อมูลการโอนเงิน
+                                        </a>
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </li>
-                        <li class="footer"><a href="#">View all</a></li>
+                        <!-- <li class="footer"><a href="#">View all</a></li> -->
                     </ul>
-                </li> -->
+                </li>
 
                 <!-- <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

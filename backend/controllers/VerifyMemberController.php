@@ -43,6 +43,9 @@ class VerifyMemberController extends Controller
         $searchModel = new VerifyMemberSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $path = Yii::getAlias('@web').'/web/uploads/verify/';
+        $updateNow = Yii::$app->db->createCommand()
+                    ->update('verify_member', ['read' => VerifyMember::READ])
+                    ->execute();
 
         return $this->render('index', [
             'searchModel' => $searchModel,

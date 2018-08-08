@@ -7,16 +7,16 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\GraduationScheduleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Graduation Schedules';
+$this->title = 'ตารางแสดงรายละเอียดวันรับปริญญา';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="graduation-schedule-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2 style="font-family: 'Prompt', sans-serif;"><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Graduation Schedule', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('สร้างกำหนดการ', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([

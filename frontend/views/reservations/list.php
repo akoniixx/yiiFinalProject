@@ -10,18 +10,18 @@ use yii\widgets\Pjax;
 /* @var $searchModel common\models\ReservationsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Reservations';
+$this->title = 'ตารางงาน';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="reservations-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h2><?= Html::encode($this->title) ?></h2>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php if (!isset($calendar)) { ?>
         <p>
-            <?= Html::a('Create Reservations', ['create'], ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Calendar', ['work-schedule', 'id' => $id], ['class' => 'btn btn-info']) ?>
+            <?php /*Html::a('Create Reservations', ['create'], ['class' => 'btn btn-success'])*/ ?>
+            <?= Html::a('ปฏิทินงาน', ['work-schedule', 'id' => $id], ['class' => 'btn btn-info']) ?>
         </p>
     <?php } ?>
 
@@ -43,42 +43,42 @@ $this->params['breadcrumbs'][] = $this->title;
                     // 'studio_id',
                     // 'created_at',
                     [
-                        'label' => 'Name',
+                        'label' => Yii::t('common', 'User Name'),
                         'attribute' => 'id',
                         'value' => function ($model) {
                             return $model->reservationDetail->name;
                         }
                     ],
                     [
-                        'label' => 'Tel',
+                        'label' => Yii::t('common', 'Tel'),
                         'attribute' => 'id',
                         'value' => function ($model) {
                             return $model->reservationDetail->tel;
                         }
                     ],
                     [
-                        'label' => 'Work',
+                        'label' => Yii::t('common', 'Occupation'),
                         'attribute' => 'id',
                         'value' => function ($model) {
-                            return $model->reservationDetail->work;
+                            return $model->reservationDetail->occupation->TH_name;
                         }
                     ],
                     [
-                        'label' => 'Work Detail',
+                        'label' => Yii::t('common', 'Work Detail'),
                         'attribute' => 'id',
                         'value' => function ($model) {
                             return $model->reservationDetail->workType->name_type_TH;
                         }
                     ],
                     [
-                        'label' => 'Date',
+                        'label' => Yii::t('common', 'Date Of Work'),
                         'attribute' => 'id',
                         'value' => function ($model) {
                             return $model->reservationDetail->reservation_date;
                         }
                     ],
                     [
-                        'label' => 'Type',
+                        'label' => Yii::t('common', 'Type Of Work'),
                         'attribute' => 'id',
                         'value' => function ($model) {
                             $newStatus = new ReservationDetail();
@@ -90,13 +90,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         }
                     ],
-                    [
-                        'label' => 'Contact',
-                        'attribute' => 'id',
-                        'value' => function ($model) {
-                            return $model->reservationDetail->contact;
-                        }
-                    ],
+                    // [
+                    //     'label' => Yii::t('common', 'Contact'),
+                    //     'attribute' => 'id',
+                    //     'value' => function ($model) {
+                    //         return $model->reservationDetail->contact;
+                    //     }
+                    // ],
 
 
                     ['class' => 'yii\grid\ActionColumn'],

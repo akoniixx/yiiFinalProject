@@ -36,12 +36,13 @@ class TransferSlip extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['transfer_id', 'name', 'amount'], 'required'],
+            [['transfer_id', 'name', 'amount', 'bank_from', 'bank_to', 'transfer_time'], 'required'],
             [['transfer_id', 'amount'], 'integer'],
             [['transfer_time'], 'date'],
             [['slip_image'],  'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
-            [['name', 'slip_image', 'bank_from', 'bank_to'], 'string', 'max' => 255],
-            [['studio_name'], 'string', 'max' => 100],
+            // [['name', 'slip_image', 'bank_from', 'bank_to'], 'string', 'max' => 255],
+            [['name', 'bank_from', 'bank_to'], 'string', 'max' => 255],
+            [['reservation_date'], 'safe'],
             [['tel'], 'string', 'max' => 10],
             [['bank_id'], 'string', 'max' => 5],
         ];
@@ -56,7 +57,7 @@ class TransferSlip extends \yii\db\ActiveRecord
             'id' => 'ID',
             'transfer_id' => 'Transfer ID',
             'name' => 'ชื่อ-นามสกุล',
-            'studio_name' => 'ชื่อสตูดิโอที่คุณจ้าง',
+            'reservation_date' => 'วันงานที่คุณจ้าง',
             'tel' => 'เบอร์โทรศัพท์',
             'transfer_time' => 'เวลาที่โอนเงิน',
             'amount' => 'จำนวนเงิน',
@@ -91,12 +92,14 @@ class TransferSlip extends \yii\db\ActiveRecord
     {
         $image = UploadedFile::getInstance($model, $attr);
         $path = Yii::getAlias('@app').'/web/uploads/transfer_slip/';
-
+        $date = date("Y-m-d");
+        $time = date("h-i-s");
+        $dateTime = $date . "_" . $time;
         if ($image !== NULL) {
             if ($attr == 'slip_image') {
-                $fileName = $attr.$id.'.'.$image->extension;
+                $fileName = $attr.$id.'_'.$dateTime.'.'.$image->extension;
             } else {
-                $fileName = $attr.$id.'.'.$image->extension;
+                $fileName = $attr.$id.'_'.$dateTime.'.'.$image->extension;
             }
             if ($image->saveAs($path.$fileName)) {
                 return $fileName;

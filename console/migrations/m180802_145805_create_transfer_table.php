@@ -18,6 +18,7 @@ class m180802_145805_create_transfer_table extends Migration
             'status' => $this->integer(2)->defaultValue(1),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
+            'status_view' => $this->integer(1)->defaultValue(1),
         ]);
     }
 

@@ -1,3 +1,7 @@
+<?php
+use common\models\Transfer;
+?>
+
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -17,6 +21,10 @@
             </div>
         </div>
 
+        <?php
+            // $countModel = Transfer::find()->where(['status_view' => 1])->groupBy(['id'])->count();
+        ?>
+
         <!-- search form -->
         <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
@@ -33,7 +41,7 @@
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
-                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
+                    ['label' => 'Menu Postzii', 'options' => ['class' => 'header']],
                     //['label' => 'จัดการผู้ใช้', 'icon' => 'cog', 'url' => ['/gii']],
                     [
                         'label' => Yii::t('manageUser', 'Manage User'),
@@ -71,6 +79,15 @@
                             ['label' => Yii::t('schedule', 'Update Schedule'), 'icon' => 'calendar-check-o', 'url' => ['/graduation-schedule/index']],
                         ],
                     ],
+                    ['label' => 'ข้อมูลการจอง', 'icon' => 'calendar-check-o', 'url' => ['/debug']],
+                    [
+                        // 'label' => $countModel == 0 ? 'ข้อมูลการโอนเงิน' : 'ข้อมูลการโอนเงิน <span class="label label-danger" style="margin-left:10px">'.$countModel.'</span>', 
+                        'label' => 'ข้อมูลการโอนเงิน',
+                        // 'template' => '<p>test</p>',
+                        'icon' => 'dollar', 
+                        'url' => ['/transfer/index']
+                    ],
+                    ['label' => 'รายงานสถิติ', 'icon' => 'line-chart', 'url' => ['/report/sumary-report']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     [

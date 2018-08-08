@@ -76,8 +76,14 @@ class Reservations extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'studio_id' => 'Studio ID',
             'create_time' => 'Created At',
-            'status' => 'Status',
-            ''
+            'status' => Yii::t('common', 'Status'),
+            'name' => Yii::t('common', 'User Name'),
+            'tel' => Yii::t('common', 'Tel'),
+            'work_detail' => Yii::t('common', 'Work Detail'),
+            'reservation_date' => Yii::t('common', 'Date Of Work'),
+            'type' => Yii::t('common', 'Type Of Work'),
+            'work' => Yii::t('common', 'Occupation'),
+            'contact' => Yii::t('common', 'Contact'),
         ];
     }
 

@@ -19,6 +19,7 @@
 		'Half day' => 'ครึ่งวัน',
 		'Create Reservations' => 'จองตารางงาน',
 		'Reservations Table' => 'ตารางการจอง',
+		'Status' => 'สถานะ',
 	];
 
 ?>

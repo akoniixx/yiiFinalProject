@@ -67,24 +67,7 @@ div.field-transferslip-slip_image label.control-label:after {
 			
 			<?= $form->field($slipModel, 'name')->textInput(); ?>
 
-			<div class="form-group">
-				<label class="control-label col-sm-3">วันงานที่จ้าง</label>
-				<div class="col-sm-6" style="margin-bottom: 10px">
-				    <?= DatePicker::widget([
-					    'name' => 'dp_2',
-					    'model' => $slipModel,
-					    'attribute' => 'reservation_date',
-					    // 'type' => DatePicker::TYPE_COMPONENT_PREPEND,
-					    // 'value' => time(),
-					    'pluginOptions' => [
-					        'autoclose'=>true,
-					        'format' => 'yyyy-mm-dd',
-					        'todayHighlight' => true,
-					        'eventBackgroundColor' => 'red',
-					    ]
-					]); ?> 
-				</div>
-			</div>
+			<?= $form->field($slipModel, 'studio_name')->textInput(); ?>
 
 			<?= $form->field($slipModel, 'bank_from')->widget(Typeahead::classname(), [
 			    'options' => ['placeholder' => 'รายชื่อธนาคาร ...'],

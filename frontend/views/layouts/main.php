@@ -151,6 +151,7 @@ div.required label.control-label:after {
                 ['label' => 'สร้างสตูดิโอ <span class="glyphicon glyphicon-home"style="color:#00bfff; padding-left:10px"></span>', 'url' => ['/tbl-studio/create'], 'linkOptions' => ['style' => 'color: #00bfff;']],
                 ['label' => 'ตรวจสอบการจอง', 'url' => ['/reservations/list', 'id' => $uid->id]],
                 ['label' => 'ส่งหลักฐานการโอนเงิน', 'url' => ['/transfer/create', 'id' => $uid->id]],
+                ['label' => 'ตรวจสอบสถานะการโอนเงิน', 'url' => ['/transfer/index', 'id' => $uid->id]],
                 '<li class="divider"></li>',
                 ['label' => 'ออกจากระบบ', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
             ],

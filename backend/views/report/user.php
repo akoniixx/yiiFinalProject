@@ -17,7 +17,7 @@ use miloschuman\highcharts\Highcharts;
             'options' => [
                 'title' => ['text' => 'จำนวนผู้ป่วยในแยกรายเดือน'],
                 'xAxis' => [
-                    'categories' => $mm
+                    'categories' => "test",
                 ],
                 'yAxis' => [
                     'title' => ['text' => 'จำนวน(คน)']
