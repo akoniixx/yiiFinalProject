@@ -10,6 +10,7 @@ use common\models\TblCategories;
 use common\models\VerifyMember;
 use common\models\Confirmation;
 use yii\helpers\FileHelper;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "tbl_studio".
@@ -40,6 +41,13 @@ class TblStudio extends \yii\db\ActiveRecord
         return 'tbl_studio';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(), 
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -52,7 +60,7 @@ class TblStudio extends \yii\db\ActiveRecord
             [['u_id'], 'integer'],
             //[['placeOfWork'], 'string'],
             [['url', 'confirmation'], 'string', 'max' => 30],
-            [['studioName'], 'string', 'max' => 100],
+            [['studioName'], 'string', 'max' => 35],
             [['tel'], 'string', 'max' => 10],
             [['lineID'], 'string', 'max' => 20],
             [['searchstring'], 'safe'],

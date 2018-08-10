@@ -8,6 +8,8 @@ use yii\helpers\ArrayHelper;
 // $oc = $test->occupations;
 // $map = ArrayHelper::map($category,'id','cateWork');
 // $list = implode(" ", $map);
+Yii::info($model->id);
+
 $find_profile = $model->studio->userProfile->imgProfile;
 $bg_cover = $model->studio->cover_image;
 // $img_profile = isset($find_profile) ? $find_profile : 'hooo';

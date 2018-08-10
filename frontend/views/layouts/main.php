@@ -46,8 +46,12 @@ div.required label.control-label:after {
     
     if (!Yii::$app->user->isGuest && isset($identity)) { 
         $sid = TblStudio::find()->where(['u_id' => $id])->one();
-        $countModel = Reservations::find()->where(['studio_id' => $sid, 'status_view' => Reservations::NO_VISITED])->groupBy(['create_time'])->count();
-        
+        $countModel = Reservations::find()->where(['studio_id' => $sid, 'status_view' => Reservations::NO_VISITED])->groupBy(['id'])->count();
+        if ($countModel == 0) {
+            $countModel = "";
+        } else {
+            $countModel = '<span class="label label-danger" style="margin-left:10px">'.$countModel.'</span>';
+        }
         if (!isset($sid)) {
             $sid = $sid->u_id;
         }
@@ -90,6 +94,7 @@ div.required label.control-label:after {
         $menuItems[] = ['label' => Yii::t('index', 'Login'), 'url' => ['/site/login']];
     } else if(isset($identity)) {
         $vid = VerifyMember::findOne(['studio_id' => $sid->id]);
+        $menuItems[] =  ['label' => '<span style="color: cyan" ><span class="glyphicon glyphicon-picture"></span> สร้างอัลบั้ม</span>', 'url' => ['/tbl-studio/uploadform', 'id' => $sid->id]];
         $menuItems[] = /*'<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
@@ -98,17 +103,16 @@ div.required label.control-label:after {
             )
             . Html::endForm()
             . '</li>';*/
-            ['label' => $imgDiv . Yii::$app->user->identity->username, 'items' => [
+            ['label' => $imgDiv . Yii::$app->user->identity->username . $countModel, 'items' => [
                 [
                     'label' => 'หน้าโปรไฟล์',
                     'url' => ['/tbl-studio/fanpage', 'id' => $sid->id],
                     'visible' => !Yii::$app->user->isGuest && $identity->userType ? TRUE : FALSE,
                 ],
-                ['label' => 'สร้างอัลบั้ม', 'url' => ['/tbl-studio/uploadform', 'id' => $sid->id]],
+                // ['label' => 'สร้างอัลบั้ม', 'url' => ['/tbl-studio/uploadform', 'id' => $sid->id]],
                 ['label' => 'เพิ่มอาชีพ', 'url' => ['/tbl-studio/createnewcareer', 'id' => $sid->id]],
                 ['label' => 'แก้ไขข้อมูลส่วนตัว', 'url' => ['/tbl-studio/update', 'id' => $sid->id]],
-                ['label' => 
-                    $countModel == 0 ? 'ตารางงาน' : 'ตารางงาน <span class="label label-danger" style="margin-left:10px">'.$countModel.'</span>', 
+                ['label' => 'ตารางงาน' .$countModel, 
                     'url' => ['/reservations/list', 'id' => $sid->id]],
                 // <span class="label label-warning">10</span>
                 [
@@ -146,9 +150,10 @@ div.required label.control-label:after {
                 ['label' => 'ออกจากระบบ', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
             ]];
         } else {
+            $menuItems[] =  ['label' => '<span style="color: cyan" ><span class="glyphicon glyphicon-home"></span> สร้างสตูดิโอ</span>', 'url' => ['/tbl-studio/create']];
             $menuItems[] = ['label' => $imgDiv . Yii::$app->user->identity->username, 'items' => [
                 ['label' => 'แก้ไขข้อมูลส่วนตัว', 'url' => ['/profile/view', 'id' => $uid->id],],
-                ['label' => 'สร้างสตูดิโอ <span class="glyphicon glyphicon-home"style="color:#00bfff; padding-left:10px"></span>', 'url' => ['/tbl-studio/create'], 'linkOptions' => ['style' => 'color: #00bfff;']],
+                // ['label' => 'สร้างสตูดิโอ <span class="glyphicon glyphicon-home"style="color:#00bfff; padding-left:10px"></span>', 'url' => ['/tbl-studio/create'], 'linkOptions' => ['style' => 'color: #00bfff;']],
                 ['label' => 'ตรวจสอบการจอง', 'url' => ['/reservations/list', 'id' => $uid->id]],
                 ['label' => 'ส่งหลักฐานการโอนเงิน', 'url' => ['/transfer/create', 'id' => $uid->id]],
                 ['label' => 'ตรวจสอบสถานะการโอนเงิน', 'url' => ['/transfer/index', 'id' => $uid->id]],

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model common\models\TblStudio */
 
 $this->title = Yii::t('user', 'Create Tbl Studio');
-$this->params['breadcrumbs'][] = ['label' => 'Tbl Studios', 'url' => ['index']];
+// $this->params['breadcrumbs'][] = ['label' => 'Tbl Studios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tbl-studio-create">

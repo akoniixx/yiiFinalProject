@@ -74,7 +74,7 @@ class Reservations extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
-            'studio_id' => 'Studio ID',
+            'studio_id' => 'รหัสสตูดิโอ',
             'create_time' => 'Created At',
             'status' => Yii::t('common', 'Status'),
             'name' => Yii::t('common', 'User Name'),

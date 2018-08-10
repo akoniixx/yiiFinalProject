@@ -80,9 +80,9 @@ class TblAlbumController extends Controller
             $value;
         }*/
         //$val = TblStudio::findOne($id);
-        $findID = TblAlbum::findOne($id);
+        $modelAlbum = TblAlbum::findOne($id);
         //$valu = $val->userProfile;
-        $sid = $findID->studioID;
+        $sid = $modelAlbum->studioID;
         $dirName = 'userid'.$sid;
         $path = Yii::getAlias('@web').'/uploads/user/'.$dirName;
 
@@ -93,6 +93,7 @@ class TblAlbumController extends Controller
             'path' => $path,
             'qid' => $qid,
             'sid' => $sid,
+            'modelAlbum' => $modelAlbum,
             //'test' => $test,
         ]);
     }

@@ -40,6 +40,7 @@ class TblAlbum extends \yii\db\ActiveRecord
             [['albumName'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 20],
             [['status'], 'string', 'max' => 15],
+            [['value'], 'string'],
             //[['cateAlbum'], 'required'],
             /*############# old #############*/
             /*[['studioID', 'albumName', 'image'], 'required'],
@@ -66,6 +67,7 @@ class TblAlbum extends \yii\db\ActiveRecord
             'image' => 'Image',
             //'date' => 'Date',
             'status' => 'Status',
+            'value' => 'ข้อมูลเพิ่มเติม',
         ];
     }
 

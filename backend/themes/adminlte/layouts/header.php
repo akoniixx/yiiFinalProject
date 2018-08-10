@@ -9,7 +9,7 @@ use common\models\Reservations;
 
 $countVerify = VerifyMember::find()->where(['read' => VerifyMember::NOT_READ])->groupBy(['verify_id'])->count();
 $countTrans = Transfer::find()->where(['status_view' => 1])->groupBy(['id'])->count();
-$countRes = Reservations::find()->where(['status_view' => Reservations::NO_VISITED])->groupBy(['create_time'])->count();
+$countRes = Reservations::find()->where(['admin_view' => Reservations::NO_VISITED, 'status' => Reservations::CONFIRM])->groupBy(['id'])->count();
 $sum = $countVerify + $countTrans + $countRes;
 ?>
 <style>
@@ -136,7 +136,7 @@ $sum = $countVerify + $countTrans + $countRes;
                                 <?php } ?>
                                 <?php if($countRes != 0) { ?>
                                     <li style="background-color: darkturquoise">
-                                        <a href="<?= Url::to(['/reservation/index']) ?>">
+                                        <a href="<?= Url::to(['/reservations/index']) ?>">
                                             <i class="fa fa-dollar" style="color: green"></i> <span class="label label-danger" style="margin-left:10px"><?= $countRes ?></span> ข้อมูลการจองงาน
                                         </a>
                                     </li>

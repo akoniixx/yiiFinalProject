@@ -22,5 +22,17 @@ return [
         'studio' => [
             'class' => 'common\components\Studio',
         ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => true,
+            'rules' => [
+                '<controller:(announce)>/<action:(view)>' => 'item/oview',
+                '<controller:(announce)>/<id:\d+>' => 'item/oview',
+                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+            ],
+            // 'class' => 'codemix\localeurls\UrlManager',
+            // 'languages' => ['en' => 'en-EN', 'th' => 'th-TH'],
+            // ...
+        ],
     ],
 ];

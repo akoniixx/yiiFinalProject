@@ -10,7 +10,7 @@ use yii\helpers\Url;
     	<a href="<?= Url::to(['/tbl-album/detailgallery', 'id' => $model->albumID]); ?>">
 	      	<img src="<?= $baseUrl.$model->image; ?>" alt="#">
 	      	<div class="caption">
-	        	<h4><?= $model->albumName; ?></h4>
+	        	<h4 class="album-name"><?= $model->albumName; ?></h4>
 	      	</div>
   		</a>
   	</div>

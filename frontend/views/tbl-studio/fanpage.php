@@ -11,6 +11,8 @@ use dosamigos\google\maps\overlays\Marker;
 use dosamigos\google\maps\Map;
 use common\models\TblCategories;
 use yii\bootstrap\Modal;
+use yii\widgets\Pjax;
+use kartik\rating\StarRating;
 
 $this->registerJsFile("//cdn.jsdelivr.net/jquery/1/jquery.min.js");
 $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.min.js");
@@ -103,6 +105,9 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
     background-position: center;
     width: 100%;
     max-height: 760px;
+}
+.rating-container-center {
+    text-align: center;
 }
 </style>
 </head>
@@ -273,26 +278,107 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
                 </h1> -->
             <?php 
                 if ($modelAlbum !== NULL) {
-                    echo ListView::widget([
-                        'dataProvider' => $dataProvider,
-                        'itemView' => '/tbl-studio/_albumView',
-                        'summary' => false,
-                        'itemOptions' => [
-                            'class' => 'col-sm-6 col-md-3',
-                        ],
-                        'viewParams' => [
-                            //'aName' => $aName,
-                            'baseUrl' => $baseUrl,
-                        ],
-                    ]);
+                    Pjax::begin();
+                        echo ListView::widget([
+                            'dataProvider' => $dataProvider,
+                            'itemView' => '/tbl-studio/_albumView',
+                            'summary' => false,
+                            'itemOptions' => [
+                                'class' => 'col-sm-6 col-md-3',
+                            ],
+                            'viewParams' => [
+                                //'aName' => $aName,
+                                'baseUrl' => $baseUrl,
+                            ],
+                        ]);
+                    Pjax::end();
+                } else {
+                    echo "<h4> ไม่มีอัลบั้มรูปภาพ </h4>";
                 }
 
                 //echo $id . " " . $tt->email . "<br>";
             ?>
                 
             </div>
+
         </div>
     </section>
+
+    <?php if (Yii::$app->studio->getStudioId() != $id) { ?>
+    <section class="section">
+        <div class="col-sm-12 col-md-12">
+            <?php $form = ActiveForm::begin([
+                'action' => Url::to(['tbl-studio/create-comment', 'myId' => $myId, 'studio_id' => $id])
+            ]); ?>
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-md-offset-3 rating-container-center">
+                    <?php
+                        echo '<label class="control-label">ระดับความพึงพอใจ</label>';
+                        echo StarRating::widget([
+                            'name' => 'rating_score',
+                            'pluginOptions' => [
+                                'min' => 0,
+                                'max' => 5,
+                                'step' => 1,
+                                'size' => 'sm',
+                                'starCaptions' => [
+                                    0 => '-',
+                                    1 => 'น้อยมาก',
+                                    2 => 'น้อย',
+                                    3 => 'ปานกลาง',
+                                    4 => 'ดี',
+                                    5 => 'ดีมาก',
+                                    // 12 => 'Extremely Good',
+                                ],
+                                'starCaptionClasses' => [
+                                    0 => 'text-danger',
+                                    1 => 'text-danger',
+                                    2 => 'text-warning',
+                                    3 => 'text-info',
+                                    4 => 'text-primary',
+                                    5 => 'text-success',
+                                    // 12 => 'text-success'
+                                ],
+                            ],
+                        ]);
+                    ?>
+                </div>
+                <div class="col-md-8 col-md-offset-2">
+                    <?= $form->field($modelComment, 'comment')->textarea(['rows' => '4', 'placeholder' => "ความคิดเห็น ..."]) ?>
+                </div>
+            </div>
+
+            <div class="form-group text-center" style="padding-bottom: 5px;">
+                <div style="padding-left: 15px; padding-right: 15px;">
+                    <?= Html::submitButton('โพสต์', ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10 col-md-offset-1">
+                    <?php
+                        Pjax::begin();
+                        echo ListView::widget([
+                            'dataProvider' => $commentProvider,
+                            'itemView' => '/tbl-studio/_commentList',
+                            'summary' => false,
+                            'itemOptions' => [
+                                'class' => 'panel panel-white post panel-shadow',
+                            ],
+                            'viewParams' => [
+                                //'aName' => $aName,
+                                'baseUrl' => $baseUrl,
+                            ],
+                        ]);
+                    Pjax::end();
+                    ?>
+                </div>
+            </div>
+
+            <?php ActiveForm::end(); ?>
+        </div>
+    </section>
+    <?php } ?>
 
     <?php if($modelCategory->cateWork == TblCategories::DRESS_RENTAL) { ?>
     <section>

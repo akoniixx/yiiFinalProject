@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use common\models\TblStudio;
 use common\models\Occupation;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "tbl_categories".
@@ -30,6 +31,13 @@ class TblCategories extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'tbl_categories';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(), 
+        ];
     }
 
     /**

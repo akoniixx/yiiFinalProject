@@ -181,10 +181,9 @@ class SiteController extends Controller
         //$modelStudio = new TblStudio();
         $occupation = new Occupation();
         $text = Yii::$app->request->post('text-search');
-        return $text;
+        // return $text;
         $post = Yii::$app->request->post();
         //$oc = $occupation->load(Yii::$app->request->post());
-        Yii::info('testtttttttt');
         Yii::info($text);
 
         $postOccupation = $post['Occupation'];
@@ -196,6 +195,8 @@ class SiteController extends Controller
         $workType = $postWorkType['id'];
         $occupationId = $postOccupation['id'];
         $workHours = $postOccupation['workHours'];
+        $resultTextSearch = [];
+        $resultText = "";
 
         $queryOccupation = Occupation::find()->where(['initials' => $occupationId])->one();
         // return $queryOccupation->TH_name;
@@ -215,6 +216,7 @@ class SiteController extends Controller
 
         if (!empty($text) && isset($text) && $text != 'blank') {
 
+            $resultTextSearch[] = $text;
             $itemQuery = TblStudio::find()
                     ->leftJoin(
                         'tbl_categories',
@@ -256,11 +258,13 @@ class SiteController extends Controller
             if (!empty($queryOccupation)) {
                 //echo $queryOccupation->TH_name;
                 $itemQuery->andWhere(['like', 'tbl_categories.cateWork', $queryOccupation->initials]);
+                $resultTextSearch[] = $queryOccupation->TH_name;
             }
 
             if (!empty($workType)) {
                 $work_type = WorkType::find()->where(['id' => $workType])->one();
                 $itemQuery->andWhere(['like', 'tbl_categories.workDetails', $work_type->name_type]);
+                $resultTextSearch[] = $work_type->name_type_TH;
             }
 
             if (!empty($budget)) {
@@ -282,27 +286,22 @@ class SiteController extends Controller
                 }
 
                 $itemQuery->andWhere(['like', 'tbl_categories.placeOfWork', $arrayLocationName]);
-
+                // $resultTextSearch[] = $arrayLocationName;
             }
-
-            // if (!empty($queryOccupation)) {
-
-            //     if($workHours == 1) {
-            //         echo "All day";
-            //     } else if($workHours == 2) {
-            //         echo "Half day";
-            //     }
-    
-            // }
-            
 
             $dataProvider =  new ActiveDataProvider([
                 'query' => $itemQuery->orderBy('id DESC'),
                 'pagination' => ['pageSize' => 20],
             ]);
 
+            foreach ($resultTextSearch as $key => $value) {
+                $resultText .= $value;
+            }
+
             return $this->render('studio-search', [
-                'dataProvider' => $dataProvider
+                'dataProvider' => $dataProvider,
+                'resultTextSearch' => $resultTextSearch,
+                'resultText' => $resultText,
             ]);
         
         } else {
@@ -319,24 +318,13 @@ class SiteController extends Controller
             if (!empty($queryOccupation)) {
                 //echo $queryOccupation->TH_name;
                 $itemQuery->andWhere(['like', 'tbl_categories.cateWork', $queryOccupation->initials]);
+                $resultTextSearch[] = $queryOccupation->TH_name;
             }
 
             if (!empty($workType)) {
                 $work_type = WorkType::find()->where(['id' => $workType])->one();
-                // echo $work_type->name_type;
-                // return true;
-                // $findWorkType = print_r(json_decode($work_type->name_type));
                 $itemQuery->andWhere(['like', 'tbl_categories.workDetails', $work_type->name_type]);
-                // $substr = (string)substr($findWorkType, 0, -1);
-                // echo $substr;
-                // echo "<br>";
-                // echo substr($findWorkType, 0, -1);
-                // echo "####### <br>";
-                // $query = TblCategories::find()->where(['like', 'workDetails', $work_type->name_type])
-                //         ->andWhere(['like', 'cateWork', $queryOccupation->occupationName])
-                //         ->all();
-                // echo print_r($query);
-                // echo print_r($itemQuery);
+                $resultTextSearch[] = $work_type->name_type_TH;
             }
 
             if (!empty($budget)) {
@@ -359,10 +347,8 @@ class SiteController extends Controller
                 //$queryLocations = Locations::find();
                 foreach ($locations as $value) {
                     $arrayLocation[] = $value;
-                    //$queryLocations->orWhere(['like', 'location_name', $value]);
                 }
                 $arrayLocationName = array();
-                //echo print_r($arrayLocation);
                 $locationModel = Locations::find()->where(['location_id' => $arrayLocation])->all();
                 
                 foreach ($locationModel as $key => $value) {
@@ -372,31 +358,22 @@ class SiteController extends Controller
                 }
 
                 $itemQuery->andWhere(['like', 'tbl_categories.placeOfWork', $arrayLocationName]);
-
-            }
-
-            if (!empty($queryOccupation)) {
-                
-                /*if ($queryOccupation->occupationName == 'MakeupArtist' || $queryOccupation->occupationName == 'DressRental') {
-                    echo "Null";
-                } else */
-
-                // if($workHours == 1) {
-                //     echo "All day";
-                // } else if($workHours == 2) {
-                //     echo "Half day";
-                // }
-    
+                // $resultTextSearch[] = $arrayLocationName;
             }
             
+            foreach ($resultTextSearch as $key => $value) {
+                $resultText .= $value . ", ";
+            }
 
             $dataProvider =  new ActiveDataProvider([
-                'query' => $itemQuery->orderBy('id DESC'),
+                'query' => $itemQuery->orderBy('active DESC'),
                 'pagination' => ['pageSize' => 20],
             ]);
 
             return $this->render('studio-search', [
-                'dataProvider' => $dataProvider
+                'dataProvider' => $dataProvider,
+                'resultTextSearch' => $resultTextSearch,
+                'resultText' => $resultText,
             ]);
         }
 

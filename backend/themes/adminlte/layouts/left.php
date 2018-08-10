@@ -79,7 +79,7 @@ use common\models\Transfer;
                             ['label' => Yii::t('schedule', 'Update Schedule'), 'icon' => 'calendar-check-o', 'url' => ['/graduation-schedule/index']],
                         ],
                     ],
-                    ['label' => 'ข้อมูลการจอง', 'icon' => 'calendar-check-o', 'url' => ['/debug']],
+                    ['label' => 'ข้อมูลการจอง', 'icon' => 'calendar-check-o', 'url' => ['/reservations/index']],
                     [
                         // 'label' => $countModel == 0 ? 'ข้อมูลการโอนเงิน' : 'ข้อมูลการโอนเงิน <span class="label label-danger" style="margin-left:10px">'.$countModel.'</span>', 
                         'label' => 'ข้อมูลการโอนเงิน',

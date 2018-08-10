@@ -42,12 +42,15 @@ class ReservationsSearch extends Reservations
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $id = null)
+    public function search($params, $id = null, $status = null)
     {
         $query = Reservations::find()
             ->innerJoinWith('reservationDetail', true);
         if (isset($id)) {
             $query->andWhere(['user_id' => $id]);
+        }
+        if (isset($status)) {
+            $query->andWhere(['reservations.status' => Reservations::CONFIRM]);
         }
         // $query->innerJoinWith('reservationDetail', true);
         // add conditions that should always apply here

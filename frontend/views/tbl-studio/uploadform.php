@@ -39,6 +39,10 @@ use common\models\WorkType;
 	          ]
 		) ?>
 	</div>
+
+	<div class="col-md-8 col-md-offset-2">
+	    <?= $form->field($album, 'value')->textarea(['rows' => '6']) ?>
+	</div>
 	
 	<div class="col-lg-12 col-md-12">
 	    <?= $form->field($model, 'gimages[]')->widget(FileInput::classname(), [

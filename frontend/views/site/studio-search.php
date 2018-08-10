@@ -63,16 +63,22 @@ div#masonry:hover .col-sm-3:hover { opacity: 1; }
 </style>
 
 <div class="container bg-3" id="masonry">    
-  <h3><?= Yii::t('search', 'Search Result') ?></h3><br>
+  <h3><?= Yii::t('search', 'Search Result') ?> <?= substr($resultText, 0, -2) ?></h3><br>
   <div class="row">
     <?=
         ListView::widget([
             'dataProvider' => $dataProvider,
-            'itemView' => '/site/_fanpagedetail',
-            'summary' => false,
+            'itemView' => '/site/_listView',
+            // 'summary' => false,
             'itemOptions' => [
-                'class' => 'col-sm-3',
-                'style' => 'padding-bottom: 15px;'
+                'class' => 'col-sm-12 col-md-12',
+                'style' => [
+                  'padding' => '15px',
+                  'border' => '1px solid #b3b3b3',
+                  'margin-top' => '10px',
+                  'border-radius' => '4px',
+                    'box-shadow' => '2px 2px 2px #b3b3b3',
+                ],
             ],
             /*'viewParams' => [
                 'aName' => $aName,

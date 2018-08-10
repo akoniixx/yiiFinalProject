@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\FileHelper;
+use dosamigos\editable\Editable;
 
 /**
  * This is the model class for table "u_profile".
@@ -39,7 +40,7 @@ class UProfile extends \yii\db\ActiveRecord
             [['u_id'], 'integer'],
             [['firstName', 'lastName'], 'string', 'max' => 100],
             [['tel'], 'string', 'max' => 10],
-            //[['usreType'], 'string', 'max' => 5],
+            [['usreType'], 'string'],
             //[['imgProfile'], 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 5, 'skipOnEmpty' => false],
             // [['imgProfile'], 'string', 'max' => 255],
             [['imgProfile'], 'file', 'extensions'=>'jpg, png', 'skipOnEmpty' => true],
@@ -56,9 +57,9 @@ class UProfile extends \yii\db\ActiveRecord
             'firstName' => 'ชื่อ',
             'lastName' => 'นามสกุล',
             'tel' => 'เบอร์โทร',
-            'usreType' => 'Usre Type',
+            'usreType' => 'สถานะ',
             'u_id' => 'U ID',
-            'imgProfile' => 'Img Profile',
+            'imgProfile' => 'รูปภาพประจำตัว',
         ];
     }
 
@@ -96,5 +97,50 @@ class UProfile extends \yii\db\ActiveRecord
                 return $value;
             }
         }
+    }
+
+    public function getFirstNameEditable()
+    {
+        return Editable::widget([
+                    'model' => $this,
+                    'attribute' => 'firstName',
+                    'url' => 'profile/editable-user',
+                    'type' => 'text',
+                    'mode' => 'inline',
+                    // 'mode' => 'pop',
+                    'clientOptions' => [
+                        'emptytext' => "ไม่ได้กำหนด",
+                    ],
+        ]).' <i class="fa fa-pencil"></i>';
+    }
+
+    public function getLastNameEditable()
+    {
+        return Editable::widget([
+                    'model' => $this,
+                    'attribute' => 'lastName',
+                    'url' => 'profile/editable-user',
+                    'type' => 'text',
+                    'mode' => 'inline',
+                    // 'mode' => 'pop',
+                    'clientOptions' => [
+                        'emptytext' => "ไม่ได้กำหนด",
+                    ],
+        ]).' <i class="fa fa-pencil"></i>';
+    }
+
+    public function getTelEditable()
+    {
+        return Editable::widget([
+                    'model' => $this,
+                    'attribute' => 'tel',
+                    'url' => 'profile/editable-user',
+                    'type' => 'text',
+                    'mode' => 'inline',
+                    // 'mode' => 'pop',
+                    'clientOptions' => [
+                        'emptytext' => "ไม่ได้กำหนด",
+                    ],
+        ]).' <i class="fa fa-pencil"></i>';
     }
 }

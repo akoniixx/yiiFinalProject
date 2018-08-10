@@ -25,6 +25,7 @@ use common\models\TblAlbumSearch;
 use common\models\Occupation;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
+use common\models\Comment;
 
 /*use common\models\VerifyMember;
 use common\models\VerifyMemberSearch;*/
@@ -331,7 +332,7 @@ class TblStudioController extends Controller
                             $arr_results['architecture'][] = $ar[$k+2];
                         }
                         if ($ar[$k] == 'productAndFood') {
-                            $arr_results['productAndFood'][] = $val['productAndFood'];
+                            $arr_results['productAndFood'][] = 'productAndFood';
                         }
                         // }
                     }
@@ -415,6 +416,7 @@ class TblStudioController extends Controller
     {
         $profile = new UProfile();
         $studio = new TblStudio();
+        $modelComment = new Comment();
         $modelCategory = TblCategories::findOne(['s_id' => $id]);
         $modelStudio = TblStudio::findOne($id);
         $modelAlbum = TblAlbum::findOne(['studioID' => $id]);
@@ -438,9 +440,20 @@ class TblStudioController extends Controller
             $baseUrl = NULL;
             //$aName = NULL;
         }
+        $comment = Comment::find()->where(['studio_id' => $id]);
+        $commentProvider = new ActiveDataProvider([
+            'query' => $comment,
+            'pagination' => [
+                 'pageSize' => 3, 
+             ],
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
+        ]);
 
-        $test = TblStudio::findOne($id);
-        $tt = $test->userProfile;
+        $myId = Yii::$app->user->getId();
+        // if (Yii::$app->studio->getStudioId() != NULL) {
+        //     $myId = Yii::$app->studio->getStudioId();
+        // }
+
         $uploadImg = new UProfile();
         
         if ($modelProfile->imgProfile == 'profile-default-icon.png') {
@@ -461,13 +474,6 @@ class TblStudioController extends Controller
         // $tblCategory = TblCategories::findOne
         $arrayLocation = Json::decode($modelCategory->workDetails);
         $modelStudio->updateCounters(['view_count' => 1]);
-        // return var_dump($location);
-        // return print_r($location);
-        // $arrayLocation = [];
-        // foreach ($location as $value) {
-        //     $arrayLocation[] = $value;
-        // }
-        // // return print_r($arrayLocation);
 
         return $this->render('fanpage', [
             'modelCategory' => $modelCategory,
@@ -480,13 +486,15 @@ class TblStudioController extends Controller
             'studio' => $studio,
             'baseUrl' => $baseUrl,
             'id' => $id,
-            'tt' => $tt,
             'uploadImg' => $uploadImg,
             'profile' => $profile,
             'textStatus' => $textStatus,
             'img_cover' => $img_cover,
             'img_profile' => $img_profile,
             'arrayLocation' => $arrayLocation,
+            'myId' => $myId,
+            'modelComment' => $modelComment,
+            'commentProvider' => $commentProvider,
         ]);
     }
 
@@ -652,6 +660,31 @@ class TblStudioController extends Controller
             }
         }
         throw new BadRequestHttpException("file is found");
+    }
+
+    public function actionCreateComment($myId, $studio_id)
+    {
+        $post = Yii::$app->request->post();
+        if (isset($post)) {
+            Yii::info($post['Comment']);
+            // return print_r($post['Comment']);
+            $modelComment = new Comment();
+            $modelComment->user_id = $myId;
+            $modelComment->studio_id = $studio_id;
+            $modelComment->rating = $post['rating_score'];
+            $modelComment->comment = $post['Comment']['comment'];
+
+            Yii::info($modelComment->user_id);
+            Yii::info($modelComment->studio_id);
+            Yii::info($modelComment->rating);
+            Yii::info($modelComment->comment);
+            if ($modelComment->save()) {
+                return $this->redirect(['fanpage', 'id' => $studio_id]);
+            }
+            $modelComment->delete();
+            throw new BadRequestHttpException("โพสไม่สำเร็จ กรุณาลองอีกครั้ง !");
+        }
+        throw new BadRequestHttpException("โพสไม่สำเร็จ กรุณาลองอีกครั้ง");
     }
 
     /**

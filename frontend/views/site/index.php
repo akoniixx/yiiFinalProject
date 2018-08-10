@@ -29,7 +29,7 @@ $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/ang
       <img src="https://i.ytimg.com/vi/yqXC4wlIAbI/maxresdefault.jpg">
   </div>
 </div> -->
-<div class="container text-center" style="padding-top: inherit;">
+<div class="container search-box-center" style="padding-top: inherit;">
   <div class="input-group" id="boot-search-box">
       <input type="text" class="form-control" placeholder="<?= Yii::t('search', 'Search') ?>" onchange="checkText(this.value)"/>
       <div class="input-group-btn">
@@ -47,7 +47,7 @@ $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/ang
                             //'onchange' => 'checkOccupation();',
                             //'required'=> true,
                           ]
-                        ); ?>
+                        )->label('อาชีพ'); ?>
                       </div>
                       <div class="form-group" id="hide-work-type" style="display: none;">
 
@@ -56,7 +56,7 @@ $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/ang
                           [
                             'prompt' => '-- ' . Yii::t('search', 'Type of Work') . ' --',
                           ]
-                        ); ?>
+                        )->label('ประเภทงาน'); ?>
                         
                       </div>
 
@@ -70,15 +70,15 @@ $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/ang
                               'tokenSeparators' => [',', ' '],
                               'maximumInputLength' => 10
                             ],
-                        ])->label('Tag Multiple'); ?>
+                        ])->label('จังหวัด'); ?>
                         
                       </div>
                       <div class="form-group" id="hide-budget" style="display: none;">
-                        <?= $form->field($occupation, 'budget')->textInput(['type' => 'number', 'step' => 100]) ?>
+                        <?= $form->field($occupation, 'budget')->textInput(['type' => 'number', 'step' => 100])->label('ราคา') ?>
                       </div>
 
                       <div class="form-group" id="hide-work-hours" style="display: none;">
-                        <?= $form->field($occupation, 'workHours')->dropDownList($workHours); ?>
+                        <?= $form->field($occupation, 'workHours')->dropDownList($workHours)->label('เวลา'); ?>
                       </div>
 
                       <!-- <p id="text-search" style="display: none;"></p> -->
@@ -88,7 +88,7 @@ $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/ang
                         'name' => 'text-search',
                         'style' => 'display : none',
                         'value' => 'blank',
-                      ]) ?>
+                      ])->label(false) ?>
                       
                      <div class="form-group"><!-- </div> -->
                         
@@ -357,7 +357,7 @@ $("#occupation-id").on("click", function() {
         
       document.getElementById("hide-work-type").style.display = "none";
       document.getElementById("hide-locations").style.display = "block";
-      document.getElementById("hide-budget").style.display = "block";
+      document.getElementById("hide-budget").style.display = "none";
       document.getElementById("hide-work-hours").style.display = "none";
 
     } else if (current_value == '') {

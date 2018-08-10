@@ -20,7 +20,7 @@ use unclead\multipleinput\MultipleInput;
     <?php $form = ActiveForm::begin(/*['layout' => 'horizontal']*/); ?>
 
     <!-- $form->field($model, 'gimages[]')->fileInput(['multiple' => true]) -->
-    <div class="col-xs-12 col-md-6" style="padding-right: 15px;">
+    <div class="col-xs-12 col-md-6" style="padding-right: 15px; border-right: 1px solid #cac8c8">
 
     <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
 
@@ -51,22 +51,22 @@ use unclead\multipleinput\MultipleInput;
           'tokenSeparators' => [',', ' '],
           'maximumInputLength' => 10
         ],
-    ])->label('Tag Multiple'); ?>
+    ])->label('จังหวัดที่รับงาน'); ?>
 
     </div>
 
-    <div class="col-xs-12 col-md-6" style="padding-left: 15px; border-left: 1px solid #cac8c8">
+    <div class="col-xs-12 col-md-6" style="padding-left: 15px;">
         
         <div class="col-xs-12 col-md-12" style="padding-left: 0px; padding-right: 0px">
-        <?= $form->field($model, 'description')->textarea(['rows' => '6']) ?>
+        <?= $form->field($model, 'description')->textarea(['rows' => '8']) ?>
         </div>
 
-        <div class="col-xs-6 col-md-6" style="padding-left: 0px">
-        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true]) ?>
+        <div class="col-xs-6 col-md-6" style="padding-left: 0px;display:none;" id="location1">
+        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true])->label('ลาติจูด') ?>
         </div>
 
-        <div class="col-xs-6 col-md-6" style="padding-right: 0px">
-        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true]) ?>
+        <div class="col-xs-6 col-md-6" style="padding-right: 0px;display:none;" id="location2">
+        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true])->label('ลองจิจูด') ?>
         </div>
     </div>
 
@@ -140,7 +140,7 @@ use unclead\multipleinput\MultipleInput;
             </div>
         </div>
 
-        <div class="inline form-inline">
+        <div class="inline form-inline" id="this-hide1">
             <?= $form->field($cate, 'workDetails[]')->checkbox(['uncheck' => null, 'class' => 'checkbox-inline-type', 'value' => 'architecture'])->label(false); ?>    
             <?= Html::img(Yii::$app->request->baseUrl.'/img/pn6.png', ['alt'=>'some', 'class'=>'set-image']);?>
             <label class="checkbox-inline-type">สถาปัตยกรรม</label>
@@ -150,7 +150,7 @@ use unclead\multipleinput\MultipleInput;
             </div>
         </div>
 
-        <div class="inline form-inline">
+        <div class="inline form-inline" id="this-hide2">
             <?= $form->field($cate, 'workDetails[]')->checkbox(['uncheck' => null, 'class' => 'checkbox-inline-type', 'value' => 'productAndFood'])->label(false); ?>    
             <?= Html::img(Yii::$app->request->baseUrl.'/img/pn7.png', ['alt'=>'some', 'class'=>'set-image']);?>
             <label class="checkbox-inline-type">สินค้า/อาหาร</label>
@@ -158,13 +158,13 @@ use unclead\multipleinput\MultipleInput;
             <input type="hidden" name="quantity[]" value="-"> -->
         </div>
     </div>
-    </div>
+    
 
     <div id="map" style="width:100%;height:400px;display:none;"></div>
 
     <div class="form-group text-center" style="padding-top: 50px;">
         <div style="padding-left: 15px; padding-right: 15px;">
-            <?= Html::submitButton('ยืนยืน', ['class' => 'btn btn-primary btn-block']) ?>
+            <?= Html::submitButton('ยืนยืน', ['class' => 'btn btn-primary', 'style' => 'width:35%']) ?>
         </div>
     </div>
 
@@ -243,16 +243,26 @@ $("#tblcategories-catework").on("click", function() {
         
       document.getElementById("hide-elements").style.display = "block";
       document.getElementById("map").style.display = "none";
+      document.getElementById("location1").style.display = "none";
+      document.getElementById("location2").style.display = "none";
+      document.getElementById("this-hide1").style.display = "block";
+      document.getElementById("this-hide2").style.display = "block";
 
     } else if (current_value == "Ma") {
         
       document.getElementById("hide-elements").style.display = "block";
       document.getElementById("map").style.display = "none";
+      document.getElementById("location1").style.display = "none";
+      document.getElementById("location2").style.display = "none";
+      document.getElementById("this-hide1").style.display = "none";
+      document.getElementById("this-hide2").style.display = "none";
 
     } else if (current_value == "Dr") {
         
       document.getElementById("hide-elements").style.display = "none";
       document.getElementById("map").style.display = "block";
+      document.getElementById("location1").style.display = "block";
+      document.getElementById("location2").style.display = "block";
 
     }
 
