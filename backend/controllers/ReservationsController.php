@@ -46,10 +46,10 @@ class ReservationsController extends Controller
         $status = 'admin';
         $searchModel = new ReservationsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id, $status);
-        // $updateNow = Yii::$app->db->createCommand()
-        //             ->update('reservations', ['admin_view' => 1], 'status = '. '"'.Reservations::CONFIRM.'"')
-        //             // ->update('reservations', ['admin_view' => 0])
-        //             ->execute();
+        $updateNow = Yii::$app->db->createCommand()
+                    ->update('reservations', ['admin_view' => 1], 'status = '. '"'.Reservations::CONFIRM.'"')
+                    // ->update('reservations', ['admin_view' => 0])
+                    ->execute();
 
         return $this->render('index', [
             'searchModel' => $searchModel,

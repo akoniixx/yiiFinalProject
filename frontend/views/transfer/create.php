@@ -99,14 +99,22 @@ div.field-transferslip-slip_image label.control-label:after {
 
 			<?= $form->field($slipModel, 'bank_to')->widget(Typeahead::classname(), [
 			    'options' => ['placeholder' => 'รายชื่อธนาคาร ...'],
-			    'pluginOptions' => ['highlight'=>true],
+			    'pluginOptions' => ['highlight' => true, 'minLength' => 0],
 			    'dataset' => [
 			        [
-			            'local' => $slipModel->bankList(),
+			            'local' => $slipModel->bankListTo(),
 			            'limit' => 10
 			        ]
 			    ]
 			]); ?>
+
+<!-- 			echo TypeaheadBasic::widget([
+    'name' => 'state_17',
+    'data' => $data,
+    'dataset' => ['limit' => 10],
+    'options' => ['placeholder' => 'Filter as you type ...'],
+    'pluginOptions' => ['highlight' => true, 'minLength' => 0] 				
+]); -->
 
 			<?= $form->field($slipModel, 'bank_id')->textInput(['maxlength' => true]); ?>
 

@@ -120,6 +120,7 @@ $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/ang
             'dataProvider' => $dataProviderPhotographer,
             'itemView' => '/site/_fanpagedetail',
             'summary' => false,
+            'layout'=>"\n{items}",
             'itemOptions' => [
                 'class' => 'col-sm-3',
                 'style' => 'padding-bottom: 15px;'
@@ -141,6 +142,7 @@ $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/ang
             'dataProvider' => $dataProviderMakeup,
             'itemView' => '/site/_fanpagedetail',
             'summary' => false,
+            'layout'=>"\n{items}",
             'itemOptions' => [
                 'class' => 'col-sm-3',
                 'style' => 'padding-bottom: 15px;'
@@ -162,6 +164,7 @@ $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/ang
             'dataProvider' => $dataProviderDress,
             'itemView' => '/site/_fanpagedetail',
             'summary' => false,
+            'layout'=>"\n{items}",
             'itemOptions' => [
                 'class' => 'col-sm-3',
                 'style' => 'padding-bottom: 15px;'

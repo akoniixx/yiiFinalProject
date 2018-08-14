@@ -78,27 +78,28 @@ class ProfileController extends Controller
     public function actionEditableUser()
     {
         $post = Yii::$app->request->post();
-        // $myId = Yii::$app->user->getId();
-        // $profile = UProfile::find()->where(['u_id' => $myId])->one();
-        // Yii::info($_POST["value"]);
-        // $name = $post["name"];
-        // if (isset($post)) {
-        //     if ($post == 'firstName') {
-        //         // Yii::info($post['value']);
-        //         $profile->firstName = $post['value'];
-        //         // $success = $profile->save();
-        //     } else if ($post['name'] == 'lastName') {
-        //         $profile->lastName = $post['value'];
-        //         $success = $profile->save();
-        //     } else if ($post['name'] == 'tel') {
-        //         $profile->tel = $post['value'];
-        //         $success = $profile->save();
-        //     }
-        //     return true;
-        //     Yii::info($name);
-        //     return true;
-        // }
-        // return false;
+        Yii::info($post['name']);
+        $myId = Yii::$app->user->getId();
+        $profile = UProfile::find()->where(['u_id' => $myId])->one();
+        // Yii::info($post["name"]);
+        $name = $post["name"];
+        if (isset($post)) {
+            if ($post['name'] == 'firstName') {
+                // Yii::info($post['value']);
+                $profile->firstName = $post['value'];
+                // $success = $profile->save();
+            } else if ($post['name'] == 'lastName') {
+                $profile->lastName = $post['value'];
+                // $success = $profile->save();
+            } else if ($post['name'] == 'tel') {
+                $profile->tel = $post['value'];
+                // $success = $profile->save();
+            }
+            return $profile->save();
+            // Yii::info($name);
+            // return true;
+        }
+        return false;
         
         // $profile->save();
         // Yii::info($profile);

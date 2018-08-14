@@ -308,6 +308,7 @@ class TblStudioController extends Controller
                         // if( $val ) {
                         // $arr_results[] = $val ;
                             // $arr_results['congratulation'][] = $val[]
+
                         if ($ar[$k] == 'congratulation') {
 
                             $arr_results['congratulation'][] = $ar[$k+1];
@@ -336,7 +337,14 @@ class TblStudioController extends Controller
                         }
                         // }
                     }
-                    $cate->workDetails = Json::encode($arr_results);
+                    if (empty($arr_results)) {
+                        $arrayNew = [$cate->workDetails[0], $cate->workDetails[1]];
+                        $cate->workDetails = Json::encode($arrayNew);
+                    } else {
+                        $cate->workDetails = Json::encode($arr_results);
+                    }
+                    Yii::info($cate->workDetails);
+                    
                     // return $cate->workDetails;
 
                 //return $js . " " . $js2. " ". $cate->cateWork;
@@ -597,7 +605,12 @@ class TblStudioController extends Controller
                 }
                 // }
             }
-            $cate->workDetails = Json::encode($arr_results);
+            if (empty($arr_results)) {
+                $arrayNew = [$cate->workDetails[0], $cate->workDetails[1]];
+                $cate->workDetails = Json::encode($arrayNew);
+            } else {
+                $cate->workDetails = Json::encode($arr_results);
+            }
             // }
             
             if ($cate->save()) {

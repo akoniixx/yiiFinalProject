@@ -122,21 +122,21 @@ class SiteController extends Controller
         $dataProviderPhotographer = new ActiveDataProvider([
                 'query' => $photographer,
                 'sort'=> ['defaultOrder' => ['id'=> SORT_DESC]],
-                'pagination' => [ 'pageSize' => 10 ]
+                'pagination' => [ 'pageSize' => 8 ]
             ]);
 
         $makeup = TblCategories::find()->where(['cateWork' => TblCategories::MAKEUP_ARTICT]);
         $dataProviderMakeup = new ActiveDataProvider([
                 'query' => $makeup,
                 'sort'=> ['defaultOrder' => ['id'=> SORT_DESC]],
-                'pagination' => [ 'pageSize' => 10 ]
+                'pagination' => [ 'pageSize' => 8 ]
             ]);
 
         $dress = TblCategories::find()->where(['cateWork' => TblCategories::DRESS_RENTAL]);
         $dataProviderDress = new ActiveDataProvider([
                 'query' => $dress,
                 'sort'=> ['defaultOrder' => ['id'=> SORT_DESC]],
-                'pagination' => [ 'pageSize' => 5 ]
+                'pagination' => [ 'pageSize' => 4 ]
             ]);
 
         // $dataProvider->pagination->pageSize = 5;

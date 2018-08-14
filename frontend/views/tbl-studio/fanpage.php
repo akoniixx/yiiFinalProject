@@ -253,6 +253,7 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
             </div>
         </div>
     </section>
+
     <section class="section section-skills">
         <div class="animate-up animated">
             <div class="section-title">
@@ -304,12 +305,13 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
         </div>
     </section>
 
-    <?php if (Yii::$app->studio->getStudioId() != $id) { ?>
     <section class="section">
         <div class="col-sm-12 col-md-12">
             <?php $form = ActiveForm::begin([
                 'action' => Url::to(['tbl-studio/create-comment', 'myId' => $myId, 'studio_id' => $id])
             ]); ?>
+
+            <?php if (Yii::$app->studio->getStudioId() != $id) { ?>
             <div class="row">
                 <div class="col-sm-12 col-md-6 col-md-offset-3 rating-container-center">
                     <?php
@@ -347,13 +349,12 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
                     <?= $form->field($modelComment, 'comment')->textarea(['rows' => '4', 'placeholder' => "ความคิดเห็น ..."]) ?>
                 </div>
             </div>
-
             <div class="form-group text-center" style="padding-bottom: 5px;">
                 <div style="padding-left: 15px; padding-right: 15px;">
                     <?= Html::submitButton('โพสต์', ['class' => 'btn btn-primary']) ?>
                 </div>
             </div>
-
+            <?php } ?>
             <div class="row">
                 <div class="col-sm-10 col-md-offset-1">
                     <?php
@@ -378,7 +379,6 @@ $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.
             <?php ActiveForm::end(); ?>
         </div>
     </section>
-    <?php } ?>
 
     <?php if($modelCategory->cateWork == TblCategories::DRESS_RENTAL) { ?>
     <section>

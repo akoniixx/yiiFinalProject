@@ -88,6 +88,16 @@ class TransferSlip extends \yii\db\ActiveRecord
         ];
     }
 
+    public function bankListTo()
+    {
+        return [
+            'ธ. กรุงเทพ จำกัด (มหาชน)',
+            'ธ. กรุงไทย จำกัด (มหาชน)',
+            'ธ. กรุงศรีอยุธยา จำกัด (มหาชน)',
+            'ธ. กสิกรไทย จำกัด (มหาชน)',
+        ];
+    }
+
     public function uploadImages($model, $attr, $id)
     {
         $image = UploadedFile::getInstance($model, $attr);

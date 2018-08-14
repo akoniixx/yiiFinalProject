@@ -28,7 +28,18 @@ use unclead\multipleinput\MultipleInput;
           'tokenSeparators' => [',', ' '],
           'maximumInputLength' => 10
         ],
-    ])->label('Tag Multiple'); ?>
+    ])->label('จังหวัด'); ?>
+
+    <div class="col-xs-12 col-md-12" style="padding-left: 15px;">
+
+        <div class="col-xs-6 col-md-6" style="padding-left: 0px;display:none;" id="location1">
+        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true])->label('ลาติจูด') ?>
+        </div>
+
+        <div class="col-xs-6 col-md-6" style="padding-right: 0px;display:none;" id="location2">
+        <?= $form->field($cate, 'workDetails[]')->textInput(['maxlength' => true])->label('ลองจิจูด') ?>
+        </div>
+    </div>
 
     <h2>ประเภทงานที่รับและราคา</h2>
 
@@ -79,7 +90,7 @@ use unclead\multipleinput\MultipleInput;
             </div>
         </div>
 
-        <div class="inline form-inline">
+        <div class="inline form-inline" id="this-hide1">
             <?= $form->field($cate, 'workDetails[]')->checkbox(['uncheck' => null, 'class' => 'checkbox-inline-type', 'value' => 'architecture'])->label(false); ?>    
             <?= Html::img(Yii::$app->request->baseUrl.'/img/pn6.png', ['alt'=>'some', 'class'=>'set-image']);?>
             <label class="checkbox-inline-type">สถาปัตยกรรม</label>
@@ -89,7 +100,7 @@ use unclead\multipleinput\MultipleInput;
             </div>
         </div>
 
-        <div class="inline form-inline">
+        <div class="inline form-inline" id="this-hide2">
             <?= $form->field($cate, 'workDetails[]')->checkbox(['uncheck' => null, 'class' => 'checkbox-inline-type', 'value' => 'productAndFood'])->label(false); ?>    
             <?= Html::img(Yii::$app->request->baseUrl.'/img/pn7.png', ['alt'=>'some', 'class'=>'set-image']);?>
             <label class="checkbox-inline-type">สินค้า/อาหาร</label>
@@ -97,6 +108,8 @@ use unclead\multipleinput\MultipleInput;
             <input type="hidden" name="quantity[]" value="-"> -->
         </div>
     </div>
+
+    <div id="map" style="width:100%;height:400px;display:none;"></div>
 
     <div class="form-group text-center" style="padding-top: 50px;">
         <div style="padding-left: 15px; padding-right: 15px;">
@@ -106,3 +119,91 @@ use unclead\multipleinput\MultipleInput;
 
     <?php ActiveForm::end(); ?>
 </div>
+
+<script> 
+  function myMap() {
+        var mapOptions = {
+          center: {lat: 13.847860, lng: 100.604274},
+          zoom: 18,
+        }
+            
+        var maps = new google.maps.Map(document.getElementById("map"),mapOptions);
+        
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found. lat: ' + position.coords.latitude + ', lng: ' + position.coords.longitude + ' ');
+            infoWindow.open(maps);
+            // map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+        
+    }
+
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: The Geolocation service failed.' :
+                          'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+  }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhwvJrkjYHfpjd2DKiPhcqliTOo9NssAI&callback=myMap"></script>
+
+<?php
+
+$js = <<< JS
+
+$("#tblcategories-catework").on("click", function() {
+    
+    var current_value = this.value;
+
+    if (current_value == "1") {
+        
+      document.getElementById("hide-elements").style.display = "block";
+      document.getElementById("map").style.display = "none";
+      document.getElementById("location1").style.display = "none";
+      document.getElementById("location2").style.display = "none";
+      document.getElementById("this-hide1").style.display = "block";
+      document.getElementById("this-hide2").style.display = "block";
+
+    } else if (current_value == "2") {
+        
+      document.getElementById("hide-elements").style.display = "block";
+      document.getElementById("map").style.display = "none";
+      document.getElementById("location1").style.display = "none";
+      document.getElementById("location2").style.display = "none";
+      document.getElementById("this-hide1").style.display = "none";
+      document.getElementById("this-hide2").style.display = "none";
+
+    } else if (current_value == "3") {
+        
+      document.getElementById("hide-elements").style.display = "none";
+      document.getElementById("map").style.display = "block";
+      document.getElementById("location1").style.display = "block";
+      document.getElementById("location2").style.display = "block";
+
+    }
+
+});
+
+JS;
+ 
+// register your javascript
+$this->registerJs($js);
+
+?>

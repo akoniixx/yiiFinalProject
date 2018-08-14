@@ -187,7 +187,7 @@ use unclead\multipleinput\MultipleInput;
     }
     </script> -->
 
-<script>
+<script> 
   function myMap() {
         var mapOptions = {
           center: {lat: 13.847860, lng: 100.604274},

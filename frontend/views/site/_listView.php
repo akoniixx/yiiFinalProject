@@ -61,6 +61,6 @@ foreach ($category as $key => $value) {
   </div>
   <div class="col-sm-6" style="border-left: 1px solid #d4d4d4">
     <h4><?= implode(" | ", $arr); ?></h4>
-    <p><?= implode(" ", $array) ?></p>
+    
   </div>
 </div>

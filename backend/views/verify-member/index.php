@@ -105,11 +105,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ],
                             ]);
                     },
-                    'ok' => function($url,$model,$key){
-                        $vid = VerifyMember::findOne($model->verify_id);
-                        $sid = $vid->studioValidation;
-                        return $sid->confirmation == Confirmation::VERIFY ? Html::a('<i class="glyphicon glyphicon-ok" style="color:green;"></i>',false,['class'=>'btn btn-default']) : NULL;
-                      }
+                    // 'ok' => function($url,$model,$key){
+                    //     $vid = VerifyMember::findOne($model->verify_id);
+                    //     $sid = $vid->studioValidation;
+                    //     return $sid->confirmation == Confirmation::VERIFY ? Html::a('<i class="glyphicon glyphicon-ok" style="color:green;"></i>',false,['class'=>'btn btn-default']) : NULL;
+                    //   }
                 ]
             ],
         ],

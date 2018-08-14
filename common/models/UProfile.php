@@ -13,7 +13,7 @@ use dosamigos\editable\Editable;
  * @property string $firstName ชื่อ
  * @property string $lastName นามสกุล
  * @property string $tel เบอร์โทร
- * @property string $usreType
+ * @property string $userType
  * @property int $u_id
  * @property string $imgProfile
  */
@@ -40,7 +40,7 @@ class UProfile extends \yii\db\ActiveRecord
             [['u_id'], 'integer'],
             [['firstName', 'lastName'], 'string', 'max' => 100],
             [['tel'], 'string', 'max' => 10],
-            [['usreType'], 'string'],
+            [['userType'], 'string'],
             //[['imgProfile'], 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 5, 'skipOnEmpty' => false],
             // [['imgProfile'], 'string', 'max' => 255],
             [['imgProfile'], 'file', 'extensions'=>'jpg, png', 'skipOnEmpty' => true],
@@ -57,7 +57,7 @@ class UProfile extends \yii\db\ActiveRecord
             'firstName' => 'ชื่อ',
             'lastName' => 'นามสกุล',
             'tel' => 'เบอร์โทร',
-            'usreType' => 'สถานะ',
+            'userType' => 'สถานะ',
             'u_id' => 'U ID',
             'imgProfile' => 'รูปภาพประจำตัว',
         ];
